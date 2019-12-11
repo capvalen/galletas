@@ -50,7 +50,7 @@
           <option value="3">Recibo por honorarios</option>
           <option value="3">Sin comprobante</option>
         </select>
-        <label for="">Serie-Correlativo</label>
+        <label for="">Serie y Correlativo</label>
         <input class="form-control" type="text" name="">
         <label for="">¿A crédito?</label>
         <select name="" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
