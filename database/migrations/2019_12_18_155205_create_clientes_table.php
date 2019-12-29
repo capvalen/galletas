@@ -17,8 +17,8 @@ class CreateClientesTable extends Migration
             $table->bigIncrements('id');
             $table->string('ruc')->unique();
             $table->string('razonSocial');
-            $table->string('direccion');
-            $table->string('celular');
+            $table->string('direccion')->nullable();
+            $table->string('celular')->nullable();
             $table->boolean('activo')->default(1);
             $table->timestamps();
         });

@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{url('css/bootstrap-material-datetimepicker.css?version=0.1')}}" >
   <link rel="stylesheet" href="{{url('css/animate.css?version=0.0')}}" >
   <link rel="stylesheet" href="{{url('css/alertify.min.css?version=1.0.1')}}" >
+  <link rel="stylesheet" href="{{asset('css/easy-autocomplete.min.css?version=1.0.2')}}" >
 
 
 
@@ -52,6 +53,7 @@
 <script src="{{url('js/bootstrap-select.js?version=1.0.5')}}"></script>
 <script src="{{url('js/bootstrap-material-datetimepicker.js')}}"></script>
 <script src="{{url('js/alertify.min.js?version=1.0.1')}}"></script>
+<script src="{{asset('js/jquery.easy-autocomplete.min.js?version=1.0.1')}}"></script>
 
 <script>
   $('.selectpicker').selectpicker();

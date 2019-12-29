@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMarcasTable extends Migration
+class CreateCategoriaComprasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateMarcasTable extends Migration
      */
     public function up()
     {
-        Schema::create('marcas', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('descripcion')->unique();
-            $table->boolean('activo')->default(1);
+        Schema::create('categoria_compras', function (Blueprint $table) {
+						$table->bigIncrements('id');
+						$table->string('descripcion');
+						$table->boolean('activo')->default(1);
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateMarcasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('marcas');
+        Schema::dropIfExists('categoria_compras');
     }
 }

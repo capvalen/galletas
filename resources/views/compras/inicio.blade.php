@@ -7,7 +7,7 @@
 @section('cuerpo')
 <div class="card">
   
-  <div class="card-body col-6">
+  <div class="card-body ">
     <p class="card-text mb-0"><small class="text-muted"><i class="icofont-filter"></i> Acciones</small></p>
     <div class="form-row">
       <div class="col">
@@ -17,15 +17,16 @@
       <div class="col">
         <label for="">RUC o Razón social</label>
         <select name="" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
-          <option value="1">20312701031 - EL CRISTAL S.C.R.L.</option>
-          <option value="2">20602337147 - BI GRAND CONFECCIONES S.A.C.</option>
-          <option value="3">20364845567 - SANDRA & ABIGAIL GENERAL SERVICE S.A.C.	</option>
-          <option value="3">10203508848 - SERVICIOS TECNICOS EL CHALANCITO EIRL</option>
+          @foreach ($proveedores as $proveedor )
+          <option value="{{$proveedor->id}}"> {{$proveedor->ruc}} - {{$proveedor->razonSocial}}</option>
+          @endforeach
+         
         </select>
       </div>
         
       <div class="col d-flex align-items-end">
-        <a href="{{route('compras.nuevo')}}" class="btn btn-outline-primary" role='button'>Compra nueva</a>
+        <a href="{{route('compras.nuevo')}}" class="btn btn-outline-primary" role='button'><i class="icofont-ticket"></i> Nueva compra </a>
+        <a href="{{route('proveedores.crear')}}" class="btn btn-outline-primary mx-2" role='button'><i class="icofont-ticket"></i> Nuevo proveedor</a>
       </div>
     </div>
   </div>

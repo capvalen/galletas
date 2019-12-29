@@ -13,66 +13,63 @@
 @endsection
 
 @section('cuerpo')
-
+<form action="{{route('compra.insertar')}}" method="post">
+@csrf
 <div class="card-deck">
-  <div class="card col-4">
+  <div class="card col-md-4">
     <div class="card-body">
       <h2 class='card-title'>Datos de la compra</h2>
         <label for="">RUC o Razón social</label>
-        <select name="" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
-          <option value="1">20312701031 - EL CRISTAL S.C.R.L.</option>
-          <option value="2">20602337147 - BI GRAND CONFECCIONES S.A.C.</option>
-          <option value="3">20364845567 - SANDRA & ABIGAIL GENERAL SERVICE S.A.C.	</option>
-          <option value="3">10203508848 - SERVICIOS TECNICOS EL CHALANCITO EIRL</option>
+        <select name="idProveedor" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
+					@foreach ($proveedores as $proveedor )
+          <option value="{{$proveedor->id}}"> {{$proveedor->ruc}} - {{$proveedor->razonSocial}}</option>
+          @endforeach
         </select>
         <label for="">Categoría</label>
-        <select name="" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
-          <option value="1">Compras generales</option>
-          <option value="2">Insumos</option>
-          <option value="3">Materiales</option>
-          <option value="3">Combustible</option>
-          <option value="4">Servicios</option>
-          <option value="4">Gastos gerenciales</option>
-          <option value="4">Caja chica</option>
+        <select name="idCategoriaCompras" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
+          @foreach ($categorias as $categoria )
+          <option value="{{$categoria->id}}"> {{$categoria->descripcion}}</option>
+          @endforeach
         </select>
         <label for="">Moneda</label>
-        <select name="" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
-          <option value="1">Soles</option>
-          <option value="2">Dólares</option>
-          <option value="3">Gratis</option>
+        <select name="idMoneda" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
+					@foreach ($monedas as $moneda )
+          <option value="{{$moneda->id}}"> {{$moneda->descripcion}}</option>
+          @endforeach
         </select>
         <label for="">Comprobante</label>
-        <select name="" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
-          <option value="1">Ticket</option>
-          <option value="2">Recibo</option>
-          <option value="3">Factura</option>
-          <option value="3">Boleta de venta</option>
-          <option value="3">Recibo por honorarios</option>
-          <option value="3">Sin comprobante</option>
+        <select name="idComprobante" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
+					@foreach ($comprobantes as $comprobante )
+          <option value="{{$comprobante->id}}"> {{$comprobante->descripcion}}</option>
+          @endforeach
         </select>
         <label for="">Serie y Correlativo</label>
-        <input class="form-control" type="text" name="">
+        <input class="form-control" type="text" name="serieCorrelativo">
         <label for="">¿A crédito?</label>
-        <select name="" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
+        <select name="esCredito" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
           <option value="1">Si</option>
           <option value="2">No</option>
         </select>
         <label for="">¿Contiene IGV?</label>
-        <select name="" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
+        <select name="tieneIGV" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
           <option value="1">Si</option>
           <option value="2">No</option>
         </select>
         <label for="">Fecha de compra</label>
-        <input class="form-control" type="date" name="" value="2019-12-09">
+        <input class="form-control" type="date" name="fecha" value="<?= date('Y-m-d'); ?>">
         <label for="">Importe final</label>
-        <input class="form-control" type="number" name="" value="0.00">
-      <button class="btn btn-outline-success mt-2 btn-block">Crear compra</button>
+        <input class="form-control" type="number" name="total" value="0.00">
+        <label for="">Observaciones</label>
+        <input class="form-control" type="text" name="detalle" value="">
+      <button class="btn btn-outline-success mt-2 btn-block" type="submit"><i class="icofont-save"></i> Crear compra</button>
     </div>
   </div>
-  <div class="card">
+  <div class="card col">
     <div class="card-body">
       <h2 class='card-title'>Detalle</h2>
-      <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal">Agregar detalle</button>
+			<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#exampleModal">Agregar detalle</button>
+		
+			
       <table class="table table-hover">
         <thead class="">
           <tr>
@@ -132,6 +129,25 @@
           </button>
         </div>
         <div class="modal-body">
+          <label for="">Producto</label>
+          <select id="sltPProducto" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
+						@foreach ($insumos as $insumo )
+						<option value="{{$insumo->id}}"> {{$insumo->descripcion}}</option>
+						@endforeach
+					</select>
+					<label for="">Marca</label>
+					<input type="text" name="" id="txtMarcas" class="form-control">
+          {{-- <select id="sltPUnidad" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
+						@foreach ($marcas as $marca )
+						<option value="{{$marca->id}}"> {{$marca->descripcion}}</option>
+						@endforeach
+					</select> --}}
+          <label for="">Unidad</label>
+          <select id="sltPUnidad" class="selectpicker" id="sltRUCCliente" data-live-search="true" data-width="100%">
+						@foreach ($unidades as $unidad )
+						<option value="{{$unidad->id}}" data-abreviatura="{{$unidad->abreviatura}}"> {{$unidad->descripcion}}</option>
+						@endforeach
+					</select>
           <label for="">Cantidad</label>
           <input class="form-control" type="number" name="" value="0.00">
           <label for="">Descripción</label>
@@ -145,5 +161,49 @@
       </div>
     </div>
   </div>
+</form>
+@endsection
 
+@section('script')
+<script>
+	var options = {
+	data: [
+		{"name": "Afghanistan", "code": "AF"},
+		{"name": "Aland Islands", "code": "AX"},
+		{"name": "Albania", "code": "AL"},
+		{"name": "Algeria", "code": "DZ"},
+		{"name": "American Samoa", "code": "AS"},
+	],
+	getValue: "name",
+	list: {
+		match: {
+			enabled: true
+		},
+		showAnimation: {
+			type: "fade", //normal|slide|fade
+			time: 400,
+			callback: function() {}
+		},
+
+		hideAnimation: {
+			type: "slide", //normal|slide|fade
+			time: 400,
+			callback: function() {}
+		},
+		sort: {
+			enabled: true
+		}
+	}
+};
+	
+	$("#txtMarcas").easyAutocomplete(options);
+	$('#btnPrueba').click(function() {
+		$('#divPrueba').append(`
+			<div class="row">
+					<input class="hidden" type="text" name="producto[]" id="">
+					<input class="hidden" type="text" name="cantidad[]" id="">
+				</div>
+				`);
+	});
+</script>
 @endsection

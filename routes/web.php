@@ -31,9 +31,13 @@ Route::get('cliente/nuevo', function(){ return view('clientes.crear'); })->name(
 Route::get('cliente/editar', function(){ return view('clientes.editar'); })->name('clientes.editar');
 Route::get('clientes/historial', function(){ return view('clientes.historial'); })->name('clientes.historial');
 
-Route::get('compras', function(){ return view('compras.inicio'); })->name('compras');
-Route::get('compra/nuevo', function(){ return view('compras.crear'); })->name('compras.nuevo');
+Route::get('compras', 'frontend@compras' )->name('compras'); //proveedoresControler@show
+Route::get('compra/nuevo', 'frontend@comprasNuevo')->name('compras.nuevo');
 Route::get('compra/editar', function(){ /* return view('compras.editar'); */ })->name('compras.editar');
 Route::get('compra/historial', function(){ return view('compras.historial'); })->name('compras.historial');
+Route::post('compra/insertar', 'comprasController@store' )->name('compra.insertar');
 
 Route::get('caja', 'frontend@caja' )->name('caja');
+
+Route::get('proveedores/crear', 'frontend@crearProveedor' )->name('proveedores.crear');
+Route::post('proveedores/insertar', 'proveedoresControler@store' )->name('proveedor.insertar');
