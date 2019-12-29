@@ -20,7 +20,7 @@
       <a href="{{route('compras')}}"><i class="icofont-cart-alt"></i> Compras</a>
     </li>
     <li>
-      <a href="alumnos.php"><i class="icofont-money-bag"></i> Caja</a>
+      <a href="{{route('caja')}}"><i class="icofont-money-bag"></i> Caja</a>
     </li>
     <li>
       <a href="alumnos.php"><i class="icofont-handshake-deal"></i> Ventas</a>

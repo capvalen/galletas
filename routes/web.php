@@ -24,7 +24,7 @@ Route::get('logout', function(){
     return redirect('login')->with(Auth::logout());
 } );
 
-Route::get('panel', function(){ return view('plantillas.inicio'); })->name('panel');
+Route::get('panel', 'frontend@index' )->name('panel');
 
 Route::get('clientes', function(){ return view('clientes.inicio'); })->name('clientes');
 Route::get('cliente/nuevo', function(){ return view('clientes.crear'); })->name('clientes.nuevo');
@@ -35,3 +35,5 @@ Route::get('compras', function(){ return view('compras.inicio'); })->name('compr
 Route::get('compra/nuevo', function(){ return view('compras.crear'); })->name('compras.nuevo');
 Route::get('compra/editar', function(){ /* return view('compras.editar'); */ })->name('compras.editar');
 Route::get('compra/historial', function(){ return view('compras.historial'); })->name('compras.historial');
+
+Route::get('caja', 'frontend@caja' )->name('caja');

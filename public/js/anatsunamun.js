@@ -48,3 +48,18 @@
 		if(tipo){$('#overlay').css('display', 'initial');}
 		else{ $('#overlay').css('display', 'none'); }
 	}
+
+	$('.esDecimal').change(function(){
+		var campo = $(this);
+		var valor =campo.val();
+		$(this).val(parseFloat(valor).toFixed(2));
+	});
+	$('.esMoneda').change(function(){
+		var campo = $(this);
+		var valor =campo.val();
+		if(valor<0){
+			$(this).val('0.00')
+		}else{
+			$(this).val(parseFloat(valor).toFixed(2));
+		}
+	});
