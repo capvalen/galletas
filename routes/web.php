@@ -41,3 +41,6 @@ Route::get('caja', 'frontend@caja' )->name('caja');
 
 Route::get('proveedores/crear', 'frontend@crearProveedor' )->name('proveedores.crear');
 Route::post('proveedores/insertar', 'proveedoresControler@store' )->name('proveedor.insertar');
+
+Route::get('marcas/todos', 'marcasController@show' )->name('marcas.todos');
+Route::get('insumos/todos', 'insumosController@show' )->name('insumos.todos');

@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         $this->truncarTablas([
-            'users', 'unidades', 'monedas', 'monedas_procesos', 'clientes', 'proveedores', 'tipo_procesos', 'categoria_compras', 'comprobantes', 'marcas'
+            'users', 'unidades', 'monedas', 'monedas_procesos', 'clientes', 'proveedores', 'tipo_procesos', 'categoria_compras', 'comprobantes', 'marcas', 'insumos'
         ]);
         $this->call(UsersSeeder::class);
         $this->call(unidadesSeeder::class);
@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call(categoriaComprasSeed::class);
         $this->call(comprobanteSeed::class);
         $this->call(marcasSeed::class);
+        $this->call(insumoSeed::class);
         
 
     }

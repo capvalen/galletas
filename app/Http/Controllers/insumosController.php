@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\compras;
+use App\Insumos;
 use Illuminate\Http\Request;
 
-class comprasController extends Controller
+class insumosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,42 +35,39 @@ class comprasController extends Controller
      */
     public function store(Request $request)
     {
-				//
-				$idUser = Auth::id();
-				return $request;
-				//return $idUser;
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\compras  $compras
+     * @param  \App\insumos  $insumos
      * @return \Illuminate\Http\Response
      */
-    public function show(compras $compras)
+    public function show(insumos $insumos)
     {
-        //
+			return $insumos::where('activo', 1)->get();
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\compras  $compras
+     * @param  \App\insumos  $insumos
      * @return \Illuminate\Http\Response
      */
-    public function edit(compras $compras)
+    public function edit(insumos $insumos)
     {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\compras  $compras
+     * @param  \App\insumos  $insumos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, compras $compras)
+    public function update(Request $request, insumos $insumos)
     {
         //
     }
@@ -79,10 +75,10 @@ class comprasController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\compras  $compras
+     * @param  \App\insumos  $insumos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(compras $compras)
+    public function destroy(insumos $insumos)
     {
         //
     }

@@ -3,7 +3,8 @@
 <head>
 	<!-- Required meta tags -->
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 
   <link rel="icon" type="image/png" href="images/peto.png" sizes="16x16">
   <!-- Bootstrap CSS -->
@@ -18,7 +19,8 @@
   <link rel="stylesheet" href="{{url('css/bootstrap-material-datetimepicker.css?version=0.1')}}" >
   <link rel="stylesheet" href="{{url('css/animate.css?version=0.0')}}" >
   <link rel="stylesheet" href="{{url('css/alertify.min.css?version=1.0.1')}}" >
-  <link rel="stylesheet" href="{{asset('css/easy-autocomplete.min.css?version=1.0.2')}}" >
+	<link rel="stylesheet" href="{{asset('css/easy-autocomplete.min.css?version=1.0.2')}}" > <!-- Extraido de: http://easyautocomplete.com/guide -->
+
 
 
 
@@ -49,14 +51,16 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="{{url('js/moment.js')}}"></script>
-<script src="{{url('js/anatsunamun.js?version=1.0.4')}}"></script>
+<script src="{{url('js/anatsunamun.js?version=1.0.13')}}"></script>
 <script src="{{url('js/bootstrap-select.js?version=1.0.5')}}"></script>
 <script src="{{url('js/bootstrap-material-datetimepicker.js')}}"></script>
 <script src="{{url('js/alertify.min.js?version=1.0.1')}}"></script>
 <script src="{{asset('js/jquery.easy-autocomplete.min.js?version=1.0.1')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 
 <script>
-  $('.selectpicker').selectpicker();
+  //$('.selectpicker').selectpicker();
   $('[data-toggle="tooltip"]').tooltip();
 
 </script>

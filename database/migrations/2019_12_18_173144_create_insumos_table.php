@@ -16,7 +16,7 @@ class CreateInsumosTable extends Migration
         Schema::create('insumos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('descripcion')->unique();
-            $table->boolean('activo');
+            $table->boolean('activo')->default(1);
             $table->timestamps();
         });
     }

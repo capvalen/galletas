@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\compras;
+use App;
 use Illuminate\Http\Request;
 
-class comprasController extends Controller
+class marcasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,30 +35,30 @@ class comprasController extends Controller
      */
     public function store(Request $request)
     {
-				//
-				$idUser = Auth::id();
-				return $request;
-				//return $idUser;
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\compras  $compras
+     * @param  \App\marcas  $marcas
      * @return \Illuminate\Http\Response
      */
-    public function show(compras $compras)
+    public function show()
     {
-        //
+				//
+				$marca = App\Marcas::all();
+        //$proveedores = DB::table('proveedores')->get();
+        return $marca;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\compras  $compras
+     * @param  \App\marcas  $marcas
      * @return \Illuminate\Http\Response
      */
-    public function edit(compras $compras)
+    public function edit(marcas $marcas)
     {
         //
     }
@@ -68,10 +67,10 @@ class comprasController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\compras  $compras
+     * @param  \App\marcas  $marcas
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, compras $compras)
+    public function update(Request $request, marcas $marcas)
     {
         //
     }
@@ -79,10 +78,10 @@ class comprasController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\compras  $compras
+     * @param  \App\marcas  $marcas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(compras $compras)
+    public function destroy(marcas $marcas)
     {
         //
     }

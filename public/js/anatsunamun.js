@@ -1,4 +1,9 @@
 	$(document).ready(function () {
+		$.ajaxSetup({
+			headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
 		$("#sidebar").mCustomScrollbar({
 			theme: "minimal-dark",
 			mouseWheelPixels: 200
@@ -63,3 +68,19 @@
 			$(this).val(parseFloat(valor).toFixed(2));
 		}
 	});
+
+function urlBase(url){
+	//return '{{url()}}/'+ url;
+	var bUrl = window.location.href;
+	var arr = bUrl.split("/");
+	var result = arr[0] + "//" + arr[2];
+	return result+"/"+url; 
+}
+
+$('form').on('keyup keypress', function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) { 
+    e.preventDefault();
+    return false;
+  }
+});
