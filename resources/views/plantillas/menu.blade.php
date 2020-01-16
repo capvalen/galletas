@@ -14,6 +14,9 @@
 			<a href="{{route('panel')}}" class="d-flex align-items-center"><i class="icofont-home"></i> <span class="liText">Principal</span> </a>
     </li>
     <li>
+      <a href="{{route('galeria.mostrar')}}"><i class="icofont-users-alt-1"></i> Galería</a>
+    </li>
+    <li>
       <a href="{{route('clientes')}}"><i class="icofont-users-alt-1"></i> Clientes</a>
     </li>
     <li>

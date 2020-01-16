@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return redirect('login');
 });
 
 Auth::routes();
@@ -44,3 +44,8 @@ Route::post('proveedores/insertar', 'proveedoresControler@store' )->name('provee
 
 Route::get('marcas/todos', 'marcasController@show' )->name('marcas.todos');
 Route::get('insumos/todos', 'insumosController@show' )->name('insumos.todos');
+
+Route::get('galeria/subir', 'galeriaControler@subida' )->name('galeria.subida');
+Route::get('galeria/mostrar/{fecha?}', 'galeriaControler@index' )->name('galeria.mostrar');
+Route::get('galeria/mostrar/{fecha?}/grupo/{grupo?}', 'galeriaControler@grupo' )->name('galeria.mostrar.grupo');
+Route::post('fotos/subida', 'galeriaControler@store' )->name('galeria.subir');

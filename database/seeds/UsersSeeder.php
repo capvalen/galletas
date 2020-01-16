@@ -16,9 +16,36 @@ class UsersSeeder extends Seeder
             'name' => 'Carlos',
             'lastname'=> 'Pariona',
             'username'=> 'infocat',
-            'username'=> 'infocat',
             'email'=> 'infocat2.0@gmail.com',
             'password'=> bcrypt('00'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Stefano',
+            'lastname'=> '',
+            'username'=> 'stefano',
+            'email'=> 'stefano@gmail.com',
+            'password'=> bcrypt(''),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Bruni',
+            'lastname'=> '',
+            'username'=> 'bruni',
+            'email'=> 'bruni@gmail.com',
+            'password'=> bcrypt(''),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Victor',
+            'lastname'=> '',
+            'username'=> 'victor',
+            'email'=> 'Victor@gmail.com',
+            'password'=> bcrypt(''),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Ricardo',
+            'lastname'=> '',
+            'username'=> 'ricardo',
+            'email'=> 'Ricardo@gmail.com',
+            'password'=> bcrypt(''),
         ]);
     }
 }
