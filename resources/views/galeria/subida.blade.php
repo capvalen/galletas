@@ -31,16 +31,14 @@ margin-top: 10px;
 		<label for="">Fecha</label>
 		<input type="date" name="dia" class="form-control" id="" value="<?= date('Y-m-d');?>">
 		<label for="">Grupo</label>
-		<select name="grupo" id="" class="form-control">
+		<select name="grupo" class="form-control" id="sltGrupo">
 			@foreach ( $grupos as $grupo )
 				<option value="{{$grupo->id}}">{{$grupo->grupo}}</option>
 			@endforeach
 		</select>
 		<label for="">Tipo de Reporte</label>
-		<select name="tipo" id="" class="form-control">
-			@foreach ( $tipos as $tipo )
-				<option value="{{$tipo->id}}">{{$tipo->descripcion}}</option>
-			@endforeach
+		<select name="tipo" class="form-control" id="sltTipos">
+		
 		</select>
 		<label class="mb-0" for="">Archivo</label>
 		<div class="input-group mb-2">
@@ -56,6 +54,7 @@ margin-top: 10px;
 		@endif
 
 		<button class="btn btn-outline-success btn-block my-3" type="submit"><i class="icofont-upload-alt"></i> Subir archivo</button>
+		
 	</div>
 
 </div>
@@ -64,12 +63,29 @@ margin-top: 10px;
 
 @section('script')
 <script>
+	var grupos = JSON.parse('@php echo json_encode($tipos) @endphp');
+	rellenarSelect(1);
 $('#inputGroupFile04').on('change',function(e){
 	//get the file name
 	var fileName = $(this).val();
 	//replace the "Choose a file" label
 	//$(this).next('.custom-file-label').html(fileName);
 	$(this).next('.custom-file-label').html(e.target.files[0].name);
-})
+});
+$('#sltGrupo').change(function() {
+	//console.log($('#sltGrupo').val())
+	rellenarSelect($('#sltGrupo').val())
+});
+
+function rellenarSelect(id){
+	$('#sltTipos').html('');
+	for(let i=0; i<grupos.length; i++){
+		if( grupos[i].grupo_id == id ){
+			$('#sltTipos').append(`
+			<option value="${grupos[i].grupo_id}">${grupos[i].descripcion}</option>
+			`)
+		}
+	}
+}
 </script>
 @endsection

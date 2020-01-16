@@ -16,8 +16,11 @@ class CreateGaleriaTiposTable extends Migration
         Schema::create('galeria_tipos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('descripcion');
+            $table->bigInteger('grupo_id')->unsigned();
             $table->boolean('activo')->default(1);
-            $table->timestamps();
+						$table->timestamps();
+						
+						$table->foreign('grupo_id')->references('id')->on('grupos');
         });
     }
 
