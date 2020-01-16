@@ -90,7 +90,7 @@ class galeriaControler extends Controller
 				$galeria -> idUser = Auth::id();
 				$galeria -> save();
 				
-				return back()->with('mensaje','Todo ok');
+				return back()->with('mensaje','¡Archivo subido con éxito!');
 			}else{
 				return back()->with('error','Debe subir un archivo antes de guardar');
 			}
