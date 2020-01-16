@@ -9,7 +9,7 @@
 	</div>
 
 	<ul class="list-unstyled components">
-		<p class="text-center"><small>Versión 1.0.6</small></p>
+		<p class="text-center"><small>Versión 1.0.6d</small></p>
 		<li>
 			<a href="{{route('panel')}}" class="d-flex align-items-center"><i class="icofont-home"></i> <span class="liText">Principal</span> </a>
     </li>
