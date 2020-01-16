@@ -1,5 +1,4 @@
 @extends('plantillas.panel')
-namespace App;
 
 @section('css')
 <style>
@@ -68,12 +67,16 @@ margin-top: 10px;
 @endisset
 
 @isset($categorias)
-<div class=" mt-3" id="divPadreCards d-print-none">
+<h5 class=" mt-3">Galería de archivos</h5>
+<div id="divPadreCards d-print-none">
 	<div class="row row-cols-5">
 		@foreach ($categorias as $categoria )
 		<div class="col">
 			<div class="card">
-				<img src="@if( substr($categoria->foto, -4) =='.pdf') {{url('subidas/iconopdf.png')}} @else  {{url('subidas/' . $categoria->foto )}}  @endif" class="card-img-top" alt="..."data-archivo="{{$categoria->foto}}">
+				@php
+				$extension = substr($categoria->foto, -4);
+				@endphp
+				<img src="@if( $extension =='.pdf'){{url('subidas/iconopdf.png')}}@elseif( $extension =='.doc' or $extension =='docx' ){{url('subidas/iconoword.png')}}@elseif( $extension =='.xls' or $extension =='xlsx' ){{url('subidas/iconoexcel.png')}}@else{{url('subidas/' . $categoria->foto )}}@endif" class="card-img-top" alt="..."data-archivo="{{$categoria->foto}}">
 				<div class="card-body">
 					<small class="text-muted">Creado el {{\Carbon\Carbon::parse($categoria->created_at)->format('d/m/Y h:m a')}}</small>
 					<h5 class="card-title">{{$categoria->descripcion}}</h5>

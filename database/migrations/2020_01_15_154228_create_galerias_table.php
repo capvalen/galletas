@@ -20,6 +20,7 @@ class CreateGaleriasTable extends Migration
             $table->integer('idUser')->unsigned();
             $table->text('observacion')->nullable(true)->default('');
             $table->text('foto');
+            $table->date('dia');
             $table->boolean('activo')->default(1);
 						$table->timestamps();
 						

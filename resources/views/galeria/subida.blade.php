@@ -28,6 +28,8 @@ margin-top: 10px;
 <div class="card col-md-6" id="cardFormulario">
 
 	<div class="card-body">
+		<label for="">Fecha</label>
+		<input type="date" name="dia" class="form-control" id="" value="<?= date('Y-m-d');?>">
 		<label for="">Grupo</label>
 		<select name="grupo" id="" class="form-control">
 			@foreach ( $grupos as $grupo )
@@ -43,14 +45,14 @@ margin-top: 10px;
 		<label class="mb-0" for="">Archivo</label>
 		<div class="input-group mb-2">
 			<div class="custom-file">
-				<input type="file" class="custom-file-input m-0" name="archivo" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" accept="image/*, .pdf">
+				<input type="file" class="custom-file-input m-0" name="archivo" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" accept="image/*, .pdf, .doc, .docx, .xls, .xlsx">
 				<label class="custom-file-label" for="inputGroupFile04">Seleccione el archivo</label>
 			</div>
 		</div>
 		<label for="">Observaciones:</label>
 		<input type="text" name="observacion" class="form-control" id="">
 		@if (session('mensaje'))
-			<div class="alert alert-warning my-2"><i class="icofont-check-circled"></i> {{session('mensaje')}}</div>
+			<div class="alert alert-warning my-2"><i class="icofont-check-circled"></i> {{session('mensaje')}} puede verlo haciendo <a class="text-decoration-none" href="{{route('galeria.mostrar', session('fechaGuardada'))}}">click acá</a></div>
 		@endif
 
 		<button class="btn btn-outline-success btn-block my-3" type="submit"><i class="icofont-upload-alt"></i> Subir archivo</button>

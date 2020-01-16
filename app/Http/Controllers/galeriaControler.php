@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 class galeriaControler extends Controller
 {
+	public function __construct(){
+		$this->middleware('auth');
+	}
     /**
      * Display a listing of the resource.
      *
@@ -36,15 +39,15 @@ class galeriaControler extends Controller
 				$contador=App\Galerias::select(DB::raw('grupos.grupo, count(grupo_id) as cantidad, grupo_id'))
 				->crossJoin('grupos', 'galerias.grupo_id', '=', 'grupos.id')
 				->groupBy('grupo_id', 'grupos.grupo')
-				->whereDate('galerias.created_at', $fecha )
+				->whereDate('galerias.dia', $fecha )
 				->get();
 				//return $contador;
 				return view('galeria.mostrar', compact('fecha', 'galerias', 'grupos', 'contador'));
 		}
 		public function grupo($fecha='', $idGrupo=''){
-			$categorias = App\Galerias::select(DB::raw('galerias.id, galeria_tipos.descripcion, galerias.foto, observacion, galerias.created_at' ))
+			$categorias = App\Galerias::select(DB::raw('galerias.id, galeria_tipos.descripcion, galerias.foto, observacion, galerias.created_at, dia' ))
 			->crossJoin('galeria_tipos', 'galeria_tipos.id', '=', 'galerias.idTipoGaleria')
-			->whereDate('galerias.created_at', $fecha )->where('grupo_id', $idGrupo)->get();
+			->whereDate('galerias.dia', $fecha )->where('grupo_id', $idGrupo)->get();
 			//return $categorias;
 			
 			return view('galeria.mostrar', compact('fecha', 'categorias'));
@@ -86,11 +89,11 @@ class galeriaControler extends Controller
 				$galeria -> foto = $nombArchivo;
 				$galeria -> grupo_id = $request->grupo;
 				$galeria -> idTipoGaleria = $request->tipo;
+				$galeria -> dia = $request->dia;
 				$galeria -> observacion = $request->observacion;
 				$galeria -> idUser = Auth::id();
 				$galeria -> save();
-				
-				return back()->with('mensaje','¡Archivo subido con éxito!');
+				return back()->with('mensaje','¡Archivo subido con éxito!')->with('fechaGuardada', $request->dia);
 			}else{
 				return back()->with('error','Debe subir un archivo antes de guardar');
 			}
