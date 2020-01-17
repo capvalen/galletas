@@ -141,7 +141,7 @@ class galeriaControler extends Controller
 			$galeria -> dia = $request->dia;
 			$galeria -> observacion = $request->observacion;
 			$galeria ->save();
-			return redirect()->route('galeria.mostrar.grupo',  [$request->dia, $request->grupo]);
+			return redirect()->route('galeria.mostrar.grupo',  [$request->dia, $request->grupo])->with('actualizado', 'Registro actualizado con éxito');
     }
 
     /**

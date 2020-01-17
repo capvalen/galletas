@@ -176,5 +176,8 @@ function botonEliminar(id){
 @if(session('borrado'))
 alertify.error('<i class="icofont-magic"></i> {{session('borrado')}}');
 @endif
+@if(session('actualizado'))
+alertify.success('<i class="icofont-magic"></i> {{session('actualizado')}}');
+@endif
 </script>
 @endsection
