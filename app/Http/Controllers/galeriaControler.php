@@ -36,9 +36,9 @@ class galeriaControler extends Controller
 					//entró con fecha
 				}
 				$galerias = App\Galerias::whereDate('created_at', $fecha )->get();
-				$contador=App\Galerias::select(DB::raw('grupos.grupo, count(grupo_id) as cantidad, grupo_id'))
+				$contador=App\Galerias::select(DB::raw('grupos.grupo, count(galerias.grupo_id) as cantidad, galerias.grupo_id'))
 				->crossJoin('grupos', 'galerias.grupo_id', '=', 'grupos.id')
-				->groupBy('grupo_id', 'grupos.grupo')
+				->groupBy('galerias.grupo_id', 'grupos.grupo')
 				->whereDate('galerias.dia', $fecha )
 				->get();
 				//return $contador;
@@ -47,7 +47,7 @@ class galeriaControler extends Controller
 		public function grupo($fecha='', $idGrupo=''){
 			$categorias = App\Galerias::select(DB::raw('galerias.id, galeria_tipos.descripcion, galerias.foto, observacion, galerias.created_at, dia' ))
 			->crossJoin('galeria_tipos', 'galeria_tipos.id', '=', 'galerias.idTipoGaleria')
-			->whereDate('galerias.dia', $fecha )->where('grupo_id', $idGrupo)->get();
+			->whereDate('galerias.dia', $fecha )->where('galerias.grupo_id', $idGrupo)->get();
 			//return $categorias;
 			
 			return view('galeria.mostrar', compact('fecha', 'categorias'));
@@ -118,7 +118,12 @@ class galeriaControler extends Controller
      */
     public function edit($id)
     {
-        //
+			$galeria = App\Galerias::findOrFail($id);
+			//return $galeria;
+			$grupos = App\Grupos::where('activo', 1)->get();
+			$tipos = App\galeria_tipo::where('activo', 1)->get();
+			//return $tipos;
+			return view('galeria.editar', compact( 'galeria', 'grupos', 'tipos' ));
     }
 
     /**
@@ -130,7 +135,13 @@ class galeriaControler extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+			$galeria = App\Galerias::findOrFail($id);
+			$galeria -> grupo_id = $request->grupo;
+			$galeria -> idTipoGaleria = $request->tipo;
+			$galeria -> dia = $request->dia;
+			$galeria -> observacion = $request->observacion;
+			$galeria ->save();
+			return redirect()->route('galeria.mostrar.grupo',  [$request->dia, $request->grupo]);
     }
 
     /**
@@ -139,8 +150,17 @@ class galeriaControler extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+				//return $request;
+				$galeria = App\Galerias::findOrFail($request->idBorrar);
+				//return $galeria;
+				$nombreArchivo = $galeria -> foto;
+        File::delete('subidas/'. $nombreArchivo );
+				$galeria->delete();
+
+				//return 'ok';
+				
+        return back()->with('borrado', 'Foto eliminada del servidor');
     }
 }

@@ -48,4 +48,7 @@ Route::get('insumos/todos', 'insumosController@show' )->name('insumos.todos');
 Route::get('galeria/subir', 'galeriaControler@subida' )->name('galeria.subida');
 Route::get('galeria/mostrar/{fecha?}', 'galeriaControler@index' )->name('galeria.mostrar');
 Route::get('galeria/mostrar/{fecha?}/grupo/{grupo?}', 'galeriaControler@grupo' )->name('galeria.mostrar.grupo');
+Route::get('galeria/editar/{id}', 'galeriaControler@edit' )->name('galeria.editar');
+Route::post('fotos/editar/{id}', 'galeriaControler@update' )->name('galeria.update');
 Route::post('fotos/subida', 'galeriaControler@store' )->name('galeria.subir');
+Route::post('fotos/borrar', 'galeriaControler@destroy' )->name('galeria.borrar');

@@ -870,7 +870,9 @@
   background: rgba(91, 189, 114, 0.95);
 }
 .alertify-notifier .ajs-message.ajs-error {
-  background: rgba(217, 92, 92, 0.95);
+	background: rgba(243, 36, 36, 0.95);
+	color: white!important;
+	border-radius: 5px;
 }
 .alertify-notifier .ajs-message.ajs-warning {
   background: rgba(252, 248, 215, 0.95);

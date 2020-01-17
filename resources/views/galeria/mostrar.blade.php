@@ -14,7 +14,9 @@ margin-top: 10px;
     object-fit: cover;
 		object-position: top;
 }
-
+.btn:focus, .close {
+  outline: none!important;
+}
 </style>
 @endsection
 
@@ -73,6 +75,7 @@ margin-top: 10px;
 		@foreach ($categorias as $categoria )
 		<div class="col">
 			<div class="card">
+					<button class="text-right close pr-2" onclick="botonEliminar({{$categoria->id}})" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				@php
 				$extension = substr($categoria->foto, -4);
 				@endphp
@@ -81,6 +84,7 @@ margin-top: 10px;
 					<small class="text-muted">Creado el {{\Carbon\Carbon::parse($categoria->created_at)->format('d/m/Y h:m a')}}</small>
 					<h5 class="card-title">{{$categoria->descripcion}}</h5>
 					<p class="card-text">{{$categoria->observacion}}</p>
+					<a href="{{route('galeria.editar', $categoria->id )}}" class="btn btn-outline-primary" ><i class="icofont-edit"></i> Editar</a>
 					<a href="{{url('subidas/' . $categoria->foto )}}" class="btn btn-outline-success" download><i class="icofont-download"></i> Descargar</a>
 				</div>
 			</div>
@@ -102,6 +106,28 @@ margin-top: 10px;
 				<div id="relleno">
 
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="modalBorrar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+	<div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title text-danger" id="my-modal-title">Eliminar</h5>
+				<button class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>¿Está seguro que desea borrar el item?</p>
+				<form action="{{route('galeria.borrar')}}" method="post">
+					@csrf
+					<input type="number" class="d-none" name="idBorrar" id="txtIdBorrar">
+					<div class="d-flex align-items-end flex-column">
+						<button type="submit" class="btn btn-outline-danger" id="btnConfirmarBorrado"><i class="icofont-trash"></i> Sí, borrar</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -141,5 +167,14 @@ $('.card-img-top').click(function() {
 	
 	$('#modalPreview').modal('show');
 });
+
+function botonEliminar(id){
+	//$.idEliminar = id;
+	$('#txtIdBorrar').val(id);
+	$('#modalBorrar').modal('show');
+}
+@if(session('borrado'))
+alertify.error('<i class="icofont-magic"></i> {{session('borrado')}}');
+@endif
 </script>
 @endsection
