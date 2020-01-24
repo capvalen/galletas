@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -17,11 +17,37 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{url('css/icofont.min.css')}}">
 </head>
 <body>
+<style>
+	body{
+	background-image: url('{{url("/images/fondo-galletas.jpg")}}');
+
+	background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+	min-height: 100vh;
+		/*background-color: #ddd;*/
+
+	}
+	.card{
+		background-color: #00000021;
+		border: 1px solid rgba(0, 0, 0, 0);
+		color: white;
+	}
+	.btn-primary{
+		background-color: #3e4095;
+    border-color: #3e4095;
+	}
+	.btn-primary:hover, .btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #2f3173;
+    border-color: #2f3173;
+	}
+</style>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #3E4095">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Fábrica Marie') }}
@@ -71,7 +97,6 @@
                 </div>
             </div>
         </nav>
-
         <main class="py-4">
             @yield('content')
         </main>
