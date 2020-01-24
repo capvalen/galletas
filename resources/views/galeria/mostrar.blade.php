@@ -43,6 +43,7 @@ margin-top: 10px;
 			</div>
 			<div class="col col-md-6 d-flex align-items-end">
 				<a class="btn btn-outline-primary" type="button" href="{{route('galeria.subida')}}"><i class="icofont-folder-open"></i> Subir nuevo reporte</a>
+				<a class="btn btn-outline-primary ml-2" type="button" href="{{route('tproceso.nuevo')}}"><i class="icofont-drag2"></i> Nuevo categoría</a>
 			</div>
 		</div>
 		

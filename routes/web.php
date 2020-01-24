@@ -52,3 +52,7 @@ Route::get('galeria/editar/{id}', 'galeriaControler@edit' )->name('galeria.edita
 Route::post('fotos/editar/{id}', 'galeriaControler@update' )->name('galeria.update');
 Route::post('fotos/subida', 'galeriaControler@store' )->name('galeria.subir');
 Route::post('fotos/borrar', 'galeriaControler@destroy' )->name('galeria.borrar');
+
+Route::get('tipoProceso/nuevo/', 'tipoProcesoControler@index' )->name('tproceso.nuevo');
+Route::post('tipoProceso/nuevo/', 'tipoProcesoControler@store' )->name('tproceso.crear');
+Route::post('tipoProceso/eliminar/{id}', 'tipoProcesoControler@destroy' )->name('tproceso.eliminar');
