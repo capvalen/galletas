@@ -56,3 +56,6 @@ Route::post('fotos/borrar', 'galeriaControler@destroy' )->name('galeria.borrar')
 Route::get('tipoProceso/nuevo/', 'tipoProcesoControler@index' )->name('tproceso.nuevo');
 Route::post('tipoProceso/nuevo/', 'tipoProcesoControler@store' )->name('tproceso.crear');
 Route::post('tipoProceso/eliminar/{id}', 'tipoProcesoControler@destroy' )->name('tproceso.eliminar');
+
+Route::get('ventas/', 'ventasController@index' )->name('ventas.index');
+Route::get('ventas/liquidacion', 'ventasController@liquidacion' )->name('liquidacion.nueva');
