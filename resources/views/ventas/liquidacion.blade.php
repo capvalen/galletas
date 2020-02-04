@@ -134,7 +134,7 @@
 			<h4 class="">Ventas al crédito</h4>
 		</div>
 		<div>
-			<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addVentasCreditoLista" @click="esNuevo = true; gasDescripcion=''; gasMonto= '0.00';" ><i class="icofont-ui-add"></i></button>
+			<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addVentasCreditoLista" @click="esNuevo = true; vencreCliente='', vencreNumNota='', vencreCantidad=0; vencrePrecio=0; " ><i class="icofont-ui-add"></i></button>
 		</div>
 	</div>
 	<div class="row col">
@@ -150,11 +150,10 @@
 							<th>Presentación</th>
 							<th>Precio</th>
 							<th>Total</th>
+							<td>@</td>
 						</tr>
 					</thead>
 					<tbody>
-						{{-- this.vencrePresentacion = $('#sltPresentacionCredito option[value="'+$('#sltPresentacionCredito').val()+'"]').text();
-			this.listaVentasCredito.push({ presentacion: this.vencrePresentacion, idPresentacion: vencreIdPresentacion, cliente: this.vencreCliente, nota: this.vencreNumNota, cantidad: this.vencreCantidad, precio: this.vencrePrecio, subTotal: sub	}); --}}
 						<tr v-for="(credito, index) of listaVentasCredito">
 							<td>@{{index+1}}</td>
 							<td>@{{credito.cliente}}</td>
@@ -163,6 +162,10 @@
 							<td>@{{credito.presentacion}}</td>
 							<td>@{{parseFloat(credito.precio).toFixed(2)}}</td>
 							<td>@{{parseFloat(credito.subTotal).toFixed(2)}}</td>
+							<td>
+								<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addVentasCreditoLista" @click="esNuevo=false; creditoEditar(index)"><i class="icofont-edit"></i></button>
+								<button class="btn btn-outline-danger border-0 btn-sm" @click="creditoBorrarFila(index)"><i class="icofont-close"></i></button>
+							</td>
 						</tr>
 					</tbody>
 					<tfoot v-if="sumCredito>0">
@@ -183,7 +186,14 @@
 		</div>
 	</div>
 
-	<h4 class="my-3 text-center">Cobranza</h4>
+	<div class="row text-center my-3">
+		<div class="col d-flex justify-content-center">
+			<h4 class="">Cobranza</h4>
+		</div>
+		<div>
+			<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addCobranzaLista" @click="esNuevo = true; cobraCliente= ''; cobraDeuda= 0; cobraAcuenta= 0; cobraSaldo= 0; cobraNumNota= ''; " ><i class="icofont-ui-add"></i></button>
+		</div>
+	</div>
 	<div class="row col">
 		<div class="card w-100">
 			<div class="card-body">
@@ -194,25 +204,48 @@
 							<th>Nombre del cliente</th>
 							<th>Deuda</th>
 							<th>A cuenta</th>
+							<th>Saldo</th>
 							<th># Nota de Pedido</th>
+							<th>@</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>Inversiones Don mario</td>
-							<td>110.00</td>
-							<td>60.00</td>
-							<td>50.00</td>
-							<td>2485</td>
+						<tr v-for="(cobro, index) of listaCobranza">
+							<td>@{{index+1}}</td>
+							<td>@{{cobro.cliente}}</td>
+							<td>@{{parseFloat(cobro.deuda).toFixed(2)}}</td>
+							<td>@{{parseFloat(cobro.acuenta).toFixed(2)}}</td>
+							<td>@{{parseFloat(cobro.saldo).toFixed(2)}}</td>
+							<td>@{{cobro.nota}}</td>
+							<td>
+								<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addCobranzaLista" @click="esNuevo=false; cobroEditar(index)"><i class="icofont-edit"></i></button>
+								<button class="btn btn-outline-danger border-0 btn-sm" @click="cobroBorrarFila(index)"><i class="icofont-close"></i></button>
+							</td>
 						</tr>
 					</tbody>
+					<tfoot v-if="sumCobranza>0">
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<th>@{{parseFloat(sumCobranza).toFixed(2)}}</th>
+							<td></td>
+							<td></td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		</div>
 	</div>
 
-	<h4 class="my-3 text-center">Pagos por adelantado</h4>
+	<div class="row text-center my-3">
+		<div class="col d-flex justify-content-center">
+			<h4 class="">Pagos por adelantado</h4>
+		</div>
+		<div>
+			<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addAdelantoLista" @click="esNuevo = true; adelaCliente= ''; adelaMonto= 0; adelaCantidad= 0; adelaFecha= '<?= date('Y-m-d'); ?>'; " ><i class="icofont-ui-add"></i></button>
+		</div>
+	</div>
 	<div class="row col">
 		<div class="card w-100">
 			<div class="card-body">
@@ -224,17 +257,31 @@
 							<th>Monto</th>
 							<th>Cantidad</th>
 							<th>Fecha</th>
+							<th>@</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>Inversiones Don mario</td>
-							<td>110.00</td>
-							<td>60</td>
-							<td>12/04/2020</td>
+						<tr v-for="(adelanto, index) of listaAdelantos">
+							<td>@{{index+1}}</td>
+							<td>@{{adelanto.cliente}}</td>
+							<td>@{{parseFloat(adelanto.monto).toFixed(2)}}</td>
+							<td>@{{adelanto.cantidad}}</td>
+							<td>@{{fechaFormateada(adelanto.fecha)}}</td>
+							<td>
+								<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addAdelantoLista" @click="esNuevo=false; adelantoEditar(index)"><i class="icofont-edit"></i></button>
+								<button class="btn btn-outline-danger border-0 btn-sm" @click="adelantoBorrarFila(index)"><i class="icofont-close"></i></button>
+							</td>
 						</tr>
 					</tbody>
+					<tfoot v-if="sumAdelanto>0">
+						<tr>
+							<td></td>
+							<td></td>
+							<th>@{{parseFloat(sumAdelanto).toFixed(2)}}</th>
+							<td></td>
+							<td></td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		</div>
@@ -277,6 +324,7 @@
 							<td></td>
 							<td></td>
 							<th>@{{parseFloat(gasTotal).toFixed(2)}}</th>
+							<td></td>
 						</tr>
 					</tfoot>
 				</table>
@@ -303,10 +351,10 @@
 					<tbody>
 						<tr>
 							<td>@{{parseFloat(ventcTotal).toFixed(2)}}</td>
-							<td>0.00</td>
+							<td>@{{parseFloat(sumCobranza).toFixed(2)}}</td>
 							<td>@{{parseFloat(gasTotal).toFixed(2)}}</td>
-							<td>0.00</td>
-							<td>0.00</td>
+							<td>@{{parseFloat(sumAdelanto).toFixed(2)}}</td>
+							<td>@{{parseFloat(sumaTotales).toFixed(2)}}</td>
 							<td>0.00</td>
 							
 						</tr>
@@ -377,7 +425,65 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="vencreAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
-        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="ventcActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="vencreActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal de cobranza -->
+<div class="modal fade" id="addCobranzaLista" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Cobranza</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+				<label class="mt-0 mb-2" for="">Nombre de cliente</label>
+				<input type="text" name="" id="" class=" form-control" v-model="cobraCliente">
+				
+				<label class="mt-0 mb-2" for="">Deuda</label>
+				<input type="number" name="" id="" class="esMoneda form-control" v-model="cobraDeuda">
+				<label class="mt-0 mb-2" for="">A cuenta</label>
+				<input type="number" name="" id="" class="esMoneda form-control" v-model="cobraAcuenta">
+				<label class=" mb-2" for="">Saldo <strong>@{{cobraSaldos}}</strong></label> <br>
+				<label class="mt-0 mb-2" for=""># Nota de pedido</label>
+				<input type="text" name="" id="" class=" form-control" v-model="cobraNumNota">
+				
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="cobroAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="cobroActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal de Pagos por adelantado -->
+<div class="modal fade" id="addAdelantoLista" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Pagos por adelantado</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+				<label class="mt-0 mb-2" for="">Nombre de cliente</label>
+				<input type="text" name="" id="" class=" form-control" v-model="adelaCliente">
+				<label class="mt-0 mb-2" for="">Monto</label>
+				<input type="number" name="" id="" class="esMoneda form-control" v-model="adelaMonto">
+				<label class="mt-0 mb-2" for="">Cantidad</label>
+				<input type="number" name="" id="" class="esMoneda form-control" v-model="adelaCantidad">
+				<label class="mt-0 mb-2" for="">Fecha</label>
+				<input type="date" name="" id="" class=" form-control" v-model="adelaFecha">
+				
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="adelaAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="adelaActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
   </div>
@@ -462,12 +568,14 @@
 		listaStockFinal: [],
 		listaVentasCredito:[],
 		listaCobranza:[],
-		listaPagosAdelantado:[],
+		listaAdelantos:[],
 		listaGastos:[],
 		ventcCantidad:0, ventcIdPresentacion:0, ventcPresentacion:'', ventcPrecio: '0.00', ventcSubTotal:0, ventcTotal:0, ventcNuevo: true,
 		gasDescripcion:'', gasMonto: '0.00', gasTotal:0, esNuevo: true, idEditar:0,
 		stockPenta: 0, stockFabrica: 0, stockOficina:0, stockRetorno:0, stockIdPresentacion:0, stockObservacion:'', stockTotal:0, stockTotalEntrega:0,
-		vencreCliente:'', vencreNumNota:'', vencreCantidad:0, vencrePrecio:0, vencreIdPresentacion:0, sumCredito:0, 
+		vencreCliente:'', vencreNumNota:'', vencreCantidad:0, vencrePrecio:0, vencreIdPresentacion:0, sumCredito:0,
+		cobraCliente: '', cobraDeuda: 0, cobraAcuenta: 0, cobraSaldo:0, cobraNumNota: '', sumCobranza:0,
+		adelaCliente: '', adelaMonto: 0, adelaCantidad: 0, adelaFecha: '<?= date('Y-m-d'); ?>', sumAdelanto:0,
 		listaPresentaciones:[{
 			presentacion: '5x700',
 			precio: 13.5
@@ -568,11 +676,96 @@
 			this.listaStockFinal.splice(index,1);
 		},
 		vencreAgregar(){
-			let sub = parseFloat(this.vencrePrecio)	* parseFloat(this.vencreCantidad)
+			let sub = parseFloat(this.vencrePrecio)	* parseFloat(this.vencreCantidad);
 			this.vencrePresentacion = $('#sltPresentacionCredito option[value="'+$('#sltPresentacionCredito').val()+'"]').text();
 			this.listaVentasCredito.push({ presentacion: this.vencrePresentacion, idPresentacion: this.vencreIdPresentacion, cliente: this.vencreCliente, nota: this.vencreNumNota, cantidad: this.vencreCantidad, precio: this.vencrePrecio, subTotal: sub	});
 			this.sumCredito += sub;
+		},
+		creditoEditar(index){
+			this.vencreIdPresentacion = this.listaVentasCredito[index].idPresentacion;
+			this.vencreCliente = this.listaVentasCredito[index].cliente;
+			this.vencreNumNota = this.listaVentasCredito[index].nota;
+			this.vencreCantidad = this.listaVentasCredito[index].cantidad;
+			this.vencrePrecio = this.listaVentasCredito[index].precio;
+			this.idEditar = index;
+		},
+		vencreActualizar(){
+			let sub = parseFloat(this.vencrePrecio)	* parseFloat(this.vencreCantidad);
+			this.sumCredito -= parseFloat(this.listaVentasCredito[ this.idEditar ].subTotal);
 
+			this.listaVentasCredito[ this.idEditar ].idPresentacion = this.vencreIdPresentacion ;
+			this.listaVentasCredito[ this.idEditar ].cliente = this.vencreCliente ;
+			this.listaVentasCredito[ this.idEditar ].nota = this.vencreNumNota ;
+			this.listaVentasCredito[ this.idEditar ].cantidad = this.vencreCantidad ;
+			this.listaVentasCredito[ this.idEditar ].precio = this.vencrePrecio ;
+			this.listaVentasCredito[ this.idEditar ].subTotal = sub ;
+			this.sumCredito += sub;
+		},
+		creditoBorrarFila(index){
+			this.sumCredito-= parseFloat( this.listaVentasCredito[this.idEditar].subTotal );
+			this.listaVentasCredito.splice(index,1);
+		},
+		cobroAgregar(){
+			this.listaCobranza.push({cliente: this.cobraCliente, deuda: this.cobraDeuda, acuenta: this.cobraAcuenta, saldo: this.cobraSaldos, nota: this.cobraNumNota });
+			this.sumCobranza+= parseFloat(this.cobraAcuenta);
+		},
+		cobroEditar(index){
+			this.cobroCliente = this.listaCobranza[index].cliente;
+			this.cobraDeuda = this.listaCobranza[index].deuda;
+			this.cobraAcuenta = this.listaCobranza[index].acuenta;
+			this.cobraNumNota = this.listaCobranza[index].nota;
+			this.idEditar = index;
+		},
+		cobroActualizar(){
+			this.sumCobranza-= parseFloat(this.listaCobranza[this.idEditar].acuenta);
+
+			this.listaCobranza[this.idEditar].cliente= this.cobraCliente;
+			this.listaCobranza[this.idEditar].deuda= this.cobraDeuda;
+			this.listaCobranza[this.idEditar].acuenta= this.cobraAcuenta;
+			this.listaCobranza[this.idEditar].saldo= this.cobraSaldos;
+			this.listaCobranza[this.idEditar].nota= this.cobraNumNota;
+
+			this.sumCobranza+=parseFloat(this.cobraAcuenta);
+
+		},
+		cobroBorrarFila(index){
+			this.sumCobranza-= parseFloat( this.listaCobranza[index].acuenta);
+			this.listaCobranza.splice(index,1);
+		},
+		adelaAgregar(){
+			this.listaAdelantos.push({cliente: this.adelaCliente, monto: this.adelaMonto, cantidad: this.adelaCantidad, fecha: this.adelaFecha });
+			this.sumAdelanto+= parseFloat(this.adelaMonto);
+		},
+		adelantoEditar(index){
+			this.adelaCliente = this.listaAdelantos[index].cliente;
+			this.adelaMonto = this.listaAdelantos[index].monto
+			this.adelaCantidad = this.listaAdelantos[index].cantidad;
+			this.adelaFecha = this.listaAdelantos[index].fecha;
+			this.idEditar = index;
+		},
+		adelaActualizar(){
+			this.sumAdelanto-=parseFloat(this.listaAdelantos[this.idEditar].monto);
+
+			this.listaAdelantos[this.idEditar].cliente = this.adelaCliente;
+			this.listaAdelantos[this.idEditar].monto = this.adelaMonto;
+			this.listaAdelantos[this.idEditar].cantidad = this.adelaCantidad;
+			this.listaAdelantos[this.idEditar].fecha = this.adelaFecha;
+			this.sumAdelanto+= parseFloat(this.adelaMonto);
+		},
+		adelantoBorrarFila(index){
+			this.sumAdelanto-= this.listaAdelantos[index].monto;
+			this.listaAdelantos.splice(index,1);
+		},
+		fechaFormateada(fecha){
+			return moment(fecha).format('DD/MM/YYYY');
+		}
+	},
+	computed:{
+		cobraSaldos(){
+			return parseFloat(this.cobraDeuda - this.cobraAcuenta).toFixed(2);
+		},
+		sumaTotales(){
+			return parseFloat(this.ventcTotal)+ parseFloat(this.sumCobranza) + parseFloat(this.sumAdelanto) - parseFloat(this.gasTotal);
 		}
 	}
 });
