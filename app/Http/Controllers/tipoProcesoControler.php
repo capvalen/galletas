@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App;
 use DB;
+use Auth;
 use Illuminate\Http\Request;
 
 class tipoProcesoControler extends Controller
@@ -103,5 +104,122 @@ class tipoProcesoControler extends Controller
 				$proceso ->activo = 0;
 				$proceso->save();
 				return back()->with('borrado', 'Se borró correctamente');
-    }
+		}
+		
+		public function liquidacion_insert(Request $request){
+			//return auth()->id;
+			$liquidacion = new App\Liquidacion;
+			$liquidacion->fecha = $request->fecha;
+			$liquidacion->vendedor = $request->vendedor;
+			$liquidacion->placa = $request->placa;
+			$liquidacion->lugar = $request->lugar;
+			$liquidacion->idUser = Auth::id();
+
+			$liquidacion->sumaContado = $request->sumaContado;
+			$liquidacion->sumaCobranza = $request->sumaCobranza;
+			$liquidacion->sumaCredito = $request->sumaCredito;
+			$liquidacion->sumaGasto = $request->sumaGasto;
+			$liquidacion->sumaAdelanto = $request->sumaAdelanto;
+			$liquidacion->sumaEntregar = $request->sumaEntregar;
+			$liquidacion->sumaEntregado = $request->sumaEntregado;
+
+			$liquidacion->save(); //correcto
+
+			if( count($request->alContado)>0 ){
+				foreach ($request->alContado as $alcontado) {
+					$alContado = new App\VentasContado;
+					$alContado->liquidacion_id= $liquidacion->id;
+					$alContado->cantidad = $alcontado['cantidad'];
+					$alContado->presentacion = $alcontado['presentacion'];
+					$alContado->precio = $alcontado['precio'];
+					$alContado->total = $alcontado['ventcSubTotal'];	
+					$alContado->save();
+				}
+			} //correcto
+
+		
+			if( count($request->stockFinal)>0 ){
+				foreach ($request->stockFinal as $stockFinal) {
+					$stock = new App\VentasStock;
+					$stock->liquidacion_id= $liquidacion->id;
+					$stock->presentacion = $stockFinal['presentacion'];
+					$stock->pentapeaks = $stockFinal['pentapeaks'];
+					$stock->oficina = $stockFinal['oficina'];
+					$stock->fabrica = $stockFinal['fabrica'];
+					$stock->total = $stockFinal['subTotal'];
+					$stock->final = $stockFinal['retorno'];
+					$stock->observacion = $stockFinal['observacion'];
+					$stock->save();
+				}
+			} //correcto
+
+			
+			if( count($request->alCredito)>0 ){
+				foreach ($request->alCredito as $ventasCredito) {
+					$credito = new App\VentasCredito;
+					$credito->liquidacion_id= $liquidacion->id;
+					$credito->presentacion = $ventasCredito['presentacion'];
+					$credito->idPresentacion = $ventasCredito['idPresentacion'];
+					$credito->cliente = $ventasCredito['cliente'];
+					$credito->nota = $ventasCredito['nota'];
+					$credito->cantidad = $ventasCredito['cantidad'];
+					$credito->precio = $ventasCredito['precio'];
+					$credito->total = $ventasCredito['subTotal'];
+					$credito->save();
+				}
+			} //correcto
+
+
+			if( count($request->vCobranza)>0 ){
+				foreach ($request->vCobranza as $ventasCobranza) {
+					$cobranza = new App\VentasCobranza;
+					$cobranza->liquidacion_id= $liquidacion->id;
+					$cobranza->cliente = $ventasCobranza['cliente'];
+					$cobranza->deuda = $ventasCobranza['deuda'];
+					$cobranza->acuenta = $ventasCobranza['acuenta'];
+					$cobranza->saldo = $ventasCobranza['saldo'];
+					$cobranza->nota = $ventasCobranza['nota'];
+					$cobranza->save();
+				}
+			} //correcto
+
+			
+			if( count($request->adelantos)>0 ){
+				foreach ($request->adelantos as $vAdelantos) {
+					$adelanto = new App\VentasAdelanto;
+					$adelanto->liquidacion_id= $liquidacion->id;
+					$adelanto->cliente = $vAdelantos['cliente'];
+					$adelanto->monto = $vAdelantos['monto'];
+					$adelanto->cantidad = $vAdelantos['cantidad'];
+					$adelanto->fecha = $vAdelantos['fecha'];
+					$adelanto->save();
+				}
+			} //correcto
+
+			
+			if( count($request->listaGastos)>0 ){
+				foreach ($request->listaGastos as $vGastos) {
+					$gasto = new App\VentasGasto;
+					$gasto->liquidacion_id= $liquidacion->id;
+					$gasto->monto = $vGastos['monto'];
+					$gasto->descripcion = $vGastos['descripcion'];
+					
+					$gasto->save();
+				}
+			} //correcto
+
+			//return $request->listaBonificacion;
+			if( count($request->listaBonificacion)>0 ){
+				foreach ($request->listaBonificacion as $vBonificacion) {
+					$gasto = new App\VentasBonificacion;
+					$gasto->liquidacion_id= $liquidacion->id;
+					$gasto->cantidad = $vBonificacion['cantidad'];
+					$gasto->presentacion = $vBonificacion['presentacion'];
+					
+					$gasto->save();
+				}
+			} //correcto
+
+			return $liquidacion->id;
+		}
 }

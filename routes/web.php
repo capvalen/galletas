@@ -59,3 +59,6 @@ Route::post('tipoProceso/eliminar/{id}', 'tipoProcesoControler@destroy' )->name(
 
 Route::get('ventas/', 'ventasController@index' )->name('ventas.index');
 Route::get('ventas/liquidacion', 'ventasController@liquidacion' )->name('liquidacion.nueva');
+
+
+Route::post('liquidacion/insertar/', 'tipoProcesoControler@liquidacion_insert' )->name('liquidacion.insertar');

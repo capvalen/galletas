@@ -17,7 +17,37 @@
 
 @section('cuerpo')
 <div class="container-fluid" id="app">
-	
+	<div class="card">
+		<div class="card-body">
+			<form class="row">
+				<div class="col">
+					<label class="" for="">Fecha</label>
+					<input type="date" class="form-control mb-2 mr-sm-2" id="" placeholder="Fecha" value="<?= date('Y-m-d');?>" v-model="fichFecha">
+				</div>
+			
+				<div class="col">
+					<label class="" for="">Vendedor</label>
+					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Vendedor" value="" v-model="fichVendedor">
+				</div>
+				<div class="col">
+					<label class="" for="">Lugar</label>
+					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Lugar" value="" v-model="fichLugar">
+				</div>
+				<div class="col">
+					<label class="" for="">Placa</label>
+					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Placa" value="" v-model="fichPlaca">
+				</div>
+				<div class="col">
+					<label class="" for="">Saldo que entrega</label>
+					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Entrega" value="" v-model="entregado">
+				</div>
+			
+				<div class="col d-flex align-items-end">
+					<button type="button" class="btn btn-primary mb-2" @click="guardarFicha"> <i class="icofont-save"></i> Guardar ficha</button>
+				</div>
+			</form>
+		</div>
+	</div>
 	
 	<div class="row row-cols-1">
 		<div class="col">
@@ -26,12 +56,12 @@
 					<h4 class="">Ventas al contado</h4>
 				</div>
 				<div>
-					<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addVentasContLista" @click="esNuevo = true; ventcCantidad=0; gasDescripcion=''; ventcPrecio= '0.00';" ><i class="icofont-ui-add"></i></button>
+					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addVentasContLista" @click="esNuevo = true; ventcCantidad=0; gasDescripcion=''; ventcPrecio= '0.00';" ><i class="icofont-ui-add"></i></button>
 				</div>
 			</div>
 			<div class="card">
 				<div class="card-body">
-					<table class="table table-hover">
+					<table class="table table-hover" v-if="listaVentasContado.length>0">
 						<thead>
 							<tr>
 								<th>N°</th>
@@ -66,6 +96,7 @@
 							</tr>
 						</tfoot>
 					</table>
+					<p v-else>No hay registros</p>
 				</div>
 			</div>
 		</div>
@@ -75,12 +106,12 @@
 					<h4 class="">Stock final</h4>
 				</div>
 			<div>
-					<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addStockEntrega" @click="esNuevo = true; stockPenta=0; stockFabrica=0; stockOficina=0; stockRetorno=0; stockObservacion='' " ><i class="icofont-ui-add"></i></button>
+					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addStockEntrega" @click="esNuevo = true; stockPenta=0; stockFabrica=0; stockOficina=0;stockRetorno=0;stockObservacion=''; " ><i class="icofont-ui-add"></i></button>
 				</div>
 			</div>
 			<div class="card">
 				<div class="card-body">
-					<table class="table table-hover">
+					<table class="table table-hover" v-if="listaStockFinal.length>0">
 						<thead>
 							<tr>
 								<th>N°</th>
@@ -124,6 +155,115 @@
 							</tr>
 						</tfoot>
 					</table>
+					<p v-else>No hay registros</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row row-cols-1">
+		<div class="col">
+			<div class="row text-center my-3">
+				<div class="col d-flex justify-content-center">
+					<h4 class="">Bonificaciones</h4>
+				</div>
+				<div>
+					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addBonificacionLista" @click="esNuevo = true; bonCantidad=0; bonObservacion=0;" ><i class="icofont-ui-add"></i></button>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<table class="table table-hover" v-if="listaBonificaciones.length>0">
+						<thead>
+							<tr>
+								<th>N°</th>
+								<th>Presentación</th>
+								<th>Cant.</th>
+								<th>Observación</th>
+								<th>@</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(bonificacion, index) of listaBonificaciones">
+								<td>@{{index+1}}</td>
+								<td>@{{bonificacion.presentacion}}</td>
+								<td>@{{bonificacion.cantidad}}</td>
+								<td>@{{bonificacion.observacion}}</td>
+								<td>
+									<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addBonificacionLista" @click="esNuevo=false; bonifEditar(index)"><i class="icofont-edit"></i></button>
+									<button class="btn btn-outline-danger border-0 btn-sm" @click="bonifBorrarFila(index)"><i class="icofont-close"></i></button>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot v-if="bonifTotal>0">
+							<tr>
+								<td></td>
+								<td></td>
+								<th>@{{parseFloat(bonifTotal).toFixed(0)}}</th>
+								<td></td>
+							</tr>
+						</tfoot>
+					</table>
+					<p v-else>No hay registros</p>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="row text-center my-3">
+				<div class="col d-flex justify-content-center">
+					<h4 class="">Stock final</h4>
+				</div>
+			<div>
+					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addStockEntrega" @click="esNuevo = true; stockPenta=0; stockFabrica=0; stockOficina=0; stockRetorno=0; stockObservacion='' " ><i class="icofont-ui-add"></i></button>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<table class="table table-hover" v-if="listaStockFinal.length>0">
+						<thead>
+							<tr>
+								<th>N°</th>
+								<th>Presentación</th>
+								<th>Stock Pentapeacks</th>
+								<th>Salida Fabrica</th>
+								<th>Salida Oficina</th>
+								<th>Total</th>
+								<th>Retorno/ Stock Final</th>
+								<th>Obs.</th>
+								<th>@</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(stock, index) of listaStockFinal">
+								<td>@{{index+1}}</td>
+								<td>@{{stock.presentacion}}</td>
+								<td>@{{stock.pentapeaks}}</td>
+								<td>@{{stock.fabrica}}</td>
+								<td>@{{stock.oficina}}</td>
+								<td>@{{stock.subTotal}}</td>
+								<td>@{{stock.retorno}}</td>
+								<td>@{{stock.observacion}}</td>
+								<td>
+									<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addStockEntrega" @click="esNuevo=false; stockEditar(index)"><i class="icofont-edit"></i></button>
+									<button class="btn btn-outline-danger border-0 btn-sm" @click="stockBorrarFila(index)"><i class="icofont-close"></i></button>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot v-if="stockTotal>0">
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<th>@{{parseFloat(stockTotal)}}</th>
+								<th>@{{parseFloat(stockTotalEntrega)}}</th>
+								<td></td>
+								<td></td>
+							</tr>
+						</tfoot>
+					</table>
+					<p v-else>No hay registros</p>
 				</div>
 			</div>
 		</div>
@@ -134,13 +274,13 @@
 			<h4 class="">Ventas al crédito</h4>
 		</div>
 		<div>
-			<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addVentasCreditoLista" @click="esNuevo = true; vencreCliente='', vencreNumNota='', vencreCantidad=0; vencrePrecio=0; " ><i class="icofont-ui-add"></i></button>
+			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addVentasCreditoLista" @click="esNuevo = true; vencreCliente='', vencreNumNota='', vencreCantidad=0; vencrePrecio=0; " ><i class="icofont-ui-add"></i></button>
 		</div>
 	</div>
 	<div class="row col">
 		<div class="card w-100">
 			<div class="card-body">
-				<table class="table table-hover">
+				<table class="table table-hover" v-if="listaVentasCredito.length>0">
 					<thead>
 						<tr>
 							<th>N°</th>
@@ -182,6 +322,7 @@
 						</tr>
 					</tfoot>
 				</table>
+				<p v-else>No hay registros</p>
 			</div>
 		</div>
 	</div>
@@ -191,13 +332,13 @@
 			<h4 class="">Cobranza</h4>
 		</div>
 		<div>
-			<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addCobranzaLista" @click="esNuevo = true; cobraCliente= ''; cobraDeuda= 0; cobraAcuenta= 0; cobraSaldo= 0; cobraNumNota= ''; " ><i class="icofont-ui-add"></i></button>
+			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addCobranzaLista" @click="esNuevo = true; cobraCliente= ''; cobraDeuda= 0; cobraAcuenta= 0; cobraSaldo= 0; cobraNumNota= ''; " ><i class="icofont-ui-add"></i></button>
 		</div>
 	</div>
 	<div class="row col">
 		<div class="card w-100">
 			<div class="card-body">
-				<table class="table table-hover">
+				<table class="table table-hover" v-if="listaCobranza.length>0">
 					<thead>
 						<tr>
 							<th>N°</th>
@@ -234,6 +375,7 @@
 						</tr>
 					</tfoot>
 				</table>
+				<p v-else>No hay registros</p>
 			</div>
 		</div>
 	</div>
@@ -243,13 +385,13 @@
 			<h4 class="">Pagos por adelantado</h4>
 		</div>
 		<div>
-			<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addAdelantoLista" @click="esNuevo = true; adelaCliente= ''; adelaMonto= 0; adelaCantidad= 0; adelaFecha= '<?= date('Y-m-d'); ?>'; " ><i class="icofont-ui-add"></i></button>
+			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addAdelantoLista" @click="esNuevo = true; adelaCliente= ''; adelaMonto= 0; adelaCantidad= 0; adelaFecha= '<?= date('Y-m-d'); ?>'; " ><i class="icofont-ui-add"></i></button>
 		</div>
 	</div>
 	<div class="row col">
 		<div class="card w-100">
 			<div class="card-body">
-				<table class="table table-hover">
+				<table class="table table-hover" v-if="listaAdelantos.length>0">
 					<thead>
 						<tr>
 							<th>N°</th>
@@ -280,9 +422,11 @@
 							<th>@{{parseFloat(sumAdelanto).toFixed(2)}}</th>
 							<td></td>
 							<td></td>
+							<td></td>
 						</tr>
 					</tfoot>
 				</table>
+				<p v-else>No hay registros</p>
 			</div>
 		</div>
 	</div>
@@ -292,7 +436,7 @@
 			<h4 class="">Gastos</h4>
 		</div>
 		<div>
-			<button type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addGastosLista" @click="esNuevo = true; gasDescripcion=''; gasMonto= '0.00';" ><i class="icofont-ui-add"></i></button>
+			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addGastosLista" @click="esNuevo = true; gasDescripcion=''; gasMonto= '0.00';" ><i class="icofont-ui-add"></i></button>
 		</div>
 	</div>
 	<div class="row col">
@@ -354,9 +498,8 @@
 							<td>@{{parseFloat(sumCobranza).toFixed(2)}}</td>
 							<td>@{{parseFloat(gasTotal).toFixed(2)}}</td>
 							<td>@{{parseFloat(sumAdelanto).toFixed(2)}}</td>
-							<td>@{{parseFloat(sumaTotales).toFixed(2)}}</td>
-							<td>0.00</td>
-							
+							<td v-bind:class="{'text-danger': sumaTotales!=entregado, 'text-primary': sumaTotales==entregado } ">@{{parseFloat(sumaTotales).toFixed(2)}}</td>
+							<td v-bind:class="{'text-danger': sumaTotales!=entregado, 'text-primary': sumaTotales==entregado } ">@{{parseFloat(entregado).toFixed(2)}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -531,7 +674,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Agregar Gasto</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Gasto</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -540,11 +683,40 @@
 				<label class="mt-0 mb-2" for="">Descripción del gasto</label>
 				<input type="text" name="" id="" class="form-control" v-model="gasDescripcion">
 				<label class="mt-0 mb-2" for="">Monto</label>
-				<input type="number" name="q" id="2" class="esMoneda form-control" v-model="gasMonto">
+				<input type="number" name="" id="" class="esMoneda form-control" v-model="gasMonto">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="agregarGasto() "> <i class="icofont-sale-discount"></i> Insertar</button>
         <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="actualizarGasto();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal de Bonificaciones -->
+<div class="modal fade" id="addBonificacionLista" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Bonificación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+				<label class="mt-0 mb-2" for="">Cantidad</label>
+				<input type="number" name="" id="" class="esMoneda form-control" v-model="bonCantidad">
+				<label class="mt-0 mb-2" for="">Presentación</label>
+				<div class="form-group">
+					<select id="sltPresentacionBonif" class="form-control" name="" v-model="bonIdPresentacion">
+						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
+					</select>
+				</div>
+				<label class="mt-0 mb-2" for="">Observación</label>
+				<input type="text" name="" id="" class="form-control" v-model="bonObservacion">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="agregarBonificacion() "> <i class="icofont-sale-discount"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="bonifActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
   </div>
@@ -554,6 +726,7 @@
 </div>
 
 
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
 
@@ -570,12 +743,16 @@
 		listaCobranza:[],
 		listaAdelantos:[],
 		listaGastos:[],
+		listaBonificaciones:[],
 		ventcCantidad:0, ventcIdPresentacion:0, ventcPresentacion:'', ventcPrecio: '0.00', ventcSubTotal:0, ventcTotal:0, ventcNuevo: true,
 		gasDescripcion:'', gasMonto: '0.00', gasTotal:0, esNuevo: true, idEditar:0,
 		stockPenta: 0, stockFabrica: 0, stockOficina:0, stockRetorno:0, stockIdPresentacion:0, stockObservacion:'', stockTotal:0, stockTotalEntrega:0,
 		vencreCliente:'', vencreNumNota:'', vencreCantidad:0, vencrePrecio:0, vencreIdPresentacion:0, sumCredito:0,
 		cobraCliente: '', cobraDeuda: 0, cobraAcuenta: 0, cobraSaldo:0, cobraNumNota: '', sumCobranza:0,
-		adelaCliente: '', adelaMonto: 0, adelaCantidad: 0, adelaFecha: '<?= date('Y-m-d'); ?>', sumAdelanto:0,
+		adelaCliente: '', adelaMonto: 0, adelaCantidad: 0, adelaFecha: '<?= date('Y-m-d'); ?>', sumAdelanto:0, entregado:0,
+		bonDescripcion:'',bonCantidad:0, bonifTotal:0, bonIdPresentacion:0, bonObservacion:'',
+		fichFecha: '<?= date('Y-m-d')?>', fichVendedor: '', fichLugar: '', fichPlaca: '',
+		guardado: false,
 		listaPresentaciones:[{
 			presentacion: '5x700',
 			precio: 13.5
@@ -758,6 +935,42 @@
 		},
 		fechaFormateada(fecha){
 			return moment(fecha).format('DD/MM/YYYY');
+		},
+		agregarBonificacion(){
+			this.bonDescripcion = $('#sltPresentacionBonif option[value="'+$('#sltPresentacionBonif').val()+'"]').text();
+			this.listaBonificaciones.push({ cantidad: this.bonCantidad, presentacion: this.bonDescripcion, idPresentacion: $('#sltPresentacionBonif').val(), observacion: this.bonObservacion});
+			this.bonifTotal+=parseFloat(this.bonCantidad);
+		},
+		bonifEditar(index){
+			this.bonIdPresentacion = this.listaBonificaciones[index].idPresentacion;
+			this.bonDescripcion = this.listaBonificaciones[index].presentacion;
+			this.bonCantidad = this.listaBonificaciones[index].cantidad;
+			this.idEditar = index;
+		},
+		bonifActualizar(){
+			this.bonifTotal-=parseFloat(this.listaBonificaciones[this.idEditar].cantidad);
+
+			this.listaBonificaciones[this.idEditar].idPresentacion= $('#sltPresentacionBonif').val()
+			this.listaBonificaciones[this.idEditar].presentacion = this.bonDescripcion;
+			this.listaBonificaciones[this.idEditar].cantidad = this.bonCantidad;
+			this.bonifTotal+= parseFloat(this.bonCantidad);
+		},
+		bonifBorrarFila(index){
+			this.bonifTotal-= parseFloat(this.listaBonificaciones[index].cantidad);
+			this.listaBonificaciones.splice(index,1);
+		},
+		guardarFicha(){
+			axios.post('{{route("liquidacion.insertar")}}', {
+				fecha: this.fichFecha, vendedor: this.fichVendedor, placa: this.fichPlaca, lugar: this.fichLugar,
+				sumaContado: this.ventcTotal, sumaCobranza: this.sumCobranza, sumaCredito: this.ventcTotal, sumaGasto: this.gasTotal, sumaAdelanto: this.sumAdelanto, sumaEntregar: this.sumaTotales, sumaEntregado: this.entregado,
+				alContado: this.listaVentasContado, stockFinal: this.listaStockFinal, alCredito: this.listaVentasCredito, vCobranza: this.listaCobranza, adelantos: this.listaAdelantos, listaGastos: this.listaGastos, listaBonificacion: this.listaBonificaciones
+			}).then(function(resp){
+				console.log(resp);
+				this.guardado=true;
+				if(isNaN(parseInt(resp))){ //alert('Ficha guardada');
+					alertify.alert('Notificación','Ficha guardada').set({transition:'fade'});
+				}
+			});
 		}
 	},
 	computed:{

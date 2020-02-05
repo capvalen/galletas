@@ -13,7 +13,7 @@
 @section('cuerpo')
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-5 card">
+		<div class="col card w-100">
 			<div class="card-body form-inline">
 				<label for="">Fecha de reporte</label>
 				<input type="date" name="fecha" id="" class="form-control mx-2" value="<?= date('Y-m-d')?>">
