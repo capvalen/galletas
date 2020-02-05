@@ -753,20 +753,21 @@
 		bonDescripcion:'',bonCantidad:0, bonifTotal:0, bonIdPresentacion:0, bonObservacion:'',
 		fichFecha: '<?= date('Y-m-d')?>', fichVendedor: '', fichLugar: '', fichPlaca: '',
 		guardado: false,
-		listaPresentaciones:[{
-			presentacion: '5x700',
-			precio: 13.5
-		},{
-			presentacion: '10x180',
-			precio: 7.50
-		},{
-			presentacion: 'Letras',
-			precio: 7.50
-		},{
-			presentacion: 'Pan integral',
-			precio: 11.00
-		},
-	]
+		listaPresentaciones:[{presentacion: 'Galleta de agua Bolsa 1.6kg Marie', precio: 0.00},
+			{presentacion: 'Galleta de agua Bolsa 1.2kg Marie',precio: 0.00},
+			{presentacion: 'Galleta de agua Bolsa 1.05kg Rey del centro',precio: 0.00},
+			{presentacion: 'Galleta de agua Display 5x 0.95kg Rey del centro',precio: 0.00},
+			{presentacion: 'Galleta de agua Display 5x 0.95kg Marie',precio: 0.00},
+			{presentacion: 'Galleta de agua Display 5x 0.7kg Marie',precio: 0.00},
+			{presentacion: 'Galleta de agua Display 10x 1.7kg Marie',precio: 0.00},
+			{presentacion: 'Galleta de letras Display 10x 1.4kg Marie',precio: 0.00},
+			{presentacion: 'Galleta de agua Display 10x 1.65kg Rey del centro',precio: 0.00},
+			{presentacion: 'Pan de molde blanco Marie',precio: 0.00},
+			{presentacion: 'Pan de molde integral Marie',precio: 0.00},
+			{presentacion: 'Keke domo Marie',precio: 0.00},
+			{presentacion: 'Keke pirotín Rey del centro',precio: 0.00},
+
+			{presentacion: 'Galleta de agua Marie Bolsa 1.2kg ',precio: 0.00}]
 	},
 	methods:{
 		agregarGasto(){
