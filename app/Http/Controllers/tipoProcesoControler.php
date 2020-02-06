@@ -127,7 +127,7 @@ class tipoProcesoControler extends Controller
 
 			if( count($request->alContado)>0 ){
 				foreach ($request->alContado as $alcontado) {
-					$alContado = new App\VentasContado;
+					$alContado = new App\ventasContado;
 					$alContado->liquidacion_id= $liquidacion->id;
 					$alContado->cantidad = $alcontado['cantidad'];
 					$alContado->presentacion = $alcontado['presentacion'];
@@ -140,7 +140,7 @@ class tipoProcesoControler extends Controller
 		
 			if( count($request->stockFinal)>0 ){
 				foreach ($request->stockFinal as $stockFinal) {
-					$stock = new App\VentasStock;
+					$stock = new App\ventasStock;
 					$stock->liquidacion_id= $liquidacion->id;
 					$stock->presentacion = $stockFinal['presentacion'];
 					$stock->pentapeaks = $stockFinal['pentapeaks'];
@@ -156,7 +156,7 @@ class tipoProcesoControler extends Controller
 			
 			if( count($request->alCredito)>0 ){
 				foreach ($request->alCredito as $ventasCredito) {
-					$credito = new App\VentasCredito;
+					$credito = new App\ventasCredito;
 					$credito->liquidacion_id= $liquidacion->id;
 					$credito->presentacion = $ventasCredito['presentacion'];
 					$credito->idPresentacion = $ventasCredito['idPresentacion'];
