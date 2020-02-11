@@ -19,7 +19,9 @@ class CreateVentasAdelantosTable extends Migration
 						$table->string('cliente')->default('');
 						$table->float('monto');
 						$table->float('cantidad');
-						$table->date('fecha');
+						$table->integer('idPresentacion');
+						$table->string('presentacion');
+						$table->integer('bonificacion');
 
             $table->timestamps();
         });

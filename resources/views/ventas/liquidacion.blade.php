@@ -165,10 +165,10 @@
 		<div class="col">
 			<div class="row text-center my-3">
 				<div class="col d-flex justify-content-center">
-					<h4 class="">Bonificaciones</h4>
+					<h4 class="">Bonificación - Degustación</h4>
 				</div>
 				<div>
-					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addBonificacionLista" @click="esNuevo = true; bonCantidad=0; bonObservacion=0;" ><i class="icofont-ui-add"></i></button>
+					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addBonificacionLista" @click="esNuevo = true; bonCantidad=0; bonCliente='', bonBonificacion=0, bonDireccion=''; bonObservacion='';" ><i class="icofont-ui-add"></i></button>
 				</div>
 			</div>
 			<div class="card">
@@ -179,6 +179,9 @@
 								<th>N°</th>
 								<th>Presentación</th>
 								<th>Cant.</th>
+								<th>Bonf.</th>
+								<th>Cliente.</th>
+								<th>Dirección.</th>
 								<th>Observación</th>
 								<th>@</th>
 							</tr>
@@ -188,6 +191,9 @@
 								<td>@{{index+1}}</td>
 								<td>@{{bonificacion.presentacion}}</td>
 								<td>@{{bonificacion.cantidad}}</td>
+								<td>@{{bonificacion.bonificacion}}</td>
+								<td class="text-capitalize">@{{bonificacion.cliente}}</td>
+								<td>@{{bonificacion.direccion}}</td>
 								<td>@{{bonificacion.observacion}}</td>
 								<td>
 									<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addBonificacionLista" @click="esNuevo=false; bonifEditar(index)"><i class="icofont-edit"></i></button>
@@ -198,9 +204,10 @@
 						<tfoot v-if="bonifTotal>0">
 							<tr>
 								<td></td>
-								<td></td>
+								<td></td><td></td>
 								<th>@{{parseFloat(bonifTotal).toFixed(0)}}</th>
-								<td></td>
+								<td></td><td></td>
+								<td></td><td></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -208,65 +215,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col">
-			<div class="row text-center my-3">
-				<div class="col d-flex justify-content-center">
-					<h4 class="">Stock final</h4>
-				</div>
-			<div>
-					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addStockEntrega" @click="esNuevo = true; stockPenta=0; stockFabrica=0; stockOficina=0; stockRetorno=0; stockObservacion='' " ><i class="icofont-ui-add"></i></button>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-body">
-					<table class="table table-hover" v-if="listaStockFinal.length>0">
-						<thead>
-							<tr>
-								<th>N°</th>
-								<th>Presentación</th>
-								<th>Stock Pentapeacks</th>
-								<th>Salida Fabrica</th>
-								<th>Salida Oficina</th>
-								<th>Total</th>
-								<th>Retorno/ Stock Final</th>
-								<th>Obs.</th>
-								<th>@</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="(stock, index) of listaStockFinal">
-								<td>@{{index+1}}</td>
-								<td>@{{stock.presentacion}}</td>
-								<td>@{{stock.pentapeaks}}</td>
-								<td>@{{stock.fabrica}}</td>
-								<td>@{{stock.oficina}}</td>
-								<td>@{{stock.subTotal}}</td>
-								<td>@{{stock.retorno}}</td>
-								<td>@{{stock.observacion}}</td>
-								<td>
-									<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addStockEntrega" @click="esNuevo=false; stockEditar(index)"><i class="icofont-edit"></i></button>
-									<button class="btn btn-outline-danger border-0 btn-sm" @click="stockBorrarFila(index)"><i class="icofont-close"></i></button>
-								</td>
-							</tr>
-						</tbody>
-						<tfoot v-if="stockTotal>0">
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<th>@{{parseFloat(stockTotal)}}</th>
-								<th>@{{parseFloat(stockTotalEntrega)}}</th>
-								<td></td>
-								<td></td>
-							</tr>
-						</tfoot>
-					</table>
-					<p v-else>No hay registros</p>
-				</div>
-			</div>
-		</div>
+		
 	</div>
 
 	<div class="row text-center my-3">
@@ -296,7 +245,7 @@
 					<tbody>
 						<tr v-for="(credito, index) of listaVentasCredito">
 							<td>@{{index+1}}</td>
-							<td>@{{credito.cliente}}</td>
+							<td class="text-capitalize">@{{credito.cliente}}</td>
 							<td>@{{credito.nota}}</td>
 							<td>@{{credito.cantidad}}</td>
 							<td>@{{credito.presentacion}}</td>
@@ -353,7 +302,7 @@
 					<tbody>
 						<tr v-for="(cobro, index) of listaCobranza">
 							<td>@{{index+1}}</td>
-							<td>@{{cobro.cliente}}</td>
+							<td class="text-capitalize">@{{cobro.cliente}}</td>
 							<td>@{{parseFloat(cobro.deuda).toFixed(2)}}</td>
 							<td>@{{parseFloat(cobro.acuenta).toFixed(2)}}</td>
 							<td>@{{parseFloat(cobro.saldo).toFixed(2)}}</td>
@@ -385,7 +334,7 @@
 			<h4 class="">Pagos por adelantado</h4>
 		</div>
 		<div>
-			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addAdelantoLista" @click="esNuevo = true; adelaCliente= ''; adelaMonto= 0; adelaCantidad= 0; adelaFecha= '<?= date('Y-m-d'); ?>'; " ><i class="icofont-ui-add"></i></button>
+			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addAdelantoLista" @click="esNuevo = true; adelaCliente= ''; adelaMonto= 0; adelaCantidad= 0; adelaFecha= '<?= date('Y-m-d'); ?>'; adelaBonificacion=0; " ><i class="icofont-ui-add"></i></button>
 		</div>
 	</div>
 	<div class="row col">
@@ -395,20 +344,22 @@
 					<thead>
 						<tr>
 							<th>N°</th>
+							<th>Presentación</th>
 							<th>Nombre del cliente</th>
 							<th>Monto</th>
 							<th>Cantidad</th>
-							<th>Fecha</th>
+							<th>Bonificación</th>
 							<th>@</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="(adelanto, index) of listaAdelantos">
 							<td>@{{index+1}}</td>
-							<td>@{{adelanto.cliente}}</td>
+							<td>@{{adelanto.presentacion}}</td>
+							<td class="text-capitalize">@{{adelanto.cliente}}</td>
 							<td>@{{parseFloat(adelanto.monto).toFixed(2)}}</td>
 							<td>@{{adelanto.cantidad}}</td>
-							<td>@{{fechaFormateada(adelanto.fecha)}}</td>
+							<td>@{{adelanto.bonificacion}}{{-- @{{fechaFormateada(adelanto.fecha)}} --}}</td>
 							<td>
 								<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addAdelantoLista" @click="esNuevo=false; adelantoEditar(index)"><i class="icofont-edit"></i></button>
 								<button class="btn btn-outline-danger border-0 btn-sm" @click="adelantoBorrarFila(index)"><i class="icofont-close"></i></button>
@@ -418,7 +369,7 @@
 					<tfoot v-if="sumAdelanto>0">
 						<tr>
 							<td></td>
-							<td></td>
+							<td></td><td></td>
 							<th>@{{parseFloat(sumAdelanto).toFixed(2)}}</th>
 							<td></td>
 							<td></td>
@@ -614,14 +565,20 @@
         </button>
       </div>
       <div class="modal-body">
+				<label class="mt-0 mb-2" for="">Presentación</label>
+				<div class="form-group">
+					<select id="sltPresentacionAdela" class="form-control" name="" v-model="adelaIdPresentacion">
+						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
+					</select>
+				</div>
 				<label class="mt-0 mb-2" for="">Nombre de cliente</label>
-				<input type="text" name="" id="" class=" form-control" v-model="adelaCliente">
+				<input type="text" name="" id="" class=" form-control text-capitalize" v-model="adelaCliente">
 				<label class="mt-0 mb-2" for="">Monto</label>
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="adelaMonto">
 				<label class="mt-0 mb-2" for="">Cantidad</label>
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="adelaCantidad">
-				<label class="mt-0 mb-2" for="">Fecha</label>
-				<input type="date" name="" id="" class=" form-control" v-model="adelaFecha">
+				<label class="mt-0 mb-2" for="">Bonif.</label>
+				<input type="number" name="" id="" class=" form-control" v-model="adelaBonificacion">
 				
       </div>
       <div class="modal-footer">
@@ -703,20 +660,26 @@
         </button>
       </div>
       <div class="modal-body">
-				<label class="mt-0 mb-2" for="">Cantidad</label>
-				<input type="number" name="" id="" class="esMoneda form-control" v-model="bonCantidad">
 				<label class="mt-0 mb-2" for="">Presentación</label>
 				<div class="form-group">
 					<select id="sltPresentacionBonif" class="form-control" name="" v-model="bonIdPresentacion">
 						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
 					</select>
 				</div>
+				<label class="mt-0 mb-2" for="">Cantidad</label>
+				<input type="number" name="" id="" class="esMoneda form-control" v-model="bonCantidad">
+				<label class="mt-0 mb-2" for="">Bonificación</label>
+				<input type="number" name="" id="" class="esMoneda form-control" v-model="bonBonificacion">
+				<label class="mt-0 mb-2" for="">Nombre de cliente</label>
+				<input type="text" name="" id="" class=" form-control text-capitalize" v-model="bonCliente">
+				<label class="mt-0 mb-2" for="">Dirección de cliente</label>
+				<input type="text" name="" id="" class=" form-control text-capitalize" v-model="bonDireccion">
 				<label class="mt-0 mb-2" for="">Observación</label>
-				<input type="text" name="" id="" class="form-control" v-model="bonObservacion">
+				<input type="text" name="" id="" class="form-control" value="" v-model="bonObservacion">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="agregarBonificacion() "> <i class="icofont-sale-discount"></i> Insertar</button>
-        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="bonifActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="agregarBonificacion() "> <i class="icofont-ticket"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="bonifActualizar();"> <i class="icofont-ticket"></i> Actualizar</button>
       </div>
     </div>
   </div>
@@ -749,8 +712,8 @@
 		stockPenta: 0, stockFabrica: 0, stockOficina:0, stockRetorno:0, stockIdPresentacion:0, stockObservacion:'', stockTotal:0, stockTotalEntrega:0,
 		vencreCliente:'', vencreNumNota:'', vencreCantidad:0, vencrePrecio:0, vencreIdPresentacion:0, sumCredito:0,
 		cobraCliente: '', cobraDeuda: 0, cobraAcuenta: 0, cobraSaldo:0, cobraNumNota: '', sumCobranza:0,
-		adelaCliente: '', adelaMonto: 0, adelaCantidad: 0, adelaFecha: '<?= date('Y-m-d'); ?>', sumAdelanto:0, entregado:0,
-		bonDescripcion:'',bonCantidad:0, bonifTotal:0, bonIdPresentacion:0, bonObservacion:'',
+		adelaCliente: '', adelaMonto: 0, adelaCantidad: 0, adelaFecha: '<?= date('Y-m-d'); ?>', adelaBonificacion:0, sumAdelanto:0, entregado:0, adelaIdPresentacion: '', adelaPresentacion:'',
+		bonDescripcion:'',bonCantidad:0, bonifTotal:0, bonIdPresentacion:0, bonObservacion:'', bonBonificacion:0, bonCliente:'', bonDireccion:'',
 		fichFecha: '<?= date('Y-m-d')?>', fichVendedor: '', fichLugar: '', fichPlaca: '',
 		guardado: false,
 		listaPresentaciones:[{presentacion: 'Galleta de agua Bolsa 1.6kg Marie', precio: 0.00},
@@ -911,23 +874,29 @@
 			this.listaCobranza.splice(index,1);
 		},
 		adelaAgregar(){
-			this.listaAdelantos.push({cliente: this.adelaCliente, monto: this.adelaMonto, cantidad: this.adelaCantidad, fecha: this.adelaFecha });
+			let presentAdela = $('#sltPresentacionAdela option[value="'+$('#sltPresentacionAdela').val()+'"]').text();
+			this.listaAdelantos.push({cliente: this.adelaCliente, monto: this.adelaMonto, cantidad: this.adelaCantidad, bonificacion: this.adelaBonificacion,idPresentacion: this.adelaIdPresentacion, presentacion: presentAdela  });
 			this.sumAdelanto+= parseFloat(this.adelaMonto);
 		},
 		adelantoEditar(index){
 			this.adelaCliente = this.listaAdelantos[index].cliente;
 			this.adelaMonto = this.listaAdelantos[index].monto
 			this.adelaCantidad = this.listaAdelantos[index].cantidad;
-			this.adelaFecha = this.listaAdelantos[index].fecha;
+			this.adelaPresentacion = this.listaAdelantos[index].presentacion;
+			this.idPresentacion = this.listaAdelantos[index].idPresentacion;
+			this.adelaBonificacion = this.listaAdelantos[index].bonificacion;
 			this.idEditar = index;
 		},
 		adelaActualizar(){
+			let presentAdela = $('#sltPresentacionAdela option[value="'+$('#sltPresentacionAdela').val()+'"]').text();
 			this.sumAdelanto-=parseFloat(this.listaAdelantos[this.idEditar].monto);
 
 			this.listaAdelantos[this.idEditar].cliente = this.adelaCliente;
 			this.listaAdelantos[this.idEditar].monto = this.adelaMonto;
 			this.listaAdelantos[this.idEditar].cantidad = this.adelaCantidad;
-			this.listaAdelantos[this.idEditar].fecha = this.adelaFecha;
+			this.listaAdelantos[this.idEditar].bonificacion = this.adelaBonificacion;
+			this.listaAdelantos[this.idEditar].idPresentacion = this.idPresentacion;
+			this.listaAdelantos[this.idEditar].presentacion = presentAdela;
 			this.sumAdelanto+= parseFloat(this.adelaMonto);
 		},
 		adelantoBorrarFila(index){
@@ -939,13 +908,16 @@
 		},
 		agregarBonificacion(){
 			this.bonDescripcion = $('#sltPresentacionBonif option[value="'+$('#sltPresentacionBonif').val()+'"]').text();
-			this.listaBonificaciones.push({ cantidad: this.bonCantidad, presentacion: this.bonDescripcion, idPresentacion: $('#sltPresentacionBonif').val(), observacion: this.bonObservacion});
-			this.bonifTotal+=parseFloat(this.bonCantidad);
+			this.listaBonificaciones.push({ cantidad: this.bonCantidad, presentacion: this.bonDescripcion, idPresentacion: $('#sltPresentacionBonif').val(), observacion: this.bonObservacion, bonificacion: this.bonBonificacion, cliente: this.bonCliente, direccion: this.bonDireccion });
+			this.bonifTotal+=parseFloat(this.bonBonificacion);
 		},
 		bonifEditar(index){
 			this.bonIdPresentacion = this.listaBonificaciones[index].idPresentacion;
 			this.bonDescripcion = this.listaBonificaciones[index].presentacion;
 			this.bonCantidad = this.listaBonificaciones[index].cantidad;
+			this.bonBonificacion= this.listaBonificaciones[index].bonificacion;
+			this.bonCliente= this.listaBonificaciones[index].cliente;
+			this.bonDireccion= this.listaBonificaciones[index].direccion;
 			this.idEditar = index;
 		},
 		bonifActualizar(){
@@ -954,10 +926,15 @@
 			this.listaBonificaciones[this.idEditar].idPresentacion= $('#sltPresentacionBonif').val()
 			this.listaBonificaciones[this.idEditar].presentacion = this.bonDescripcion;
 			this.listaBonificaciones[this.idEditar].cantidad = this.bonCantidad;
-			this.bonifTotal+= parseFloat(this.bonCantidad);
+
+			this.listaBonificaciones[this.idEditar].bonificacion = this.bonBonificacion;
+			this.listaBonificaciones[this.idEditar].cliente = this.bonCliente;
+			this.listaBonificaciones[this.idEditar].direccion = this.bonDireccion;
+			this.listaBonificaciones[this.idEditar].observacion = this.bonObservacion;
+			this.bonifTotal+= parseFloat(this.bonBonificacion);
 		},
 		bonifBorrarFila(index){
-			this.bonifTotal-= parseFloat(this.listaBonificaciones[index].cantidad);
+			this.bonifTotal-= parseFloat(this.listaBonificaciones[index].bonificacion);
 			this.listaBonificaciones.splice(index,1);
 		},
 		guardarFicha(){
@@ -965,11 +942,11 @@
 				fecha: this.fichFecha, vendedor: this.fichVendedor, placa: this.fichPlaca, lugar: this.fichLugar,
 				sumaContado: this.ventcTotal, sumaCobranza: this.sumCobranza, sumaCredito: this.ventcTotal, sumaGasto: this.gasTotal, sumaAdelanto: this.sumAdelanto, sumaEntregar: this.sumaTotales, sumaEntregado: this.entregado,
 				alContado: this.listaVentasContado, stockFinal: this.listaStockFinal, alCredito: this.listaVentasCredito, vCobranza: this.listaCobranza, adelantos: this.listaAdelantos, listaGastos: this.listaGastos, listaBonificacion: this.listaBonificaciones
-			}).then(function(resp){
-				console.log(resp);
+			}).then(function(response){
+				console.log(response.data);
 				this.guardado=true;
-				if(isNaN(parseInt(resp))){ //alert('Ficha guardada');
-					alertify.alert('Notificación','Ficha guardada').set({transition:'fade'});
+				if(!isNaN(parseInt(response.data))){ //alert('Ficha guardada');
+					alertify.alert('','<strong class="text-muted">Ficha guardada:</strong> <h3 class="text-secondary">' + moment( this.fichFecha ).format('YYMM') + "-" + response.data+"</h3>" ).set({transition:'fade'});
 				}
 			});
 		}

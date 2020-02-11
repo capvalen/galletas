@@ -108,6 +108,10 @@ class tipoProcesoControler extends Controller
 		
 		public function liquidacion_insert(Request $request){
 			//return auth()->id;
+
+			$contador = DB::table('liquidacions')->select(DB::raw('count(*)+1 as conta'))->where('fecha', $request->fecha )->get();
+			$idCodInterno=json_decode($contador, true);
+			
 			$liquidacion = new App\Liquidacion;
 			$liquidacion->fecha = $request->fecha;
 			$liquidacion->vendedor = $request->vendedor;
@@ -122,6 +126,7 @@ class tipoProcesoControler extends Controller
 			$liquidacion->sumaAdelanto = $request->sumaAdelanto;
 			$liquidacion->sumaEntregar = $request->sumaEntregar;
 			$liquidacion->sumaEntregado = $request->sumaEntregado;
+			$liquidacion->codInterno = $idCodInterno[0]['conta'];
 
 			$liquidacion->save(); //correcto
 
@@ -191,7 +196,9 @@ class tipoProcesoControler extends Controller
 					$adelanto->cliente = $vAdelantos['cliente'];
 					$adelanto->monto = $vAdelantos['monto'];
 					$adelanto->cantidad = $vAdelantos['cantidad'];
-					$adelanto->fecha = $vAdelantos['fecha'];
+					$adelanto->idPresentacion = $vAdelantos['idPresentacion'];
+					$adelanto->presentacion = $vAdelantos['presentacion'];
+					$adelanto->bonificacion = $vAdelantos['bonificacion'];
 					$adelanto->save();
 				}
 			} //correcto
@@ -215,11 +222,14 @@ class tipoProcesoControler extends Controller
 					$gasto->liquidacion_id= $liquidacion->id;
 					$gasto->cantidad = $vBonificacion['cantidad'];
 					$gasto->presentacion = $vBonificacion['presentacion'];
+					$gasto->bonificacion = $vBonificacion['bonificacion'];
+					$gasto->cliente = $vBonificacion['cliente'];
+					$gasto->direccion = $vBonificacion['direccion'];
 					
 					$gasto->save();
 				}
 			} //correcto
 
-			return $liquidacion->id;
+			return $idCodInterno[0]['conta']; //$liquidacion->id;
 		}
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App;
+use Carbon\Carbon;
 
 class ventasController extends Controller
 {
@@ -11,15 +13,20 @@ class ventasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('ventas.index');
+    public function index($fecha=''){
+			if($fecha!=''){
+				$liquidaciones = App\Liquidacion::where('fecha', $fecha)->get();
+				//$liquidaciones = App\Liquidacion::find(1)->usuarios;
+				//return $liquidaciones;
+				return view('ventas.index', compact('liquidaciones'));
+			}else{
+				$liquidaciones = App\Liquidacion::where('fecha', Carbon::now()->format('Y-m-d') )->get();
+				return view('ventas.index', compact('liquidaciones'));
+			}
     }
-    public function liquidacion()
-    {
-        return view('ventas.liquidacion');
-    }
-
+    public function liquidacion(){
+      return view('ventas.liquidacion');
+		}
     /**
      * Show the form for creating a new resource.
      *
