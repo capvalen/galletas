@@ -17,6 +17,7 @@ margin-top: 10px;
 .btn:focus, .close {
   outline: none!important;
 }
+#relleno{height: 100%;}
 </style>
 @endsection
 
