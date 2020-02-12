@@ -17,12 +17,15 @@ class CreateVentasStocksTable extends Migration
 						$table->bigIncrements('id');
 						
 						$table->bigInteger('liquidacion_id')->unsigned();
+						$table->string('idPresentacion')->default(0)->nullable();
 						$table->string('presentacion');
 						$table->integer('pentapeaks')->comment('salida pentapeaks')->default(0);
 						$table->integer('oficina')->comment('salida oficina')->default(0);
 						$table->integer('fabrica')->comment('salida fabrica')->default(0);
 						$table->integer('total')->default(0);
 						$table->integer('final')->comment('stock final')->default(0);
+						$table->integer('retorno')->comment('regresa a guardarse a oficina')->default(0)->nullable;
+						$table->integer('vencido')->comment('vencido o dañado')->default(0)->nullable;
 						$table->string('observacion')->default('')->nullable();
 
 						$table->foreign('liquidacion_id')->references('id')->on('liquidacions');

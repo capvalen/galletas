@@ -9,11 +9,8 @@ use Illuminate\Http\Request;
 
 class tipoProcesoControler extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+	public function __construct() { $this->middleware('auth'); }
+
     public function index()
     {
 			$procesos = App\galeria_tipo::where('activo', 1)->get();
@@ -116,6 +113,7 @@ class tipoProcesoControler extends Controller
 			$liquidacion->fecha = $request->fecha;
 			$liquidacion->vendedor = $request->vendedor;
 			$liquidacion->placa = $request->placa;
+			$liquidacion->conductor = $request->conductor;
 			$liquidacion->lugar = $request->lugar;
 			$liquidacion->idUser = Auth::id();
 
@@ -148,11 +146,13 @@ class tipoProcesoControler extends Controller
 					$stock = new App\ventasStock;
 					$stock->liquidacion_id= $liquidacion->id;
 					$stock->presentacion = $stockFinal['presentacion'];
+					$stock->idPresentacion = $stockFinal['idPresentacion'];
 					$stock->pentapeaks = $stockFinal['pentapeaks'];
 					$stock->oficina = $stockFinal['oficina'];
 					$stock->fabrica = $stockFinal['fabrica'];
 					$stock->total = $stockFinal['subTotal'];
-					$stock->final = $stockFinal['retorno'];
+					$stock->retorno = $stockFinal['retorno'];
+					$stock->vencido = $stockFinal['vencido'];
 					$stock->observacion = $stockFinal['observacion'];
 					$stock->save();
 				}
@@ -222,14 +222,31 @@ class tipoProcesoControler extends Controller
 					$gasto->liquidacion_id= $liquidacion->id;
 					$gasto->cantidad = $vBonificacion['cantidad'];
 					$gasto->presentacion = $vBonificacion['presentacion'];
+					$gasto->idPresentacion = $vBonificacion['idPresentacion'];
 					$gasto->bonificacion = $vBonificacion['bonificacion'];
 					$gasto->cliente = $vBonificacion['cliente'];
 					$gasto->direccion = $vBonificacion['direccion'];
+					$gasto->esBono = $vBonificacion['esBono'];
 					
 					$gasto->save();
 				}
 			} //correcto
 
 			return $idCodInterno[0]['conta']; //$liquidacion->id;
+		}
+
+		public function reporteLiquidacion($id){
+			$liquidacion = App\Liquidacion::findOrFail($id);
+			$gastos= json_encode(App\VentasGasto::where('liquidacion_id', $id)->get());
+			$productos = App\ventasStock::where('liquidacion_id', $liquidacion->id )->get()->toJson();
+			$ventas = App\ventasContado::where('liquidacion_id', $liquidacion->id )->get()->toJson();
+			$bonificaciones = json_encode(App\VentasBonificacion::where('liquidacion_id', $liquidacion->id )->get());
+			$creditos = json_encode(App\ventasCredito::where('liquidacion_id', $liquidacion->id )->get());
+			$cobranzas = json_encode(App\VentasCobranza::where('liquidacion_id', $liquidacion->id )->get());
+			$adelantos = json_encode(App\VentasAdelanto::where('liquidacion_id', $liquidacion->id )->get());
+			//return $bonificaciones;
+
+			//return $gastos;
+			return view('liquidaciones.reporte', compact('liquidacion', 'gastos', 'productos', 'ventas', 'bonificaciones', 'creditos', 'cobranzas', 'adelantos'));
 		}
 }

@@ -22,10 +22,12 @@ class CreateProductosTable extends Migration
 						$table->float('cantidad_x_display')->comment('cuantas unidades juntas existen');// 10
 						$table->float('cantidad')->comment('total en la unidad más basica, und, kg, lt'); //Ejm: 18
 						$table->float('peso')->comment('peso en la unidad más basica, und, kg, lt');
+						$table->string('descripcion')->comment('dato extra')->nullable();
+						$table->string('precio')->default(0)->nullable();
 						$table->boolean('activo')->default(1);
 						$table->timestamps();
 						
-						$table->foreign('tipo_productos_id')->references('id')->on('grupos');
+						$table->foreign('tipo_productos_id')->references('id')->on('tipo_productos');
 						$table->foreign('tipo_displays_id')->references('id')->on('tipo_displays');
 						$table->foreign('marca_displays_id')->references('id')->on('marca_displays');
 						$table->foreign('unidades_id')->references('id')->on('unidades');

@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body py-5">
-									<h4 class="text-center py-3">{{ __('Login') }}</h4>
+									<h4 class="text-center py-3"><i class="icofont-industries-5"></i> Intranet de Fabrica Marie</h4>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

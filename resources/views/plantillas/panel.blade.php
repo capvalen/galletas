@@ -51,7 +51,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="{{url('js/moment.js')}}"></script>
-<script src="{{url('js/anatsunamun.js?version=1.0.13')}}"></script>
+<script src="{{url('js/anatsunamun.js?version=1.0.16')}}"></script>
 <script src="{{url('js/bootstrap-select.js?version=1.0.5')}}"></script>
 <script src="{{url('js/bootstrap-material-datetimepicker.js')}}"></script>
 <script src="{{url('js/alertify.min.js?version=1.0.1')}}"></script>
@@ -59,12 +59,12 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
 
-
+@yield('script')
 <script>
   //$('.selectpicker').selectpicker();
   $('[data-toggle="tooltip"]').tooltip();
 
 </script>
-@yield('script')
+
 </body>
 </html>

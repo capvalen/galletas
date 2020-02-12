@@ -18,6 +18,8 @@ class CreateVentasBonificacionsTable extends Migration
 						$table->bigInteger('liquidacion_id')->unsigned();
 						$table->integer('cantidad');
 						$table->string('presentacion')->default('')->nullable();
+						$table->string('idPresentacion')->default(0)->nullable();
+						$table->boolean('esBono')->comment('1 para bonif, 0 para degustacion')->default(1)->nullable();
             $table->timestamps();
         });
     }

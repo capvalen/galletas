@@ -16,6 +16,7 @@ class UpdateLiquidacionesTable extends Migration
 			Schema::table('liquidacions', function (Blueprint $table) {
 				//
 				$table->integer('codInterno');
+				$table->string('conductor')->nullable();
 			});
     }
 

@@ -13,5 +13,6 @@ class marcaDisplaySeed extends Seeder
     {
       DB::table('marca_displays')->insert(['descripcion' => 'Marie']);
       DB::table('marca_displays')->insert(['descripcion' => 'Rey del centro']);
+      DB::table('marca_displays')->insert(['descripcion' => 'Sin marca']);
     }
 }

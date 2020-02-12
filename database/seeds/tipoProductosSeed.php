@@ -13,7 +13,8 @@ class tipoProductosSeed extends Seeder
     {
 			DB::table('tipo_productos')->insert(['descripcion' => 'Galleta de agua']);
 			DB::table('tipo_productos')->insert(['descripcion' => 'Galleta de letras']);
-			DB::table('tipo_productos')->insert(['descripcion' => 'Pan molde']);
+			DB::table('tipo_productos')->insert(['descripcion' => 'Pan']);
 			DB::table('tipo_productos')->insert(['descripcion' => 'Keke']);
+			DB::table('tipo_productos')->insert(['descripcion' => 'Ninguno']);
     }
 }

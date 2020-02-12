@@ -61,7 +61,7 @@
 	});
 	$('.esMoneda').change(function(){
 		var campo = $(this);
-		var valor =campo.val();
+		var valor =parseFloat(campo.val());
 		if(valor<0){
 			$(this).val('0.00')
 		}else{

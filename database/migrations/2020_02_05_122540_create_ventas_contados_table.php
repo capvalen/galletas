@@ -17,6 +17,7 @@ class CreateVentasContadosTable extends Migration
 						$table->bigIncrements('id');
 
 						$table->bigInteger('liquidacion_id')->unsigned();
+						$table->integer('idPresentacion')->default(0)->nullable();
 						$table->integer('cantidad');
 						$table->string('presentacion');
 						$table->float('precio');

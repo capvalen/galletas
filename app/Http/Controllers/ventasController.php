@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 class ventasController extends Controller
 {
+	public function __construct() { $this->middleware('auth'); }
     /**
      * Display a listing of the resource.
      *
@@ -18,10 +19,12 @@ class ventasController extends Controller
 				$liquidaciones = App\Liquidacion::where('fecha', $fecha)->get();
 				//$liquidaciones = App\Liquidacion::find(1)->usuarios;
 				//return $liquidaciones;
-				return view('ventas.index', compact('liquidaciones'));
+				$fechaMaster = $fecha;
+				return view('ventas.index', compact('liquidaciones', 'fechaMaster'));
 			}else{
 				$liquidaciones = App\Liquidacion::where('fecha', Carbon::now()->format('Y-m-d') )->get();
-				return view('ventas.index', compact('liquidaciones'));
+				$fechaMaster = date('Y-m-d');
+				return view('ventas.index', compact('liquidaciones', 'fechaMaster'));
 			}
     }
     public function liquidacion(){

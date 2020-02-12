@@ -38,8 +38,12 @@
 					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Placa" value="" v-model="fichPlaca">
 				</div>
 				<div class="col">
+					<label class="" for="">Conductor</label>
+					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Conductor" value="" v-model="fichConductor">
+				</div>
+				<div class="col">
 					<label class="" for="">Saldo que entrega</label>
-					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Entrega" value="" v-model="entregado">
+					<input type="number" class="form-control mb-2 mr-sm-2 esMoneda" id="txtEntrega" placeholder="Entrega" value="" v-model="entregado">
 				</div>
 			
 				<div class="col d-flex align-items-end">
@@ -120,7 +124,8 @@
 								<th>Salida Fabrica</th>
 								<th>Salida Oficina</th>
 								<th>Total</th>
-								<th>Retorno/ Stock Final</th>
+								<th>Retorno</th>
+								<th>Vencido/ Dañado</th>
 								<th>Obs.</th>
 								<th>@</th>
 							</tr>
@@ -134,6 +139,7 @@
 								<td>@{{stock.oficina}}</td>
 								<td>@{{stock.subTotal}}</td>
 								<td>@{{stock.retorno}}</td>
+								<td>@{{stock.vencido}}</td>
 								<td>@{{stock.observacion}}</td>
 								<td>
 									<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addStockEntrega" @click="esNuevo=false; stockEditar(index)"><i class="icofont-edit"></i></button>
@@ -168,7 +174,7 @@
 					<h4 class="">Bonificación - Degustación</h4>
 				</div>
 				<div>
-					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addBonificacionLista" @click="esNuevo = true; bonCantidad=0; bonCliente='', bonBonificacion=0, bonDireccion=''; bonObservacion='';" ><i class="icofont-ui-add"></i></button>
+					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addBonificacionLista" @click="esNuevo = true; bonCantidad=0; bonCliente='', bonBonificacion=0, bonDireccion=''; bonObservacion=''; bonQuees=1;" ><i class="icofont-ui-add"></i></button>
 				</div>
 			</div>
 			<div class="card">
@@ -177,9 +183,10 @@
 						<thead>
 							<tr>
 								<th>N°</th>
+								<th>Tipo</th>
 								<th>Presentación</th>
 								<th>Cant.</th>
-								<th>Bonf.</th>
+								<th>Oferta</th>
 								<th>Cliente.</th>
 								<th>Dirección.</th>
 								<th>Observación</th>
@@ -189,6 +196,7 @@
 						<tbody>
 							<tr v-for="(bonificacion, index) of listaBonificaciones">
 								<td>@{{index+1}}</td>
+								<td><span v-if="bonificacion.esBono=='1'">Bonificación</span><span v-else>Degustación</span></td>
 								<td>@{{bonificacion.presentacion}}</td>
 								<td>@{{bonificacion.cantidad}}</td>
 								<td>@{{bonificacion.bonificacion}}</td>
@@ -203,7 +211,7 @@
 						</tbody>
 						<tfoot v-if="bonifTotal>0">
 							<tr>
-								<td></td>
+								<td></td><td></td>
 								<td></td><td></td>
 								<th>@{{parseFloat(bonifTotal).toFixed(0)}}</th>
 								<td></td><td></td>
@@ -613,6 +621,8 @@
 				<input type="number" name="" id="" class=" form-control" v-model="stockOficina">
 				<label class="mt-0 mb-2" for="">Retorno</label>
 				<input type="number" name="" id="" class=" form-control" v-model="stockRetorno">
+				<label class="mt-0 mb-2" for="">Vencido o Dañado</label>
+				<input type="number" name="" id="" class=" form-control" v-model="stockVencido">
 				<label class="mt-0 mb-2" for="">Observación</label>
 				<input type="text" name="" id="" class=" form-control" v-model="stockObservacion">
 
@@ -660,21 +670,26 @@
         </button>
       </div>
       <div class="modal-body">
-				<label class="mt-0 mb-2" for="">Presentación</label>
+				<label for="">¿Qué es?</label>
+				<select id="sltQueBonif" class="form-control" name="" v-model="bonQuees">
+					<option value="1">Bonificación</option>
+					<option value="0">Degustación</option>
+				</select>
+				<label class="mt-0 my-2" for="">Presentación</label>
 				<div class="form-group">
 					<select id="sltPresentacionBonif" class="form-control" name="" v-model="bonIdPresentacion">
 						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
 					</select>
 				</div>
-				<label class="mt-0 mb-2" for="">Cantidad</label>
-				<input type="number" name="" id="" class="esMoneda form-control" v-model="bonCantidad">
-				<label class="mt-0 mb-2" for="">Bonificación</label>
-				<input type="number" name="" id="" class="esMoneda form-control" v-model="bonBonificacion">
-				<label class="mt-0 mb-2" for="">Nombre de cliente</label>
+				<label class="mt-0 my-2" for="">Cantidad</label>
+				<input type="number" name="" id="" class=" form-control" v-model="bonCantidad">
+				<label class="mt-0 my-2" for=""><span v-if="bonQuees=='1'">Cant. Bonificaciones entregadas</span><span v-else>Cant: Degustaciones dadas:</span></label>
+				<input type="number" name="" id="" class=" form-control" v-model="bonBonificacion">
+				<label class="mt-0 my-2" for="">Nombre de cliente</label>
 				<input type="text" name="" id="" class=" form-control text-capitalize" v-model="bonCliente">
-				<label class="mt-0 mb-2" for="">Dirección de cliente</label>
+				<label class="mt-0 my-2" for="">Dirección de cliente</label>
 				<input type="text" name="" id="" class=" form-control text-capitalize" v-model="bonDireccion">
-				<label class="mt-0 mb-2" for="">Observación</label>
+				<label class="mt-0 my-2" for="">Observación</label>
 				<input type="text" name="" id="" class="form-control" value="" v-model="bonObservacion">
       </div>
       <div class="modal-footer">
@@ -709,14 +724,16 @@
 		listaBonificaciones:[],
 		ventcCantidad:0, ventcIdPresentacion:0, ventcPresentacion:'', ventcPrecio: '0.00', ventcSubTotal:0, ventcTotal:0, ventcNuevo: true,
 		gasDescripcion:'', gasMonto: '0.00', gasTotal:0, esNuevo: true, idEditar:0,
-		stockPenta: 0, stockFabrica: 0, stockOficina:0, stockRetorno:0, stockIdPresentacion:0, stockObservacion:'', stockTotal:0, stockTotalEntrega:0,
+		stockPenta: 0, stockFabrica: 0, stockOficina:0, stockRetorno:0, stockIdPresentacion:0, stockObservacion:'', stockTotal:0, stockTotalEntrega:0, stockVencido:0,
 		vencreCliente:'', vencreNumNota:'', vencreCantidad:0, vencrePrecio:0, vencreIdPresentacion:0, sumCredito:0,
 		cobraCliente: '', cobraDeuda: 0, cobraAcuenta: 0, cobraSaldo:0, cobraNumNota: '', sumCobranza:0,
 		adelaCliente: '', adelaMonto: 0, adelaCantidad: 0, adelaFecha: '<?= date('Y-m-d'); ?>', adelaBonificacion:0, sumAdelanto:0, entregado:0, adelaIdPresentacion: '', adelaPresentacion:'',
-		bonDescripcion:'',bonCantidad:0, bonifTotal:0, bonIdPresentacion:0, bonObservacion:'', bonBonificacion:0, bonCliente:'', bonDireccion:'',
-		fichFecha: '<?= date('Y-m-d')?>', fichVendedor: '', fichLugar: '', fichPlaca: '',
+		bonDescripcion:'',bonCantidad:0, bonifTotal:0, bonIdPresentacion:0, bonObservacion:'', bonBonificacion:0, bonCliente:'', bonDireccion:'', bonQuees:1,
+		fichFecha: '<?= date('Y-m-d')?>', fichVendedor: '', fichLugar: '', fichPlaca: '', fichConductor:'',
 		guardado: false,
-		listaPresentaciones:[{presentacion: 'Galleta de agua Bolsa 1.6kg Marie', precio: 0.00},
+		listaPresentaciones:[
+			{presentacion: 'Ningún producto', precio: 0.00},
+			{presentacion: 'Galleta de agua Bolsa 1.6kg Marie', precio: 0.00},
 			{presentacion: 'Galleta de agua Bolsa 1.2kg Marie',precio: 0.00},
 			{presentacion: 'Galleta de agua Bolsa 1.05kg Rey del centro',precio: 0.00},
 			{presentacion: 'Galleta de agua Display 5x 0.95kg Rey del centro',precio: 0.00},
@@ -729,7 +746,6 @@
 			{presentacion: 'Pan de molde integral Marie',precio: 0.00},
 			{presentacion: 'Keke domo Marie',precio: 0.00},
 			{presentacion: 'Keke pirotín Rey del centro',precio: 0.00},
-
 			{presentacion: 'Galleta de agua Marie Bolsa 1.2kg ',precio: 0.00}]
 	},
 	methods:{
@@ -780,7 +796,7 @@
 		stockAgregar(){
 			let sub= parseFloat(this.stockPenta) + parseFloat(this.stockFabrica) + parseFloat(this.stockOficina);
 			this.listaStockFinal.push({ presentacion: $('#sltPresentacionStock option[value="'+$('#sltPresentacionStock').val()+'"]').text(), idPresentacion: this.stockIdPresentacion,
-			pentapeaks: this.stockPenta, fabrica: this.stockFabrica, oficina: this.stockOficina, subTotal: sub, retorno: this.stockRetorno, observacion: this.stockObservacion  });
+			pentapeaks: this.stockPenta, fabrica: this.stockFabrica, oficina: this.stockOficina, subTotal: sub, retorno: this.stockRetorno, vencido: this.stockVencido, observacion: this.stockObservacion  });
 			this.stockTotal+= sub;
 			this.stockTotalEntrega += parseFloat(this.stockRetorno);
 		},
@@ -789,6 +805,7 @@
 			this.stockPenta = this.listaStockFinal[index].pentapeaks;
 			this.stockFabrica = this.listaStockFinal[index].fabrica;
 			this.stockOficina = this.listaStockFinal[index].oficina;
+			this.stockVencido = this.listaStockFinal[index].vencido;
 			this.stockObservacion = this.listaStockFinal[index].observacion;
 			
 			this.idEditar = index;
@@ -806,6 +823,7 @@
 			this.listaStockFinal[ this.idEditar ].oficina = this.stockOficina;
 			this.listaStockFinal[ this.idEditar ].subTotal = sub;
 			this.listaStockFinal[ this.idEditar ].retorno = this.stockRetorno;
+			this.listaStockFinal[ this.idEditar ].vencido = this.stockVencido;
 
 			this.stockTotal+= sub;
 			this.stockTotalEntrega += parseFloat(this.stockRetorno);
@@ -908,7 +926,7 @@
 		},
 		agregarBonificacion(){
 			this.bonDescripcion = $('#sltPresentacionBonif option[value="'+$('#sltPresentacionBonif').val()+'"]').text();
-			this.listaBonificaciones.push({ cantidad: this.bonCantidad, presentacion: this.bonDescripcion, idPresentacion: $('#sltPresentacionBonif').val(), observacion: this.bonObservacion, bonificacion: this.bonBonificacion, cliente: this.bonCliente, direccion: this.bonDireccion });
+			this.listaBonificaciones.push({ cantidad: this.bonCantidad, presentacion: this.bonDescripcion, idPresentacion: $('#sltPresentacionBonif').val(), observacion: this.bonObservacion, bonificacion: this.bonBonificacion, cliente: this.bonCliente, direccion: this.bonDireccion, esBono: this.bonQuees });
 			this.bonifTotal+=parseFloat(this.bonBonificacion);
 		},
 		bonifEditar(index){
@@ -918,6 +936,7 @@
 			this.bonBonificacion= this.listaBonificaciones[index].bonificacion;
 			this.bonCliente= this.listaBonificaciones[index].cliente;
 			this.bonDireccion= this.listaBonificaciones[index].direccion;
+			this.bonQuees= this.listaBonificaciones[index].esBono;
 			this.idEditar = index;
 		},
 		bonifActualizar(){
@@ -931,6 +950,7 @@
 			this.listaBonificaciones[this.idEditar].cliente = this.bonCliente;
 			this.listaBonificaciones[this.idEditar].direccion = this.bonDireccion;
 			this.listaBonificaciones[this.idEditar].observacion = this.bonObservacion;
+			this.listaBonificaciones[this.idEditar].esBono = this.bonQuees;
 			this.bonifTotal+= parseFloat(this.bonBonificacion);
 		},
 		bonifBorrarFila(index){
@@ -939,14 +959,14 @@
 		},
 		guardarFicha(){
 			axios.post('{{route("liquidacion.insertar")}}', {
-				fecha: this.fichFecha, vendedor: this.fichVendedor, placa: this.fichPlaca, lugar: this.fichLugar,
+				fecha: this.fichFecha, vendedor: this.fichVendedor, placa: this.fichPlaca, lugar: this.fichLugar, conductor: this.fichConductor,
 				sumaContado: this.ventcTotal, sumaCobranza: this.sumCobranza, sumaCredito: this.ventcTotal, sumaGasto: this.gasTotal, sumaAdelanto: this.sumAdelanto, sumaEntregar: this.sumaTotales, sumaEntregado: this.entregado,
 				alContado: this.listaVentasContado, stockFinal: this.listaStockFinal, alCredito: this.listaVentasCredito, vCobranza: this.listaCobranza, adelantos: this.listaAdelantos, listaGastos: this.listaGastos, listaBonificacion: this.listaBonificaciones
 			}).then(function(response){
 				console.log(response.data);
 				this.guardado=true;
 				if(!isNaN(parseInt(response.data))){ //alert('Ficha guardada');
-					alertify.alert('','<strong class="text-muted">Ficha guardada:</strong> <h3 class="text-secondary">' + moment( this.fichFecha ).format('YYMM') + "-" + response.data+"</h3>" ).set({transition:'fade'});
+					alertify.alert('','<strong class="text-muted">Ficha guardada:</strong> <h3 class="text-secondary">' + moment( this.fichFecha ).format('YYMM') + "-" + response.data+"</h3>" ).set({transition:'fade', 'onok': function(){ window.location.href = "{{route('ventas.index')}}"+"/"+ app.fichFecha;}});
 				}
 			});
 		}
@@ -962,6 +982,15 @@
 });
 $("input").focus(function() {
    $(this).select();
+});
+$('.esMoneda').change(function(){
+	var campo = $(this);
+	var valor =parseFloat(campo.val());
+	if(valor<0){
+		$(this).val('0.00')
+	}else{
+		$(this).val(parseFloat(valor).toFixed(2));
+	}
 });
 </script>
 @endsection

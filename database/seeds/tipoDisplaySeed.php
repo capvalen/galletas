@@ -16,5 +16,6 @@ class tipoDisplaySeed extends Seeder
       DB::table('tipo_displays')->insert(['descripcion' => 'Molde']);
       DB::table('tipo_displays')->insert(['descripcion' => 'Domo']);
       DB::table('tipo_displays')->insert(['descripcion' => 'Pirotín']);
+      DB::table('tipo_displays')->insert(['descripcion' => 'Ninguno']);
     }
 }

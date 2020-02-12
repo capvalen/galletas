@@ -33,7 +33,7 @@
 
 	}
 	.card{
-		background-color: #00000021;
+		background-color: #19146f21;
 		border: 1px solid rgba(0, 0, 0, 0);
 		color: white;
 	}
@@ -44,6 +44,14 @@
 	.btn-primary:hover, .btn-primary:not(:disabled):not(.disabled):active {
     background-color: #2f3173;
     border-color: #2f3173;
+	}
+	.form-control{
+		color: #7817e2!important;
+		background-color: #ffffff26!important;
+	}
+	.form-control:focus{
+		border-color: #7b49b1;
+    box-shadow: 0 0 0 0.2rem rgba(202, 41, 255, 0.25);
 	}
 </style>
     <div id="app">

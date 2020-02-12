@@ -62,3 +62,12 @@ Route::get('Ventas/Liquidación', 'ventasController@liquidacion' )->name('liquid
 
 
 Route::post('liquidacion/insertar/', 'tipoProcesoControler@liquidacion_insert' )->name('liquidacion.insertar');
+Route::get('Liquidación/Reporte/{id?}', 'tipoProcesoControler@reporteLiquidacion' )->name('liquidacion.reporte');
+
+
+
+
+Route::get('prueba/', function(){
+	dd(Auth::guest());
+})->name('prueba');
+
