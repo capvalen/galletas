@@ -278,7 +278,7 @@
 							<td>@{{index+1}}</td>
 							<td class="text-capitalize">BO-@{{bono.id}}</td>
 							<td class="text-capitalize">@{{bono.cliente}}</td>
-							<td class="text-capitalize"><span v-id="esBono=='1'">Bonificación</span><span v-else>Degustación</span></td>
+							<td class="text-capitalize"><span v-if="bono.esBono=='1'">Bonificación</span><span v-else>Degustación</span></td>
 							<td class="text-capitalize">@{{bono.presentacion}}</td>
 							<td class="text-capitalize">@{{bono.bonificacion}}</td>
 							<td class="text-capitalize">@{{bono.cantidad}}</td>
