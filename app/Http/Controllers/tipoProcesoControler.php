@@ -210,6 +210,10 @@ class tipoProcesoControler extends Controller
 					$gasto->liquidacion_id= $liquidacion->id;
 					$gasto->monto = $vGastos['monto'];
 					$gasto->descripcion = $vGastos['descripcion'];
+					$gasto->idComprobante = $vGastos['idComprobante'];
+					$gasto->comprobante = $vGastos['comprobante'];
+					$gasto->empresa_id = $vGastos['idDestino'];
+					$gasto->destino = $vGastos['destino'];
 					
 					$gasto->save();
 				}

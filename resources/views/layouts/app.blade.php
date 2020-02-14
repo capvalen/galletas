@@ -46,8 +46,8 @@
     border-color: #2f3173;
 	}
 	.form-control{
-		color: #7817e2!important;
-		background-color: #ffffff26!important;
+		color: #fcfaff!important;
+		background-color: #4a252526!important;
 	}
 	.form-control:focus{
 		border-color: #7b49b1;

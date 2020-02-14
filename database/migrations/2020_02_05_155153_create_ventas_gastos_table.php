@@ -18,6 +18,10 @@ class CreateVentasGastosTable extends Migration
 						$table->bigInteger('liquidacion_id')->unsigned();
 						$table->float('monto');
 						$table->string('descripcion')->default('')->nullable();
+						$table->bigInteger('idComprobante')->default(0)->nullable();
+						$table->string('comprobante')->default('')->nullable();
+						$table->bigInteger('empresa_id')->default(0)->nullable();
+						$table->string('destino')->default('')->nullable();
             $table->timestamps();
         });
     }

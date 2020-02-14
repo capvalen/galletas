@@ -395,7 +395,7 @@
 			<h4 class="">Gastos</h4>
 		</div>
 		<div>
-			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addGastosLista" @click="esNuevo = true; gasDescripcion=''; gasMonto= '0.00';" ><i class="icofont-ui-add"></i></button>
+			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addGastosLista" @click="esNuevo = true; gasDescripcion=''; gasMonto= '0.00'; gasidComprobante=1; gasComprobante=''; gasidDestino=1; gasDestino=''; " ><i class="icofont-ui-add"></i></button>
 		</div>
 	</div>
 	<div class="row col">
@@ -405,16 +405,22 @@
 					<thead>
 						<tr>
 							<th>N°</th>
+							<th>Destino</th>
 							<th>Detalle</th>
 							<th>Monto</th>
+							<th>Tipo de Comprobante</th>
+							<th>Serie y Correlativo</th>
 							<th>@</th>
 						</tr>
 					</thead>
 					<tbody v-for="(gasto, index) of listaGastos">
 						<tr>
 							<td>@{{index+1}}</td>
+							<td>@{{gasto.destino}}</td>
 							<td>@{{gasto.descripcion}}</td>
 							<td>@{{parseFloat(gasto.monto).toFixed(2)}}</td>
+							<td>@{{gasto.tipoComprobante}}</td>
+							<td>@{{gasto.comprobante}}</td>
 							<td>
 								<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addGastosLista" @click="esNuevo=false; gastosEditar(index)"><i class="icofont-edit"></i></button>
 								<button class="btn btn-outline-danger border-0 btn-sm" @click="gastosBorrarFila(index)"><i class="icofont-close"></i></button>
@@ -427,7 +433,7 @@
 							<td></td>
 							<td></td>
 							<th>@{{parseFloat(gasTotal).toFixed(2)}}</th>
-							<td></td>
+							<td></td><td></td><td></td>
 						</tr>
 					</tfoot>
 				</table>
@@ -651,6 +657,20 @@
 				<input type="text" name="" id="" class="form-control" v-model="gasDescripcion">
 				<label class="mt-0 mb-2" for="">Monto</label>
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="gasMonto">
+				<label class="mt-0 my-2" for="">Destino de gasto</label>
+				<div class="form-group">
+					<select id="sltDestinos" class="form-control" name="" v-model="gasidDestino">
+						<option v-for="(destino, index) of listaDestinos" :value="destino.id">@{{destino.destino}}</option>
+					</select>
+				</div>
+				<label class="mt-0 my-2" for="">Tipo comprobante</label>
+				<div class="form-group">
+					<select id="sltGrupoComprobantes" class="form-control" name="" v-model="gasidComprobante">
+						<option v-for="(comprobante, index) of listaComprobantes" :value="comprobante.id">@{{comprobante.descripcion}}</option>
+					</select>
+				</div>
+				<label v-if="gasidComprobante!='1'" for="">Serie y correlativo del comprobante</label>
+				<input type="text" name="" id="" v-if="gasidComprobante!='1'" class="form-control" v-model="gasComprobante">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="agregarGasto() "> <i class="icofont-sale-discount"></i> Insertar</button>
@@ -723,7 +743,7 @@
 		listaGastos:[],
 		listaBonificaciones:[],
 		ventcCantidad:0, ventcIdPresentacion:0, ventcPresentacion:'', ventcPrecio: '0.00', ventcSubTotal:0, ventcTotal:0, ventcNuevo: true,
-		gasDescripcion:'', gasMonto: '0.00', gasTotal:0, esNuevo: true, idEditar:0,
+		gasDescripcion:'', gasMonto: '0.00', gasTotal:0, esNuevo: true, idEditar:0, gasidComprobante:0, gasTipoComprobante:'', gasComprobante:'', gasidDestino:0, gasDestino:'',
 		stockPenta: 0, stockFabrica: 0, stockOficina:0, stockRetorno:0, stockIdPresentacion:0, stockObservacion:'', stockTotal:0, stockTotalEntrega:0, stockVencido:0,
 		vencreCliente:'', vencreNumNota:'', vencreCantidad:0, vencrePrecio:0, vencreIdPresentacion:0, sumCredito:0,
 		cobraCliente: '', cobraDeuda: 0, cobraAcuenta: 0, cobraSaldo:0, cobraNumNota: '', sumCobranza:0,
@@ -746,11 +766,16 @@
 			{presentacion: 'Pan de molde integral Marie',precio: 0.00},
 			{presentacion: 'Keke domo Marie',precio: 0.00},
 			{presentacion: 'Keke pirotín Rey del centro',precio: 0.00},
-			{presentacion: 'Galleta de agua Marie Bolsa 1.2kg ',precio: 0.00}]
+			{presentacion: 'Galleta de agua Marie Bolsa 1.2kg ',precio: 0.00},
+			{presentacion: 'Pre mezcla x Saco',precio: 0.00}],
+		listaComprobantes: JSON.parse({!! json_encode($comprobantes) !!}),
+		listaDestinos: JSON.parse({!! json_encode($destinos) !!}),
 	},
 	methods:{
 		agregarGasto(){
-			this.listaGastos.push({ monto: this.gasMonto, descripcion: this.gasDescripcion});
+			this.gasTipoComprobante = $('#sltGrupoComprobantes option[value="'+$('#sltGrupoComprobantes').val()+'"]').text();
+			this.gasDestino = $('#sltDestinos option[value="'+$('#sltDestinos').val()+'"]').text();
+			this.listaGastos.push({ monto: this.gasMonto, descripcion: this.gasDescripcion, idComprobante: this.gasidComprobante, comprobante: this.gasComprobante, tipoComprobante: this.gasTipoComprobante, idDestino:this.gasidDestino, destino: this.gasDestino });
 			this.gasTotal+=parseFloat(this.gasMonto);
 		},
 		gastosBorrarFila(index){
@@ -760,12 +785,23 @@
 		gastosEditar(index){
 			this.gasDescripcion = this.listaGastos[index].descripcion;
 			this.gasMonto = this.listaGastos[index].monto;
+			this.gasidComprobante = this.listaGastos[index].idComprobante;
+			this.gasComprobante = this.listaGastos[index].comprobante;
+			this.gasComprobante = this.listaGastos[index].comprobante;
+			this.gasidDestino = this.listaGastos[index].idDestino;
 			this.idEditar = index;
 		},
 		actualizarGasto(){
+			this.gasTipoComprobante = $('#sltGrupoComprobantes option[value="'+$('#sltGrupoComprobantes').val()+'"]').text();
+			this.gasDestino = $('#sltDestinos option[value="'+$('#sltDestinos').val()+'"]').text();
 			this.listaGastos[this.idEditar].descripcion = this.gasDescripcion;
 			this.gasTotal-= parseFloat(this.listaGastos[this.idEditar].monto);
 			this.listaGastos[this.idEditar].monto = this.gasMonto;
+			this.listaGastos[this.idEditar].comprobante = this.gasComprobante;
+			this.listaGastos[this.idEditar].idComprobante = this.gasidComprobante;
+			this.listaGastos[this.idEditar].tipoComprobante = this.gasTipoComprobante;
+			this.listaGastos[this.idEditar].idDestino = this.gasidDestino;
+			this.listaGastos[this.idEditar].destino = this.gasDestino;
 			this.gasTotal+=parseFloat(this.gasMonto);
 		},
 		ventcAgregar(){
@@ -991,6 +1027,15 @@ $('.esMoneda').change(function(){
 	}else{
 		$(this).val(parseFloat(valor).toFixed(2));
 	}
+});
+$('#sltGrupoComprobantes').click(function() {
+	if( $('#sltGrupoComprobantes').val()==1 ){
+		app.gasComprobante ='';
+	}
+	app.gasidComprobante=$('#sltGrupoComprobantes').val();
+});
+$('#sltDestinos').click(function() {
+	app.gasDestino=$('#sltDestinos').val();
 });
 </script>
 @endsection

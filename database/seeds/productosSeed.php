@@ -191,5 +191,17 @@ class productosSeed extends Seeder
 				'precio' => 0,
 				'activo' => 1,
 			]);
+			DB::table('productos')->insert([
+				'tipo_productos_id' => '5' ,
+				'tipo_displays_id' => '6' ,
+				'marca_displays_id' => '3' ,
+				'unidades_id' => '1' ,
+				'cantidad_x_display' => 1 ,
+				'cantidad' => 1 ,
+				'peso' => 1,
+				'descripcion' => 'Pre mezcla x Saco',
+				'precio' => 0,
+				'activo' => 1,
+			]);
     }
 }

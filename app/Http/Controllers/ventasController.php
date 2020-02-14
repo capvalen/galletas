@@ -17,6 +17,7 @@ class ventasController extends Controller
     public function index($fecha=''){
 			if($fecha!=''){
 				$liquidaciones = App\Liquidacion::where('fecha', $fecha)->get();
+				
 				//$liquidaciones = App\Liquidacion::find(1)->usuarios;
 				//return $liquidaciones;
 				$fechaMaster = $fecha;
@@ -28,7 +29,10 @@ class ventasController extends Controller
 			}
     }
     public function liquidacion(){
-      return view('ventas.liquidacion');
+			$comprobantes = App\comprobantes::all()->toJson();
+			$destinos = App\DestinoGasto::orderBy('destino', 'asc')->get()->toJson();
+		//	return $destinos;
+      return view('ventas.liquidacion', compact('comprobantes', 'destinos'));
 		}
     /**
      * Show the form for creating a new resource.

@@ -26,7 +26,7 @@
       <a href="{{route('caja')}}"><i class="icofont-money-bag"></i> Caja</a>
     </li>
     <li>
-      <a href="{{route('ventas.index')}}"><i class="icofont-handshake-deal"></i> Ventas</a>
+      <a href="{{route('ventas.index')}}"><i class="icofont-handshake-deal"></i> Liquidaciones</a>
     </li>
     <li>
       <a href="ciclos.php"><i class="icofont-cubes"></i> Inventario</a>
