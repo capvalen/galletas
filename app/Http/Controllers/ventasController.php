@@ -16,14 +16,15 @@ class ventasController extends Controller
      */
     public function index($fecha=''){
 			if($fecha!=''){
-				$liquidaciones = App\Liquidacion::where('fecha', $fecha)->get();
+				$liquidaciones = App\Liquidacion::where('fecha', $fecha)->where('activo', 1)->get();
 				
 				//$liquidaciones = App\Liquidacion::find(1)->usuarios;
 				//return $liquidaciones;
 				$fechaMaster = $fecha;
 				return view('ventas.index', compact('liquidaciones', 'fechaMaster'));
 			}else{
-				$liquidaciones = App\Liquidacion::where('fecha', Carbon::now()->format('Y-m-d') )->get();
+				$liquidaciones = App\Liquidacion::where('fecha', Carbon::now()->format('Y-m-d') )->where('activo', 1)->get();
+				//return $liquidaciones;
 				$fechaMaster = date('Y-m-d');
 				return view('ventas.index', compact('liquidaciones', 'fechaMaster'));
 			}

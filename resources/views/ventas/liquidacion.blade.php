@@ -965,7 +965,7 @@
 			this.sumAdelanto+= parseFloat(this.adelaMonto);
 		},
 		adelantoBorrarFila(index){
-			this.sumAdelanto-= this.listaAdelantos[index].monto;
+			this.sumAdelanto-= parseFloat(this.listaAdelantos[index].monto);
 			this.listaAdelantos.splice(index,1);
 		},
 		fechaFormateada(fecha){
@@ -1052,7 +1052,11 @@ var optionesLugar = {
 	data:  JSON.parse({!! json_encode($lugares) !!}),
 	getValue: "lugar",
 	list: {
-		match: { enabled: true }
+		match: { enabled: true,
+			method:  function(element, phrase) { //Hace que coincida el término inicial en la búsqueda
+				if(element.indexOf(phrase) === 0) { return true; } else { return false; }
+			}
+		}
 	}
 };
 var optionesVendedor = {
