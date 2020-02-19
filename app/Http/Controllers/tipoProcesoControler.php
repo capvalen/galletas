@@ -133,6 +133,7 @@ class tipoProcesoControler extends Controller
 					$alContado = new App\ventasContado;
 					$alContado->liquidacion_id= $liquidacion->id;
 					$alContado->cantidad = $alcontado['cantidad'];
+					$alContado->idPresentacion = $alcontado['idPresentacion'];
 					$alContado->presentacion = $alcontado['presentacion'];
 					$alContado->precio = $alcontado['precio'];
 					$alContado->total = $alcontado['ventcSubTotal'];	
