@@ -12,7 +12,6 @@ class productosSeed extends Seeder
     public function run()
     {
 			DB::table('productos')->insert([
-				'id' => 0,
 				'tipo_productos_id' => '5' ,
 				'tipo_displays_id' => '6' ,
 				'marca_displays_id' => '3' ,
@@ -190,7 +189,7 @@ class productosSeed extends Seeder
 				'peso' => 1.2,
 				'descripcion' => '',
 				'precio' => 0,
-				'activo' => 1,
+				'activo' => 0,
 			]);
 			DB::table('productos')->insert([
 				'tipo_productos_id' => '5' ,
@@ -202,7 +201,7 @@ class productosSeed extends Seeder
 				'peso' => 1,
 				'descripcion' => 'Pre mezcla x Saco',
 				'precio' => 0,
-				'activo' => 1,
+				'activo' => 0,
 			]);
 			DB::table('productos')->insert([
 				'tipo_productos_id' => '1' ,

@@ -1,15 +1,23 @@
 @extends('plantillas.panel')
 
 @section('css')
-
+<style>
+	#divPlacas li{
+		text-transform: uppercase;
+	}
+	#provPlacas::placeholder{
+		text-transform: capitalize;
+	}
+	.divProviders li{ text-transform: capitalize; }
+</style>
 @endsection
 
 @section('titulo')
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="{{route('ventas.index')}}">Ventas</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Liquidación</li>
+    <li class="breadcrumb-item"><a href="{{route('ventas.index')}}">Liquidaciones</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Nueva</li>
   </ol>
 </nav>
 <h2><i class="icofont-cart"></i> Liquidación de Ventas</h2>
@@ -25,17 +33,17 @@
 					<input type="date" class="form-control mb-2 mr-sm-2" id="" placeholder="Fecha" value="<?= date('Y-m-d');?>" v-model="fichFecha">
 				</div>
 			
-				<div class="col">
+				<div class="col divProviders">
 					<label class="" for="">Vendedor</label>
-					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Vendedor" value="" v-model="fichVendedor">
+					<input type="text" class="form-control mb-2 mr-sm-2 text-capitalize" id="provVendedores" placeholder="Vendedor" value="" v-model="fichVendedor">
 				</div>
-				<div class="col">
+				<div class="col divProviders">
 					<label class="" for="">Lugar</label>
-					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Lugar" value="" v-model="fichLugar">
+					<input type="text" class="form-control mb-2 mr-sm-2 text-capitalize" id="provLugar" placeholder="Lugar" value="" v-model="fichLugar">
 				</div>
-				<div class="col">
+				<div class="col" id="divPlacas">
 					<label class="" for="">Placa</label>
-					<input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Placa" value="" v-model="fichPlaca">
+					<input type="text" class="form-control mb-2 mr-sm-2 text-uppercase" id="provPlacas" placeholder="Placa" value="" v-model="fichPlaca">
 				</div>
 				<div class="col">
 					<label class="" for="">Conductor</label>
@@ -1040,5 +1048,32 @@ $('#sltGrupoComprobantes').click(function() {
 $('#sltDestinos').click(function() {
 	app.gasDestino=$('#sltDestinos').val();
 });
+var optionesLugar = {
+	data:  JSON.parse({!! json_encode($lugares) !!}),
+	getValue: "lugar",
+	list: {
+		match: { enabled: true }
+	}
+};
+var optionesVendedor = {
+	data:  JSON.parse({!! json_encode($vendedores) !!}),
+	getValue: "vendedor",
+	list: {
+		match: { enabled: true }
+	}
+};
+var optionesPlaca = {
+	data:  JSON.parse({!! json_encode($placas) !!}),
+	getValue: "placa",
+	list: {
+		match: { enabled: true }
+	}
+};
+
+$("#provLugar").easyAutocomplete(optionesLugar);
+$("#provVendedores").easyAutocomplete(optionesVendedor);
+$("#provPlacas").easyAutocomplete(optionesPlaca);
+
 </script>
+
 @endsection

@@ -31,8 +31,12 @@ class ventasController extends Controller
     public function liquidacion(){
 			$comprobantes = App\comprobantes::all()->toJson();
 			$destinos = App\DestinoGasto::orderBy('destino', 'asc')->get()->toJson();
-		//	return $destinos;
-      return view('ventas.liquidacion', compact('comprobantes', 'destinos'));
+
+			$lugares = App\liquidacion::select('lugar')->whereNotNull('lugar')->get()->toJson();
+			$vendedores = App\liquidacion::select('vendedor')->whereNotNull('vendedor')->get()->toJson();
+			$placas = App\liquidacion::select('placa')->whereNotNull('placa')->get()->toJson();
+			//return $placas;
+      return view('ventas.liquidacion', compact('comprobantes', 'destinos', 'lugares', 'vendedores', 'placas'));
 		}
     /**
      * Show the form for creating a new resource.
