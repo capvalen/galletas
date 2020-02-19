@@ -33,9 +33,9 @@ class ventasController extends Controller
 			$comprobantes = App\comprobantes::all()->toJson();
 			$destinos = App\DestinoGasto::orderBy('destino', 'asc')->get()->toJson();
 
-			$lugares = App\liquidacion::select('lugar')->whereNotNull('lugar')->get()->toJson();
-			$vendedores = App\liquidacion::select('vendedor')->whereNotNull('vendedor')->get()->toJson();
-			$placas = App\liquidacion::select('placa')->whereNotNull('placa')->get()->toJson();
+			$lugares = App\Liquidacion::select('lugar')->whereNotNull('lugar')->get()->toJson();
+			$vendedores = App\Liquidacion::select('vendedor')->whereNotNull('vendedor')->get()->toJson();
+			$placas = App\Liquidacion::select('placa')->whereNotNull('placa')->get()->toJson();
 			//return $placas;
       return view('ventas.liquidacion', compact('comprobantes', 'destinos', 'lugares', 'vendedores', 'placas'));
 		}
