@@ -102,6 +102,9 @@ class ventasController extends Controller
      */
     public function destroy($id)
     {
-        //
+			$liquidacion = App\Liquidacion::find($id);
+			$liquidacion -> activo = 0;
+			$liquidacion -> save();
+			return back();
     }
 }

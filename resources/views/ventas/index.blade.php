@@ -46,6 +46,7 @@ use Carbon\Carbon;
 							<th>Entregado</th>
 							<th>Usuario</th>
 							<th>Creado</th>
+							<th>@</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -67,6 +68,11 @@ use Carbon\Carbon;
 							<td>{{number_format($liquidacion->sumaEntregado,2)}}</td>
 							<td>{{$usuarios[0]->name}}</td>
 							<td>{{$creado->format('d/m/Y H:m a')}}</td>
+							<td>
+								<form action="{{route('liquidacion.borrar', $liquidacion->id )}}" method="post"> @csrf
+									<button class="btn btn-outline-danger border-0 btn-sm"><i class="icofont-close"></i></button>
+								</form>
+							</td>
 						</tr>
 						@endforeach
 					</tbody>

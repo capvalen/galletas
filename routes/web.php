@@ -63,6 +63,7 @@ Route::get('Ventas/Liquidación', 'ventasController@liquidacion' )->name('liquid
 
 Route::post('liquidacion/insertar/', 'tipoProcesoControler@liquidacion_insert' )->name('liquidacion.insertar');
 Route::get('Liquidación/Reporte/{id?}', 'tipoProcesoControler@reporteLiquidacion' )->name('liquidacion.reporte');
+Route::post('liquidacion/borrar/{id}', 'ventasController@destroy' )->name('liquidacion.borrar');
 
 
 
