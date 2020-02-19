@@ -57,8 +57,8 @@ Route::get('tipoProceso/nuevo/', 'tipoProcesoControler@index' )->name('tproceso.
 Route::post('tipoProceso/nuevo/', 'tipoProcesoControler@store' )->name('tproceso.crear');
 Route::post('tipoProceso/eliminar/{id}', 'tipoProcesoControler@destroy' )->name('tproceso.eliminar');
 
-Route::get('ventas/{fecha?}', 'ventasController@index' )->name('ventas.index');
-Route::get('Ventas/Liquidación', 'ventasController@liquidacion' )->name('liquidacion.nueva');
+Route::get('Liquidaciones/{fecha?}', 'ventasController@index' )->name('ventas.index');
+Route::get('Liquidación/Nueva', 'ventasController@liquidacion' )->name('liquidacion.nueva');
 
 
 Route::post('liquidacion/insertar/', 'tipoProcesoControler@liquidacion_insert' )->name('liquidacion.insertar');

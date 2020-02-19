@@ -9,6 +9,7 @@
 		text-transform: capitalize;
 	}
 	.divProviders li{ text-transform: capitalize; }
+	.obligatorio{ color: #e61313;  }
 </style>
 @endsection
 
@@ -493,20 +494,30 @@
         </button>
       </div>
       <div class="modal-body">
-				<label class="mt-0 mb-2" for="">Cantidad</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Cantidad</label>
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="ventcCantidad">
-				<label class="mt-0 mb-2" for="">Presentación</label>
+				<label class="mt-2 mb-2" for=""><strong class="obligatorio">*</strong> Presentación</label>
 				<div class="form-group">
 					<select id="sltPPresentaciones" class="form-control" name="" v-model="ventcIdPresentacion">
 						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
 					</select>
 				</div>
-				<label class="mt-0 mb-2" for="">Precio</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Precio</label>
 				<input type="number" name="" id="" class="esMoneda form-control esMoneda" v-model="ventcPrecio">
 				<label for="">Total: <strong>@{{parseFloat(ventcCantidad*ventcPrecio).toFixed(2)}}</strong></label>
+				<div class="alert alert-warning mt-3" v-if="!tieneObservaciones">
+					<button type="button" class="close" aria-label="Close" @click="tieneObservaciones=true" style="color: #856404;">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="alert-heading"><i class="icofont-eaten-fish"></i> Advertencias!</h4>
+					<span>Corrija lo siguiente antes de continuar:</span>
+					<ul class="pb-0">
+						<li v-for="observacion in listaObservaciones">@{{observacion}}</li>
+					</ul>
+				</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="ventcAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="tieneObservaciones=true; listaObservaciones= []; ventcAgregar(); "> <i class="icofont-sale-discount"></i> Insertar</button>
         <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="ventcActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
@@ -523,24 +534,34 @@
         </button>
       </div>
       <div class="modal-body">
-				<label class="mt-0 mb-2" for="">Nombre de cliente</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Nombre de cliente</label>
 				<input type="text" name="" id="" class=" form-control" v-model="vencreCliente">
-				<label class="mt-0 mb-2" for=""># Nota de pedido</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> # Nota de pedido</label>
 				<input type="text" name="" id="" class=" form-control" v-model="vencreNumNota">
-				<label class="mt-0 mb-2" for="">Cantidad</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Cantidad</label>
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="vencreCantidad">
-				<label class="mt-0 mb-2" for="">Presentación</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Presentación</label>
 				<div class="form-group">
 					<select id="sltPresentacionCredito" class="form-control" name="" v-model="vencreIdPresentacion">
 						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
 					</select>
 				</div>
-				<label class="mt-0 mb-2" for="">Precio</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Precio</label>
 				<input type="number" name="" id="" class="esMoneda form-control esMoneda" v-model="vencrePrecio">
 				<label for="">Total: <strong>@{{parseFloat(vencreCantidad*vencrePrecio).toFixed(2)}}</strong></label>
+				<div class="alert alert-warning mt-3" v-if="!tieneObservaciones">
+					<button type="button" class="close" aria-label="Close" @click="tieneObservaciones=true;" style="color: #856404;">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="alert-heading"><i class="icofont-eaten-fish"></i> Advertencias!</h4>
+					<span>Corrija lo siguiente antes de continuar:</span>
+					<ul class="pb-0">
+						<li v-for="observacion in listaObservaciones">@{{observacion}}</li>
+					</ul>
+				</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="vencreAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="tieneObservaciones=true; listaObservaciones= []; vencreAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
         <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="vencreActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
@@ -557,20 +578,29 @@
         </button>
       </div>
       <div class="modal-body">
-				<label class="mt-0 mb-2" for="">Nombre de cliente</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Nombre de cliente</label>
 				<input type="text" name="" id="" class=" form-control" v-model="cobraCliente">
 				
-				<label class="mt-0 mb-2" for="">Deuda</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Deuda</label>
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="cobraDeuda">
-				<label class="mt-0 mb-2" for="">A cuenta</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> A cuenta</label>
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="cobraAcuenta">
-				<label class=" mb-2" for="">Saldo <strong>@{{cobraSaldos}}</strong></label> <br>
-				<label class="mt-0 mb-2" for=""># Nota de pedido</label>
+				<label class=" mb-2" for="">Saldo pendiente <strong>@{{cobraSaldos}}</strong></label> <br>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> # Nota de pedido</label>
 				<input type="text" name="" id="" class=" form-control" v-model="cobraNumNota">
-				
+				<div class="alert alert-warning mt-3" v-if="!tieneObservaciones">
+					<button type="button" class="close" aria-label="Close" @click="tieneObservaciones=true" style="color: #856404;">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="alert-heading"><i class="icofont-eaten-fish"></i> Advertencias!</h4>
+					<span>Corrija lo siguiente antes de continuar:</span>
+					<ul class="pb-0">
+						<li v-for="observacion in listaObservaciones">@{{observacion}}</li>
+					</ul>
+				</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="cobroAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="tieneObservaciones=true; listaObservaciones= []; cobroAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
         <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="cobroActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
@@ -596,7 +626,7 @@
 				<label class="mt-0 mb-2" for="">Nombre de cliente</label>
 				<input type="text" name="" id="" class=" form-control text-capitalize" v-model="adelaCliente">
 				<label class="mt-0 mb-2" for="">Monto</label>
-				<input type="number" name="" id="" class="esMoneda form-control" v-model="adelaMonto">
+				<input type="number" name="" id="" class="esMoneda form-control forzarMinimo" v-model="adelaMonto">
 				<label class="mt-0 mb-2" for="">Cantidad</label>
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="adelaCantidad">
 				<label class="mt-0 mb-2" for="">Bonif.</label>
@@ -758,6 +788,7 @@
 		adelaCliente: '', adelaMonto: 0, adelaCantidad: 0, adelaFecha: '<?= date('Y-m-d'); ?>', adelaBonificacion:0, sumAdelanto:0, entregado:0, adelaIdPresentacion: '', adelaPresentacion:'',
 		bonDescripcion:'',bonCantidad:0, bonifTotal:0, bonIdPresentacion:0, bonObservacion:'', bonBonificacion:0, bonCliente:'', bonDireccion:'', bonQuees:1,
 		fichFecha: '<?= date('Y-m-d')?>', fichVendedor: '', fichLugar: '', fichPlaca: '', fichConductor:'',
+		tieneObservaciones: true, listaObservaciones: [],
 		guardado: false,
 		listaPresentaciones:[
 			{presentacion: 'Ningún producto', precio: 0.00},
@@ -816,9 +847,19 @@
 			this.gasTotal+=parseFloat(this.gasMonto);
 		},
 		ventcAgregar(){
-			this.ventcPresentacion = $('#sltPPresentaciones option[value="'+$('#sltPPresentaciones').val()+'"]').text();
-			this.listaVentasContado.push({ cantidad: this.ventcCantidad, presentacion: this.ventcPresentacion, idPresentacion: this.ventcIdPresentacion,  precio: this.ventcPrecio, ventcSubTotal: parseFloat(this.ventcCantidad*this.ventcPrecio) });
-			this.ventcTotal += parseFloat(this.ventcCantidad*this.ventcPrecio);
+			
+			if( this.noEsNumero(this.ventcCantidad) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La cantidad debe tener un número'); }
+			if( $('#sltPPresentaciones').val()==0 ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
+			if( this.noEsNumero(this.ventcPrecio) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El precio debe tener un valor numérico'); }
+			
+			if( this.tieneObservaciones ){
+				$('#addVentasContLista').modal('hide');
+				this.ventcPresentacion = $('#sltPPresentaciones option[value="'+$('#sltPPresentaciones').val()+'"]').text();
+				this.listaVentasContado.push({ cantidad: this.ventcCantidad, presentacion: this.ventcPresentacion, idPresentacion: this.ventcIdPresentacion,  precio: this.ventcPrecio, ventcSubTotal: parseFloat(this.ventcCantidad*this.ventcPrecio) });
+				this.ventcTotal += parseFloat(this.ventcCantidad*this.ventcPrecio);
+			}
+
+			
 		},
 		ventascEditar(index){
 			this.ventcIdPresentacion = this.listaVentasContado[index].idPresentacion;
@@ -882,10 +923,19 @@
 			this.listaStockFinal.splice(index,1);
 		},
 		vencreAgregar(){
-			let sub = parseFloat(this.vencrePrecio)	* parseFloat(this.vencreCantidad);
-			this.vencrePresentacion = $('#sltPresentacionCredito option[value="'+$('#sltPresentacionCredito').val()+'"]').text();
-			this.listaVentasCredito.push({ presentacion: this.vencrePresentacion, idPresentacion: this.vencreIdPresentacion, cliente: this.vencreCliente, nota: this.vencreNumNota, cantidad: this.vencreCantidad, precio: this.vencrePrecio, subTotal: sub	});
-			this.sumCredito += sub;
+			if( this.vencreCliente=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('El nombre del cliente es obligatorio'); }
+			if( this.vencreNumNota=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('El número de nota de crédito es obligatorio'); }
+			if( this.noEsNumero(this.vencrePrecio) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El precio debe tener un valor numérico'); }
+			if( $('#sltPresentacionCredito').val()==0 ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
+			if( this.noEsNumero(this.ventcCantidad) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El precio debe tener un valor numérico'); }
+
+			if( this.tieneObservaciones ){
+				$('#addVentasCreditoLista').modal('hide');
+				let sub = parseFloat(this.vencrePrecio)	* parseFloat(this.vencreCantidad);
+				this.vencrePresentacion = $('#sltPresentacionCredito option[value="'+$('#sltPresentacionCredito').val()+'"]').text();
+				this.listaVentasCredito.push({ presentacion: this.vencrePresentacion, idPresentacion: this.vencreIdPresentacion, cliente: this.vencreCliente, nota: this.vencreNumNota, cantidad: this.vencreCantidad, precio: this.vencrePrecio, subTotal: sub	});
+				this.sumCredito += sub;
+			}
 		},
 		creditoEditar(index){
 			this.vencreIdPresentacion = this.listaVentasCredito[index].idPresentacion;
@@ -912,8 +962,17 @@
 			this.listaVentasCredito.splice(index,1);
 		},
 		cobroAgregar(){
-			this.listaCobranza.push({cliente: this.cobraCliente, deuda: this.cobraDeuda, acuenta: this.cobraAcuenta, saldo: this.cobraSaldos, nota: this.cobraNumNota });
-			this.sumCobranza+= parseFloat(this.cobraAcuenta);
+
+			if( this.cobraCliente=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('El nombre del cliente es obligatorio'); }
+			if( this.noEsNumero(this.cobraDeuda) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La deuda debe tener un valor numérico'); }
+			if( this.noEsNumero(this.cobraAcuenta) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El monto a cuenta debe ser un valor numérico'); }
+			if( this.cobraNumNota=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('La nota de pedido es obligatoria'); }
+
+			if( this.tieneObservaciones ){
+				$('#addCobranzaLista').modal('hide');
+				this.listaCobranza.push({cliente: this.cobraCliente, deuda: this.cobraDeuda, acuenta: this.cobraAcuenta, saldo: this.cobraSaldos, nota: this.cobraNumNota });
+				this.sumCobranza+= parseFloat(this.cobraAcuenta);
+			}
 		},
 		cobroEditar(index){
 			this.cobroCliente = this.listaCobranza[index].cliente;
@@ -1016,6 +1075,20 @@
 					alertify.alert('','<strong class="text-muted">Ficha guardada:</strong> <h3 class="text-secondary">' + moment( this.fichFecha ).format('YYMM') + "-" + response.data+"</h3>" ).set({transition:'fade', 'onok': function(){ window.location.href = "{{route('ventas.index')}}"+"/"+ app.fichFecha;}});
 				}
 			});
+		},
+		forzarMinimo(valor){
+			if( isNaN(parseFloat(valor)) ){
+				return 0;
+			}else{
+				return parseFloat(valor);
+			}
+		},
+		noEsNumero(valor){
+			if( isNaN(parseFloat(valor)) ){
+				return true;
+			}else{
+				return false;
+			}
 		}
 	},
 	computed:{
@@ -1077,7 +1150,11 @@ var optionesPlaca = {
 $("#provLugar").easyAutocomplete(optionesLugar);
 $("#provVendedores").easyAutocomplete(optionesVendedor);
 $("#provPlacas").easyAutocomplete(optionesPlaca);
-
+/* $('.forzarMinimo').focusout(function () {
+	if( $(this).val()=='' ){
+		$(this).val(0).change();
+	}
+}) */
 </script>
 
 @endsection
