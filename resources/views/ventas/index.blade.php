@@ -57,7 +57,7 @@ use Carbon\Carbon;
 						@endphp
 						<tr>
 							<th>{{$loop->index+1}}</th>
-							<td><strong><a href="{{route('liquidacion.reporte', $liquidacion->id)}}">{{substr(str_replace('-', '', $liquidacion->fecha ),0, 4)."-". str_pad ($liquidacion->codInterno, 2, "0", STR_PAD_LEFT)}}</a></strong></td>
+							<td><strong><a href="{{route('liquidacion.reporte', $liquidacion->id)}}">{{substr(str_replace('-', '', $fechita->format('y-m-d') ),0, 4)."-". str_pad ($liquidacion->codInterno, 2, "0", STR_PAD_LEFT)}}</a></strong></td>
 							<td class="text-capitalize">{{$liquidacion->vendedor}}</td>
 							<td>{{$fechita->format('d/m/Y')}}</td>
 							<td>{{number_format($liquidacion->sumaContado,2)}}</td>
