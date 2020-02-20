@@ -24,7 +24,9 @@ class CreateVentasStocksTable extends Migration
 						$table->integer('fabrica')->comment('salida fabrica')->default(0);
 						$table->integer('total')->default(0);
 						$table->integer('final')->comment('stock final')->default(0);
-						$table->integer('retorno')->comment('regresa a guardarse a oficina')->default(0)->nullable;
+						$table->integer('retorno')->comment('regresa a guardarse a pentapeaks')->default(0)->nullable;
+						$table->integer('retornoFabrica')->comment('regresa a guardarse a Fábrica')->default(0)->nullable;
+						$table->integer('retornoOficina')->comment('regresa a guardarse a Oficina')->default(0)->nullable;
 						$table->integer('vencido')->comment('vencido o dañado')->default(0)->nullable;
 						$table->string('observacion')->default('')->nullable();
 

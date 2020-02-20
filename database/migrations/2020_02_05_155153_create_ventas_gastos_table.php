@@ -22,6 +22,7 @@ class CreateVentasGastosTable extends Migration
 						$table->string('comprobante')->default('')->nullable();
 						$table->bigInteger('empresa_id')->default(0)->nullable();
 						$table->string('destino')->default('')->nullable();
+						$table->tinyInteger('tipo')->default(1)->comment('1 para gasto, 2 para devolución de dinero')->nullable();
             $table->timestamps();
         });
     }

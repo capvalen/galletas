@@ -2,6 +2,11 @@
 @php
 use Carbon\Carbon;		
 @endphp
+@section('css')
+<style>
+	.text-warning{color: #9400e0!important;}
+</style>		
+@endsection
 
 @section('titulo')
 <nav aria-label="breadcrumb">
@@ -43,7 +48,8 @@ use Carbon\Carbon;
 							<th>Crédito</th>
 							<th>Gastos</th>
 							<th>Adelantos</th>
-							<th>Entregado</th>
+							<th>Sistema</th>
+							<th>Resumen</th>
 							<th>Usuario</th>
 							<th>Creado</th>
 							<th>@</th>
@@ -63,9 +69,23 @@ use Carbon\Carbon;
 							<td>{{number_format($liquidacion->sumaContado,2)}}</td>
 							<td>{{number_format($liquidacion->sumaCobranza,2)}}</td>
 							<td>{{number_format($liquidacion->sumaCredito,2)}}</td>
-							<td>{{number_format($liquidacion->sumaGasto,2)}}</td>
+							@if( $liquidacion->sumaGasto >=0 )
+								<td class="text-danger">{{number_format(abs($liquidacion->sumaGasto),2)}}</td>
+							@else
+								<td class="text-primary">{{number_format(abs($liquidacion->sumaGasto),2)}}</td>
+							@endif
 							<td>{{number_format($liquidacion->sumaAdelanto,2)}}</td>
-							<td>{{number_format($liquidacion->sumaEntregado,2)}}</td>
+							<td>S/ {{number_format(abs($liquidacion->sumaEntregar),2)}}</td>
+							@if($liquidacion->sumaEntregar<>$liquidacion->sumaEntregado)
+								@if($liquidacion->sumaEntregar>$liquidacion->sumaEntregado)
+								<td class="text-danger">Falta {{number_format( $liquidacion->sumaEntregar - $liquidacion->sumaEntregado ,2)}}</td>
+								@else
+								<td class="text-primary">Sobra {{number_format( $liquidacion->sumaEntregado - $liquidacion->sumaEntregar ,2)}}</td>
+								@endif
+							@else
+								<td class="text-warning">Exacto</td>
+							@endif
+							
 							<td>{{$usuarios[0]->name}}</td>
 							<td>{{$creado->format('d/m/Y H:m a')}}</td>
 							<td>

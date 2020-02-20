@@ -119,7 +119,7 @@
 					<h4 class="">Stock final</h4>
 				</div>
 			<div>
-					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addStockEntrega" @click="esNuevo = true; stockPenta=0; stockFabrica=0; stockOficina=0;stockRetorno=0;stockObservacion=''; " ><i class="icofont-ui-add"></i></button>
+					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addStockEntrega" @click="esNuevo = true; stockPenta=0; stockFabrica=0; stockOficina=0;stockRetorno=0;stockObservacion=''; stockRetorno=0; stockRetornoFabrica=0; stockRetornoOficina=0; " ><i class="icofont-ui-add"></i></button>
 				</div>
 			</div>
 			<div class="card">
@@ -133,7 +133,9 @@
 								<th>Salida Fabrica</th>
 								<th>Salida Oficina</th>
 								<th>Total</th>
-								<th>Retorno</th>
+								<th>Ret. Pentapeacks</th>
+								<th>Ret. Fábrica</th>
+								<th>Ret. Oficina</th>
 								<th>Vencido/ Dañado</th>
 								<th>Obs.</th>
 								<th>@</th>
@@ -148,6 +150,8 @@
 								<td>@{{stock.oficina}}</td>
 								<td>@{{stock.subTotal}}</td>
 								<td>@{{stock.retorno}}</td>
+								<td>@{{stock.retornoFabrica}}</td>
+								<td>@{{stock.retornoOficina}}</td>
 								<td>@{{stock.vencido}}</td>
 								<td>@{{stock.observacion}}</td>
 								<td>
@@ -180,7 +184,7 @@
 		<div class="col">
 			<div class="row text-center my-3">
 				<div class="col d-flex justify-content-center">
-					<h4 class="">Bonificación - Degustación</h4>
+					<h4 class="">Bonificación - Degustación - Cambios</h4>
 				</div>
 				<div>
 					<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addBonificacionLista" @click="esNuevo = true; bonCantidad=0; bonCliente='', bonBonificacion=0, bonDireccion=''; bonObservacion=''; bonQuees=1;" ><i class="icofont-ui-add"></i></button>
@@ -205,7 +209,7 @@
 						<tbody>
 							<tr v-for="(bonificacion, index) of listaBonificaciones">
 								<td>@{{index+1}}</td>
-								<td><span v-if="bonificacion.esBono=='1'">Bonificación</span><span v-else>Degustación</span></td>
+								<td><span v-if="bonificacion.esBono=='1'">Bonificación</span><span v-else-if="bonificacion.esBono=='2'">Cambio</span><span v-else>Degustación</span></td>
 								<td>@{{bonificacion.presentacion}}</td>
 								<td>@{{bonificacion.cantidad}}</td>
 								<td>@{{bonificacion.bonificacion}}</td>
@@ -401,10 +405,10 @@
 
 	<div class="row text-center my-3">
 		<div class="col d-flex justify-content-center">
-			<h4 class="">Gastos</h4>
+			<h4 class="">Gastos y Devoluciones</h4>
 		</div>
 		<div>
-			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addGastosLista" @click="esNuevo = true; gasDescripcion=''; gasMonto= '0.00'; gasidComprobante=1; gasComprobante=''; gasidDestino=1; gasDestino=''; " ><i class="icofont-ui-add"></i></button>
+			<button v-show="!guardado" type="button" class="btn btn-outline-dark mr-5" data-toggle="modal" data-target="#addGastosLista" @click="esNuevo = true; gasDescripcion=''; gasMonto= 0; gasEntra=0; gasidComprobante=1; gasComprobante=''; gasidDestino=1; gasDestino=''; " ><i class="icofont-ui-add"></i></button>
 		</div>
 	</div>
 	<div class="row col">
@@ -414,6 +418,7 @@
 					<thead>
 						<tr>
 							<th>N°</th>
+							<th>Tipo</th>
 							<th>Destino</th>
 							<th>Detalle</th>
 							<th>Monto</th>
@@ -425,9 +430,10 @@
 					<tbody v-for="(gasto, index) of listaGastos">
 						<tr>
 							<td>@{{index+1}}</td>
+							<td><span v-if="gasto.tipo=='1'">Gasto</span><span v-else>Devolución</span></td>
 							<td>@{{gasto.destino}}</td>
 							<td>@{{gasto.descripcion}}</td>
-							<td>@{{parseFloat(gasto.monto).toFixed(2)}}</td>
+							<td><span v-if="gasto.tipo=='1'" class="text-danger">@{{parseFloat(gasto.monto).toFixed(2)}}</span><span v-else class="text-primary">@{{parseFloat(gasto.entra).toFixed(2)}}</span></td>
 							<td>@{{gasto.tipoComprobante}}</td>
 							<td>@{{gasto.comprobante}}</td>
 							<td>
@@ -437,11 +443,11 @@
 						</tr>
 						
 					</tbody>
-					<tfoot v-if="gasTotal>0">
+					<tfoot > {{-- v-if="gasTotal>=0" --}}
 						<tr>
+							<td></td><td></td><td></td>
 							<td></td>
-							<td></td>
-							<th>@{{parseFloat(gasTotal).toFixed(2)}}</th>
+							<th :class="{'text-primary': gasTotal<0, 'text-danger': gasTotal>=0}">@{{parseFloat(Math.abs(gasTotal)).toFixed(2)}}</th>
 							<td></td><td></td><td></td>
 						</tr>
 					</tfoot>
@@ -470,7 +476,7 @@
 						<tr>
 							<td>@{{parseFloat(ventcTotal).toFixed(2)}}</td>
 							<td>@{{parseFloat(sumCobranza).toFixed(2)}}</td>
-							<td>@{{parseFloat(gasTotal).toFixed(2)}}</td>
+							<td>@{{parseFloat(Math.abs(gasTotal)).toFixed(2)}}</td>
 							<td>@{{parseFloat(sumAdelanto).toFixed(2)}}</td>
 							<td v-bind:class="{'text-danger': sumaTotales!=entregado, 'text-primary': sumaTotales==entregado } ">@{{parseFloat(sumaTotales).toFixed(2)}}</td>
 							<td v-bind:class="{'text-danger': sumaTotales!=entregado, 'text-primary': sumaTotales==entregado } ">@{{parseFloat(entregado).toFixed(2)}}</td>
@@ -650,28 +656,54 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body container-fluid">
 				<label class="mt-0 mb-2" for="">Presentación</label>
 				<div class="form-group">
 					<select id="sltPresentacionStock" class="form-control" name="" v-model="stockIdPresentacion">
 						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
 					</select>
 				</div>
-				<label class="mt-0 mb-2" for="">Cantidad Pentapeacks</label>
-				<input type="number" name="" id="" class=" form-control" v-model="stockPenta">
-				<label class="mt-0 mb-2" for="">Cantidad Fabrica</label>
-				<input type="number" name="" id="" class=" form-control" v-model="stockFabrica">
-				<label class="mt-0 mb-2" for="">Cantidad Oficina</label>
-				<input type="number" name="" id="" class=" form-control" v-model="stockOficina">
-				<label class="mt-0 mb-2" for="">Retorno</label>
-				<input type="number" name="" id="" class=" form-control" v-model="stockRetorno">
-				<label class="mt-0 mb-2" for="">Vencido o Dañado</label>
-				<input type="number" name="" id="" class=" form-control" v-model="stockVencido">
-				<label class="mt-0 mb-2" for="">Observación</label>
-				<input type="text" name="" id="" class=" form-control" v-model="stockObservacion">
+				<div class="form-group">
+					<ul class="nav nav-tabs" id="myTab" role="tablist" style="border-bottom: transparent;">
+						<li class="nav-item">
+							<a class="nav-link active" id="salidaStock-tab" data-toggle="tab" href="#salidaStock" role="tab" aria-controls="salidaStock" aria-selected="true"><i class="icofont-sign-out"></i> Salidas</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="retornoStock-tab" data-toggle="tab" href="#retornoStock" role="tab" aria-controls="retornoStock" aria-selected="false"><i class="icofont-sign-in"></i> Retornos</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="malogradoStock-tab" data-toggle="tab" href="#malogradoStock" role="tab" aria-controls="malogradoStock" aria-selected="false"><i class="icofont-broken"></i> Dañados</a>
+						</li>
+					<div class="tab-content  pt-2" id="myTabContent">
+						<div class="tab-pane fade show active" id="salidaStock" role="tabpanel" aria-labelledby="salidaStock-tab">
+							<label class="mt-0 mb-2" for="">Cantidad Salida de Pentapeacks</label>
+							<input type="number" name="" id="" class=" form-control" v-model="stockPenta">
+							<label class="mt-0 mb-2" for="">Cantidad Salida de Fábrica</label>
+							<input type="number" name="" id="" class=" form-control" v-model="stockFabrica">
+							<label class="mt-0 mb-2" for="">Cantidad Salida de Oficina</label>
+							<input type="number" name="" id="" class=" form-control" v-model="stockOficina">
+						</div>
+						<div class="tab-pane fade" id="retornoStock" role="tabpanel" aria-labelledby="retornoStock-tab">
+							<label class="mt-0 mb-2" for="">Retorno a Pentapeaks</label>
+							<input type="number" name="" id="" class=" form-control" v-model="stockRetorno">
+							<label class="mt-0 mb-2" for="">Retorno a Fábrica</label>
+							<input type="number" name="" id="" class=" form-control" v-model="stockRetornoFabrica">
+							<label class="mt-0 mb-2" for="">Retorno a Oficina</label>
+							<input type="number" name="" id="" class=" form-control" v-model="stockRetornoOficina">
+						</div>
+						<div class="tab-pane fade" id="malogradoStock" role="tabpanel" aria-labelledby="malogradoStock-tab">
+							<label class="mt-0 mb-2" for="">Vencido o Dañado</label>
+							<input type="number" name="" id="" class=" form-control" v-model="stockVencido">
+							<label class="mt-0 mb-2" for="">Observación</label>
+							<input type="text" name="" id="" class=" form-control" v-model="stockObservacion">
+						</div>
+					</div>
+				</div>
 
-				<label for="">Total vendido: <strong>@{{parseFloat(parseFloat(stockPenta)+parseFloat(stockFabrica)+parseFloat(stockOficina))}}</strong></label><br>
-				<label for="">Total retorno: <strong>@{{parseFloat(stockRetorno)}}</strong></label>
+				<div class="form-group">
+					<label for="">Total vendido: <strong>@{{parseFloat(parseFloat(stockPenta)+parseFloat(stockFabrica)+parseFloat(stockOficina))}}</strong></label><br>
+					<label for="">Total retorno: <strong>@{{parseFloat(stockRetorno)}}</strong></label>
+				</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="stockAgregar() "> <i class="icofont-plus-circle"></i> Insertar</button>
@@ -691,10 +723,18 @@
         </button>
       </div>
       <div class="modal-body">
+				<label class="mt-0 mb-2" for="">Tipo</label>
+				<div class="form-group">
+					<select id="sltGrupoGastos" class="form-control" name="" v-model="gasidGasto">
+						<option value="1">Gasto</option>
+						<option value="2">Devolución</option>
+					</select>
+				</div>
 				<label class="mt-0 mb-2" for="">Descripción del gasto</label>
 				<input type="text" name="" id="" class="form-control" v-model="gasDescripcion">
 				<label class="mt-0 mb-2" for="">Monto</label>
-				<input type="number" name="" id="" class="esMoneda form-control" v-model="gasMonto">
+				<input type="number" name="" id="" v-if="gasidGasto=='1'" class="esMoneda form-control" placeholder="monto" v-model="gasMonto">
+				<input type="number" name="" id="" v-if="gasidGasto=='2'" class="esMoneda form-control" placeholder="sale" v-model="gasEntra">
 				<label class="mt-0 my-2" for="">Destino de gasto</label>
 				<div class="form-group">
 					<select id="sltDestinos" class="form-control" name="" v-model="gasidDestino">
@@ -782,8 +822,8 @@
 		listaGastos:[],
 		listaBonificaciones:[],
 		ventcCantidad:0, ventcIdPresentacion:0, ventcPresentacion:'', ventcPrecio: '0.00', ventcSubTotal:0, ventcTotal:0, ventcNuevo: true,
-		gasDescripcion:'', gasMonto: '0.00', gasTotal:0, esNuevo: true, idEditar:0, gasidComprobante:0, gasTipoComprobante:'', gasComprobante:'', gasidDestino:0, gasDestino:'',
-		stockPenta: 0, stockFabrica: 0, stockOficina:0, stockRetorno:0, stockIdPresentacion:0, stockObservacion:'', stockTotal:0, stockTotalEntrega:0, stockVencido:0,
+		gasDescripcion:'', gasMonto: '0.00', gasTotal:0, esNuevo: true, idEditar:0, gasidComprobante:0, gasTipoComprobante:'', gasComprobante:'', gasidDestino:0, gasDestino:'', gasidGasto:1, gasEntra:0,
+		stockPenta: 0, stockFabrica: 0, stockOficina:0, stockRetorno:0, stockIdPresentacion:0, stockObservacion:'', stockTotal:0, stockTotalEntrega:0, stockVencido:0, stockRetornoFabrica:0, stockRetornoOficina:0,
 		vencreCliente:'', vencreNumNota:'', vencreCantidad:0, vencrePrecio:0, vencreIdPresentacion:0, sumCredito:0,
 		cobraCliente: '', cobraDeuda: 0, cobraAcuenta: 0, cobraSaldo:0, cobraNumNota: '', sumCobranza:0,
 		adelaCliente: '', adelaMonto: 0, adelaCantidad: 0, adelaFecha: '<?= date('Y-m-d'); ?>', adelaBonificacion:0, sumAdelanto:0, entregado:0, adelaIdPresentacion: '', adelaPresentacion:'',
@@ -818,11 +858,13 @@
 		agregarGasto(){
 			this.gasTipoComprobante = $('#sltGrupoComprobantes option[value="'+$('#sltGrupoComprobantes').val()+'"]').text();
 			this.gasDestino = $('#sltDestinos option[value="'+$('#sltDestinos').val()+'"]').text();
-			this.listaGastos.push({ monto: this.gasMonto, descripcion: this.gasDescripcion, idComprobante: this.gasidComprobante, comprobante: this.gasComprobante, tipoComprobante: this.gasTipoComprobante, idDestino:this.gasidDestino, destino: this.gasDestino });
-			this.gasTotal+=parseFloat(this.gasMonto);
+
+			this.listaGastos.push({ monto: this.gasMonto, descripcion: this.gasDescripcion, idComprobante: this.gasidComprobante, comprobante: this.gasComprobante, tipoComprobante: this.gasTipoComprobante, idDestino:this.gasidDestino, destino: this.gasDestino, tipo: this.gasidGasto, entra: this.gasEntra });
+			this.gasTotal+=parseFloat( this.gasMonto - this.gasEntra );
 		},
 		gastosBorrarFila(index){
-			this.gasTotal-= parseFloat(this.listaGastos[index].monto);
+			this.gasTotal-= parseFloat(this.listaGastos[index].monto );
+			this.gasTotal+= parseFloat(this.listaGastos[index].entra );
 			this.listaGastos.splice(index,1);
 		},
 		gastosEditar(index){
@@ -832,20 +874,31 @@
 			this.gasComprobante = this.listaGastos[index].comprobante;
 			this.gasComprobante = this.listaGastos[index].comprobante;
 			this.gasidDestino = this.listaGastos[index].idDestino;
+			this.gasidGasto = this.listaGastos[index].tipo;
+			this.gasEntra = this.listaGastos[index].entra;
 			this.idEditar = index;
 		},
 		actualizarGasto(){
 			this.gasTipoComprobante = $('#sltGrupoComprobantes option[value="'+$('#sltGrupoComprobantes').val()+'"]').text();
 			this.gasDestino = $('#sltDestinos option[value="'+$('#sltDestinos').val()+'"]').text();
+			//console.log( 'restar '+this.listaGastos[this.idEditar].monto +" de "+ this.gasTotal );
+			this.gasTotal+=parseFloat( -this.listaGastos[this.idEditar].monto );
+			this.gasTotal+=parseFloat( this.listaGastos[this.idEditar].entra );
+			
+
 			this.listaGastos[this.idEditar].descripcion = this.gasDescripcion;
-			this.gasTotal-= parseFloat(this.listaGastos[this.idEditar].monto);
+			//this.gasTotal-= parseFloat(this.listaGastos[this.idEditar].monto);
 			this.listaGastos[this.idEditar].monto = this.gasMonto;
 			this.listaGastos[this.idEditar].comprobante = this.gasComprobante;
 			this.listaGastos[this.idEditar].idComprobante = this.gasidComprobante;
 			this.listaGastos[this.idEditar].tipoComprobante = this.gasTipoComprobante;
 			this.listaGastos[this.idEditar].idDestino = this.gasidDestino;
 			this.listaGastos[this.idEditar].destino = this.gasDestino;
-			this.gasTotal+=parseFloat(this.gasMonto);
+			this.listaGastos[this.idEditar].tipo = this.gasidGasto;
+			this.listaGastos[this.idEditar].entra = this.gasEntra;
+
+			this.gasTotal+=parseFloat(this.gasMonto );
+			this.gasTotal-=parseFloat(this.gasEntra );
 		},
 		ventcAgregar(){
 			
@@ -885,7 +938,7 @@
 		stockAgregar(){
 			let sub= parseFloat(this.stockPenta) + parseFloat(this.stockFabrica) + parseFloat(this.stockOficina);
 			this.listaStockFinal.push({ presentacion: $('#sltPresentacionStock option[value="'+$('#sltPresentacionStock').val()+'"]').text(), idPresentacion: this.stockIdPresentacion,
-			pentapeaks: this.stockPenta, fabrica: this.stockFabrica, oficina: this.stockOficina, subTotal: sub, retorno: this.stockRetorno, vencido: this.stockVencido, observacion: this.stockObservacion  });
+			pentapeaks: this.stockPenta, fabrica: this.stockFabrica, oficina: this.stockOficina, subTotal: sub, retorno: this.stockRetorno, retornoFabrica: this.stockRetornoFabrica, retornoOficina: this.stockRetornoOficina, vencido: this.stockVencido, observacion: this.stockObservacion  });
 			this.stockTotal+= sub;
 			this.stockTotalEntrega += parseFloat(this.stockRetorno);
 		},
@@ -895,6 +948,9 @@
 			this.stockFabrica = this.listaStockFinal[index].fabrica;
 			this.stockOficina = this.listaStockFinal[index].oficina;
 			this.stockVencido = this.listaStockFinal[index].vencido;
+			this.stockRetorno = this.listaStockFinal[index].retorno;
+			this.stockRetornoFabrica = this.listaStockFinal[index].retornoFabrica;
+			this.stockRetornoOficina = this.listaStockFinal[index].retornoOficina;
 			this.stockObservacion = this.listaStockFinal[index].observacion;
 			
 			this.idEditar = index;
@@ -912,6 +968,8 @@
 			this.listaStockFinal[ this.idEditar ].oficina = this.stockOficina;
 			this.listaStockFinal[ this.idEditar ].subTotal = sub;
 			this.listaStockFinal[ this.idEditar ].retorno = this.stockRetorno;
+			this.listaStockFinal[ this.idEditar ].retornoFabrica = this.stockRetornoOficina;
+			this.listaStockFinal[ this.idEditar ].retornoOficina = this.stockRetornoOficina;
 			this.listaStockFinal[ this.idEditar ].vencido = this.stockVencido;
 
 			this.stockTotal+= sub;
@@ -1133,6 +1191,13 @@ var optionesLugar = {
 		}
 	}
 };
+$('#sltGrupoGastos').change(function() {
+	if( $('#sltGrupoGastos').val()=='1' ){
+		app.gasEntra =0;
+	}else if( $('#sltGrupoGastos').val()=='2' ){
+		app.gasMonto=0;
+	}
+});
 var optionesVendedor = {
 	data:  JSON.parse({!! json_encode($vendedores) !!}),
 	getValue: "vendedor",

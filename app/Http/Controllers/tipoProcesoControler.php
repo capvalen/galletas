@@ -153,6 +153,8 @@ class tipoProcesoControler extends Controller
 					$stock->fabrica = $stockFinal['fabrica'];
 					$stock->total = $stockFinal['subTotal'];
 					$stock->retorno = $stockFinal['retorno'];
+					$stock->retornoFabrica = $stockFinal['retornoFabrica'];
+					$stock->retornoOficina = $stockFinal['retornoOficina'];
 					$stock->vencido = $stockFinal['vencido'];
 					$stock->observacion = $stockFinal['observacion'];
 					$stock->save();
@@ -215,6 +217,7 @@ class tipoProcesoControler extends Controller
 					$gasto->comprobante = $vGastos['comprobante'];
 					$gasto->empresa_id = $vGastos['idDestino'];
 					$gasto->destino = $vGastos['destino'];
+					$gasto->tipo = $vGastos['tipo'];
 					
 					$gasto->save();
 				}
