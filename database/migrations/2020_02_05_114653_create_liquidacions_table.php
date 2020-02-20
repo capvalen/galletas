@@ -28,6 +28,7 @@ class CreateLiquidacionsTable extends Migration
 						$table->float('sumaAdelanto')->default(0);
 						$table->float('sumaEntregar')->default(0);
 						$table->float('sumaEntregado')->default(0);
+						$table->boolean('activo')->default(1);
 						
 						$table->foreign('idUser')->references('id')->on('users');
 

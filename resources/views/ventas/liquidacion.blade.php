@@ -731,17 +731,18 @@
 				<label for="">¿Qué es?</label>
 				<select id="sltQueBonif" class="form-control" name="" v-model="bonQuees">
 					<option value="1">Bonificación</option>
+					<option value="2">Cambio</option>
 					<option value="0">Degustación</option>
 				</select>
 				<label class="mt-0 my-2" for="">Presentación</label>
-				<div class="form-group">
+				<div class="form-group mb-0">
 					<select id="sltPresentacionBonif" class="form-control" name="" v-model="bonIdPresentacion">
 						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
 					</select>
 				</div>
-				<label class="mt-0 my-2" for="">Cantidad</label>
-				<input type="number" name="" id="" class=" form-control" v-model="bonCantidad">
-				<label class="mt-0 my-2" for=""><span v-if="bonQuees=='1'">Cant. Bonificaciones entregadas</span><span v-else>Cant: Degustaciones dadas:</span></label>
+				<label class="mt-0 my-2" for="" v-if="bonQuees!='2'">Cantidad</label>
+				<input type="number" name="" id="" class=" form-control"  v-if="bonQuees!='2'" v-model="bonCantidad">
+				<label class="mt-0 my-2" for=""><span v-if="bonQuees=='1'">Cant. Bonificaciones entregadas</span><span v-else-if="bonQuees=='2'">Cantidades cambiadas:</span><span v-else>Cant: Degustaciones dadas:</span></label>
 				<input type="number" name="" id="" class=" form-control" v-model="bonBonificacion">
 				<label class="mt-0 my-2" for="">Nombre de cliente</label>
 				<input type="text" name="" id="" class=" form-control text-capitalize" v-model="bonCliente">
