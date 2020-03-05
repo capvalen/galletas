@@ -106,6 +106,7 @@ class tipoProcesoControler extends Controller
 		public function liquidacion_insert(Request $request){
 			//return auth()->id;
 
+			//return $request; 
 			$contador = DB::table('liquidacions')->select(DB::raw('count(*)+1 as conta'))->where('fecha', $request->fecha )->get();
 			$idCodInterno=json_decode($contador, true);
 			
@@ -211,7 +212,8 @@ class tipoProcesoControler extends Controller
 				foreach ($request->listaGastos as $vGastos) {
 					$gasto = new App\VentasGasto;
 					$gasto->liquidacion_id= $liquidacion->id;
-					$gasto->monto = $vGastos['monto'];
+					if( $vGastos['tipo']==1){ $gasto->monto = $vGastos['monto']; }else{ $gasto->monto = $vGastos['entra']; }
+					
 					$gasto->descripcion = $vGastos['descripcion'];
 					$gasto->idComprobante = $vGastos['idComprobante'];
 					$gasto->comprobante = $vGastos['comprobante'];
