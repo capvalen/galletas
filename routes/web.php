@@ -61,10 +61,15 @@ Route::get('Liquidaciones/{fecha?}', 'ventasController@index' )->name('ventas.in
 Route::get('Liquidación/Nueva', 'ventasController@liquidacion' )->name('liquidacion.nueva');
 
 
+Route::get('productos/lista/', 'tipoProcesoControler@productosCompleto' )->name('productos.listado');
+Route::post('productos/precios/{id}', 'tipoProcesoControler@productosPrecios' )->name('productos.precios.guardar');
+
 Route::post('liquidacion/insertar/', 'tipoProcesoControler@liquidacion_insert' )->name('liquidacion.insertar');
 Route::get('Liquidación/Reporte/{id?}', 'tipoProcesoControler@reporteLiquidacion' )->name('liquidacion.reporte');
 Route::post('liquidacion/borrar/{id}', 'ventasController@destroy' )->name('liquidacion.borrar');
 
+Route::get('Reportes/', 'reporteController@index' )->name('reportes.index');
+Route::post('Reportes/Resultado', 'reporteController@busqueda' )->name('reportes.busqueda');
 
 
 

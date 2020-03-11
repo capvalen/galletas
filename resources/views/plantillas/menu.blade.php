@@ -9,12 +9,18 @@
 	</div>
 
 	<ul class="list-unstyled components">
-		<p class="text-center"><small>Versión 1.1b</small></p>
+		<p class="text-center"><small>Versión 1.13</small></p>
 		<li>
 			<a href="{{route('panel')}}" class="d-flex align-items-center"><i class="icofont-home"></i> <span class="liText">Principal</span> </a>
     </li>
     <li>
       <a href="{{route('galeria.mostrar')}}"><i class="icofont-image"></i> Galería</a>
+		</li>
+		<li>
+      <a href="{{route('ventas.index')}}"><i class="icofont-handshake-deal"></i> Liquidaciones</a>
+		</li>
+		<li>
+      <a href="{{route('reportes.index')}}"><i class="icofont-paper"></i> Reportes</a>
     </li>
     <li>
       <a href="{{route('clientes')}}"><i class="icofont-users-alt-1"></i> Clientes</a>
@@ -25,9 +31,7 @@
     <li>
       <a href="{{route('caja')}}"><i class="icofont-money-bag"></i> Caja</a>
     </li>
-    <li>
-      <a href="{{route('ventas.index')}}"><i class="icofont-handshake-deal"></i> Liquidaciones</a>
-    </li>
+   
     <li>
       <a href="ciclos.php"><i class="icofont-cubes"></i> Inventario</a>
     </li>

@@ -259,4 +259,31 @@ class tipoProcesoControler extends Controller
 			//return $gastos;
 			return view('liquidaciones.reporte', compact('liquidacion', 'gastos', 'productos', 'ventas', 'bonificaciones', 'creditos', 'cobranzas', 'adelantos'));
 		}
+
+		public function productosCompleto(){
+			$productos = App\Producto::all();
+			//return $productos;
+			return view('productos.lista', compact('productos'));
+		}
+		public function productosPrecios(Request $request, $id){
+			//return $request;
+			$resp = $request->validate([
+				'precioBonificacion' => 'required',
+				'precioMayor' => 'required',
+				'precioMenor' => 'required',
+			], [
+				'precioBonificacion.required' => 'El precio por bonificación no puede estar vacío',
+				'precioMayor.required' => 'El precio por mayor no puede estar vacío',
+				'precioMenor.required' => 'El precio por menor no puede estar vacío',
+				
+			]);
+
+			$producto = App\Producto::findOrFail($id);
+			if($request->precioBonificacion)
+			$producto -> precioBonificacion = $request->precioBonificacion;
+			$producto -> precioMayor = $request->precioMayor;
+			$producto -> precioMenor = $request->precioMenor;
+			$producto-> save();
+			return back()->with('actualizado', "Producto actualizado con éxito");
+		}
 }

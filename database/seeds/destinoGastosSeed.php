@@ -31,7 +31,12 @@ class destinoGastosSeed extends Seeder
 				['destino' => 'Fábrica Marie EIRL - Varios', 'empresa_id' => 4]
 			]);
 			DB::table('destino_gastos')->insert([
-				['destino' => 'Gerencia - Varios', 'empresa_id' => 4]
+				['destino' => 'Gerencia - Varios', 'empresa_id' => 5]
 			]);
+			DB::table('destino_gastos')->insert([ 'destino' => 'Pentakeaks EIRL - Viáticos', 'empresa_id' => 1]);
+			DB::table('destino_gastos')->insert([ 'destino' => 'Coorporación Marie EIRL - Viáticos', 'empresa_id' => 2]);
+			DB::table('destino_gastos')->insert([ 'destino' => 'CISUSAJO EIRL - Viáticos', 'empresa_id' => 3]);
+			DB::table('destino_gastos')->insert([ 'destino' => 'Fábrica Marie EIRL - Viáticos', 'empresa_id' => 4]);
+			DB::table('destino_gastos')->insert([ 'destino' => 'Gerencia - Viáticos', 'empresa_id' => 5]);
     }
 }

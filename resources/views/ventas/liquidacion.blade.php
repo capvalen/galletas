@@ -56,7 +56,7 @@
 				</div>
 			
 				<div class="col d-flex align-items-end">
-					<button type="button" class="btn btn-primary mb-2" @click="guardarFicha"> <i class="icofont-save"></i> Guardar ficha</button>
+					<button type="button" class="btn btn-outline-primary mb-2" @click="alertaGuardar=true"> <i class="icofont-save"></i> Guardar ficha</button>
 				</div>
 			</form>
 		</div>
@@ -504,8 +504,8 @@
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="ventcCantidad">
 				<label class="mt-2 mb-2" for=""><strong class="obligatorio">*</strong> Presentación</label>
 				<div class="form-group">
-					<select id="sltPPresentaciones" class="form-control" name="" v-model="ventcIdPresentacion">
-						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
+					<select id="sltPPresentaciones" class="selectpicker" name="" v-model="ventcIdPresentacion" data-live-search="true" data-width="100%">
+						<option v-for="producto in listaPresentaciones" :value="producto.id">@{{producto.presentacion}} @{{producto.contenido}} @{{producto.descripcion}}</option>
 					</select>
 				</div>
 				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Precio</label>
@@ -548,8 +548,8 @@
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="vencreCantidad">
 				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Presentación</label>
 				<div class="form-group">
-					<select id="sltPresentacionCredito" class="form-control" name="" v-model="vencreIdPresentacion">
-						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
+					<select id="sltPresentacionCredito" class="selectpicker" name="" v-model="vencreIdPresentacion" data-live-search="true" data-width="100%">
+						<option v-for="producto in listaPresentaciones" :value="producto.id">@{{producto.presentacion}} @{{producto.contenido}} @{{producto.descripcion}}</option>
 					</select>
 				</div>
 				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Precio</label>
@@ -623,24 +623,33 @@
         </button>
       </div>
       <div class="modal-body">
-				<label class="mt-0 mb-2" for="">Presentación</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Presentación</label>
 				<div class="form-group">
-					<select id="sltPresentacionAdela" class="form-control" name="" v-model="adelaIdPresentacion">
-						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
+					<select id="sltPresentacionAdela" class="selectpicker" name="" v-model="adelaIdPresentacion" data-live-search="true" data-width="100%">
+						<option v-for="producto in listaPresentaciones" :value="producto.id">@{{producto.presentacion}} @{{producto.contenido}} @{{producto.descripcion}}</option>
 					</select>
 				</div>
-				<label class="mt-0 mb-2" for="">Nombre de cliente</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Nombre de cliente</label>
 				<input type="text" name="" id="" class=" form-control text-capitalize" v-model="adelaCliente">
-				<label class="mt-0 mb-2" for="">Monto</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Monto</label>
 				<input type="number" name="" id="" class="esMoneda form-control forzarMinimo" v-model="adelaMonto">
-				<label class="mt-0 mb-2" for="">Cantidad</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Cantidad</label>
 				<input type="number" name="" id="" class="esMoneda form-control" v-model="adelaCantidad">
-				<label class="mt-0 mb-2" for="">Bonif.</label>
+				<label class="mt-0 mb-2" for=""><strong class="obligatorio">*</strong> Bonif.</label>
 				<input type="number" name="" id="" class=" form-control" v-model="adelaBonificacion">
-				
+				<div class="alert alert-warning mt-3" v-if="!tieneObservaciones">
+					<button type="button" class="close" aria-label="Close" @click="tieneObservaciones=true" style="color: #856404;">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="alert-heading"><i class="icofont-eaten-fish"></i> Advertencias!</h4>
+					<span>Corrija lo siguiente antes de continuar:</span>
+					<ul class="pb-0">
+						<li v-for="observacion in listaObservaciones">@{{observacion}}</li>
+					</ul>
+				</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="adelaAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="tieneObservaciones=true; adelaAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
         <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="adelaActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
@@ -659,8 +668,8 @@
       <div class="modal-body container-fluid">
 				<label class="mt-0 mb-2" for="">Presentación</label>
 				<div class="form-group">
-					<select id="sltPresentacionStock" class="form-control" name="" v-model="stockIdPresentacion">
-						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
+					<select id="sltPresentacionStock" class="selectpicker" name="" v-model="stockIdPresentacion" data-live-search="true" data-width="100%">
+						<option v-for="producto in listaPresentaciones" :value="producto.id">@{{producto.presentacion}} @{{producto.contenido}} @{{producto.descripcion}}</option>
 					</select>
 				</div>
 				<div class="form-group">
@@ -776,8 +785,8 @@
 				</select>
 				<label class="mt-0 my-2" for="">Presentación</label>
 				<div class="form-group mb-0">
-					<select id="sltPresentacionBonif" class="form-control" name="" v-model="bonIdPresentacion">
-						<option v-for="(producto, index) of listaPresentaciones" :value="index">@{{producto.presentacion}}</option>
+					<select id="sltPresentacionBonif" class="selectpicker" name="" v-model="bonIdPresentacion" data-live-search="true" data-width="100%">
+						<option v-for="producto in listaPresentaciones" :value="producto.id">@{{producto.presentacion}} @{{producto.contenido}} @{{producto.descripcion}}</option>
 					</select>
 				</div>
 				<label class="mt-0 my-2" for="" v-if="bonQuees!='2'">Cantidad</label>
@@ -794,6 +803,27 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="agregarBonificacion() "> <i class="icofont-ticket"></i> Insertar</button>
         <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="bonifActualizar();"> <i class="icofont-ticket"></i> Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal de Bonificaciones -->
+<div class="modal fade" id="modalGuardarReporte" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body ">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="alertaGuardar=false;">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h5 class="modal-title" id="staticBackdropLabel">Guardar</h5>
+				<label class="my-2" for="">Desea guardar el reporte?</label>
+				<div>
+					<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" @click="alertaGuardar=false;"> <i class="icofont-ui-text-loading"></i> No seguir editando</button>
+					<button type="button" class="btn btn-outline-primary" data-dismiss="modal" @click="guardarFicha"> <i class="icofont-ticket"></i> Sí, guardar</button>
+				</div>
+
+      </div>
+      <div class="modal-footer">
       </div>
     </div>
   </div>
@@ -829,17 +859,22 @@
 		adelaCliente: '', adelaMonto: 0, adelaCantidad: 0, adelaFecha: '<?= date('Y-m-d'); ?>', adelaBonificacion:0, sumAdelanto:0, entregado:0, adelaIdPresentacion: '', adelaPresentacion:'',
 		bonDescripcion:'',bonCantidad:0, bonifTotal:0, bonIdPresentacion:0, bonObservacion:'', bonBonificacion:0, bonCliente:'', bonDireccion:'', bonQuees:1,
 		fichFecha: '<?= date('Y-m-d')?>', fichVendedor: '', fichLugar: '', fichPlaca: '', fichConductor:'',
-		tieneObservaciones: true, listaObservaciones: [],
+		tieneObservaciones: true, listaObservaciones: [], alertaGuardar: false,
 		guardado: false,
-		listaPresentaciones:[
-			{presentacion: 'Ningún producto', precio: 0.00},
-			{presentacion: 'Galleta de agua Bolsa 1.57kg Marie', precio: 0.00},
-			{presentacion: 'Galleta de agua Bolsa 1.2kg Marie',precio: 0.00},
-			{presentacion: 'Galleta de agua Bolsa 1 kg Rey del centro',precio: 0.00},
-			{presentacion: 'Galleta de agua Display 5x 950 Rey del centro',precio: 0.00},
-			{presentacion: 'Galleta de agua Display 5x 950 Marie',precio: 0.00},
-			{presentacion: 'Galleta de agua Display 5x 700 Marie',precio: 0.00},
-			{presentacion: 'Galleta de agua Display 10x 18 Marie de 0.17kg',precio: 0.00},
+		listaPresentaciones: JSON.parse({!! json_encode($productos) !!}),
+
+			
+		listaComprobantes: JSON.parse({!! json_encode($comprobantes) !!}),
+		listaDestinos: JSON.parse({!! json_encode($destinos) !!}),
+	},
+	/* {presentacion: 'Ningún producto', precio: 0.00},
+			{presentacion: 'Galleta de agua Bolsa 1.57kg Marie', precio: 0.00},.
+			{presentacion: 'Galleta de agua Bolsa 1.2kg Marie',precio: 0.00},.
+			{presentacion: 'Galleta de agua Bolsa 1 kg Rey del centro',precio: 0.00},.
+			{presentacion: 'Galleta de agua Display 5x 950 Rey del centro',precio: 0.00},.
+			{presentacion: 'Galleta de agua Display 5x 950 Marie',precio: 0.00},.
+			{presentacion: 'Galleta de agua Display 5x 700 Marie',precio: 0.00},.
+			{presentacion: 'Galleta de agua Display 10x 18 Marie de 0.17kg',precio: 0.00},.
 			{presentacion: 'Galleta de letras Display 10x 140 Marie',precio: 0.00},
 			{presentacion: 'Galleta de agua Display 10x 22 Rey del centro',precio: 0.00},
 			{presentacion: 'Pan de molde blanco Marie',precio: 0.00},
@@ -848,12 +883,7 @@
 			{presentacion: 'Keke pirotín Rey del centro',precio: 0.00},
 			{presentacion: 'Galleta de agua Marie Bolsa 1.2kg',precio: 0.00},
 			{presentacion: 'Pre mezcla x Saco',precio: 0.00},
-			{presentacion: 'Galleta de agua Display 10x 18 Marie de 0.16kg',precio: 0.00}
-			],
-			
-		listaComprobantes: JSON.parse({!! json_encode($comprobantes) !!}),
-		listaDestinos: JSON.parse({!! json_encode($destinos) !!}),
-	},
+			{presentacion: 'Galleta de agua Display 10x 18 Marie de 0.16kg',precio: 0.00} */
 	methods:{
 		agregarGasto(){
 			this.gasTipoComprobante = $('#sltGrupoComprobantes option[value="'+$('#sltGrupoComprobantes').val()+'"]').text();
@@ -1057,9 +1087,20 @@
 			this.listaCobranza.splice(index,1);
 		},
 		adelaAgregar(){
-			let presentAdela = $('#sltPresentacionAdela option[value="'+$('#sltPresentacionAdela').val()+'"]').text();
-			this.listaAdelantos.push({cliente: this.adelaCliente, monto: this.adelaMonto, cantidad: this.adelaCantidad, bonificacion: this.adelaBonificacion,idPresentacion: this.adelaIdPresentacion, presentacion: presentAdela  });
-			this.sumAdelanto+= parseFloat(this.adelaMonto);
+
+			if( this.adelaIdPresentacion=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('Tiene que seleccionar una presentación obligatoria'); }
+			if( this.adelaCliente=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('Tiene que rellenar el cliente'); }
+			if( this.noEsNumero(this.adelaMonto) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La monto mínimo debe ser cero'); }
+			if( this.noEsNumero(this.adelaCantidad) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La cantidad mínima debe ser cero'); }
+			if( this.noEsNumero(this.adelaBonificacion) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La bonificación mínima debe ser cero'); }
+
+			if(this.tieneObservaciones){
+				$('#addAdelantoLista').modal('hide');
+				let presentAdela = $('#sltPresentacionAdela option[value="'+$('#sltPresentacionAdela').val()+'"]').text();
+				this.listaAdelantos.push({cliente: this.adelaCliente, monto: this.adelaMonto, cantidad: this.adelaCantidad, bonificacion: this.adelaBonificacion,idPresentacion: this.adelaIdPresentacion, presentacion: presentAdela  });
+				this.sumAdelanto+= parseFloat(this.adelaMonto);
+			}
+
 		},
 		adelantoEditar(index){
 			this.adelaCliente = this.listaAdelantos[index].cliente;
@@ -1131,7 +1172,7 @@
 				console.log(response.data);
 				this.guardado=true;
 				if(!isNaN(parseInt(response.data))){ //alert('Ficha guardada');
-					alertify.alert('','<strong class="text-muted">Ficha guardada:</strong> <h3 class="text-secondary">' + moment( this.fichFecha ).format('YYMM') + "-" + response.data+"</h3>" ).set({transition:'fade', 'onok': function(){ window.location.href = "{{route('ventas.index')}}"+"/"+ app.fichFecha;}});
+					alertify.alert('','<p class="text-muted mb-0">Ficha guardada:</p> <h3 class="text-secondary">' + moment( this.fichFecha ).format('YYMM') + "-" + response.data+"</h3>" ).set({transition:'fade', 'onok': function(){ window.location.href = "{{route('ventas.index')}}"+"/"+ app.fichFecha;}});
 				}
 			});
 		},
@@ -1156,6 +1197,13 @@
 		},
 		sumaTotales(){
 			return parseFloat(this.ventcTotal)+ parseFloat(this.sumCobranza) + parseFloat(this.sumAdelanto) - parseFloat(this.gasTotal);
+		}
+	},
+	watch:{
+		alertaGuardar(){
+			if(this.alertaGuardar){
+				$('#modalGuardarReporte').modal('show');
+			}
 		}
 	}
 });

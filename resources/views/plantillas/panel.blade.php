@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <link rel="icon" type="image/png" href="images/peto.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="{{url('images/marie.png')}}" sizes="16x16">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="{{url('css/bootstrap-select.min.css?version=0.4')}}" >
   <link rel="stylesheet" href="{{url('css/bootstrap-material-datetimepicker.css?version=0.1')}}" >
   <link rel="stylesheet" href="{{url('css/animate.css?version=0.0')}}" >
-  <link rel="stylesheet" href="{{url('css/alertify.min.css?version=1.0.4')}}" >
+  <link rel="stylesheet" href="{{url('css/alertify.min.css?version=1.0.9')}}" >
 	<link rel="stylesheet" href="{{asset('css/easy-autocomplete.min.css?version=1.0.3')}}" > <!-- Extraido de: http://easyautocomplete.com/guide -->
 
 
@@ -37,7 +37,6 @@
 <div id="content" class="container-fluid pt-5">
 	<!-- Contenido de la Página  -->
 
-		
   @yield('titulo')
   @yield('cuerpo')
 <!-- Fin de Contenido de la Página  -->
@@ -54,7 +53,7 @@
 <script src="{{url('js/anatsunamun.js?version=1.0.16')}}"></script>
 <script src="{{url('js/bootstrap-select.js?version=1.0.5')}}"></script>
 <script src="{{url('js/bootstrap-material-datetimepicker.js')}}"></script>
-<script src="{{url('js/alertify.min.js?version=1.0.1')}}"></script>
+<script src="{{url('js/alertify.min.js?version=1.0.3')}}"></script>
 <script src="{{asset('js/jquery.easy-autocomplete.min.js?version=1.0.2')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>

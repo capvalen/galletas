@@ -23,7 +23,9 @@ class CreateProductosTable extends Migration
 						$table->float('cantidad')->comment('total en la unidad más basica, und, kg, lt'); //Ejm: 18
 						$table->float('peso')->comment('peso en la unidad más basica, und, kg, lt');
 						$table->string('descripcion')->comment('dato extra')->nullable();
-						$table->string('precio')->default(0)->nullable();
+						$table->float('precioBonificacion')->default(0)->nullable();
+						$table->float('precioMayor')->default(0)->nullable();
+						$table->float('precioMenor')->default(0)->nullable();
 						$table->boolean('activo')->default(1);
 						$table->timestamps();
 						

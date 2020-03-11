@@ -5,6 +5,14 @@ use Carbon\Carbon;
 @section('css')
 <style>
 	.text-warning{color: #9400e0!important;}
+	.ajs-header{border-radius: 5px; }
+	.ajs-footer{border-radius: 5px; }
+	.ajs-button{
+		color: #007bff;
+    border-color: #007bff;
+		border-radius: .25rem;
+    padding: .375rem .75rem;
+	}
 </style>		
 @endsection
 

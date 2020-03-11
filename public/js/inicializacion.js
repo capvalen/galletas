@@ -51,3 +51,6 @@ return parseFloat(numSinFormato).tof()
 $("input").focus(function(){
   this.select();
 });
+$("#app").on( 'focus', 'input', function(){
+	this.select();
+});

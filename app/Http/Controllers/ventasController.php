@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App;
+use DB;
 use Carbon\Carbon;
 
 class ventasController extends Controller
@@ -36,8 +37,16 @@ class ventasController extends Controller
 			$lugares = App\Liquidacion::select('lugar')->whereNotNull('lugar')->get()->toJson();
 			$vendedores = App\Liquidacion::select('vendedor')->whereNotNull('vendedor')->get()->toJson();
 			$placas = App\Liquidacion::select('placa')->whereNotNull('placa')->get()->toJson();
+			$productos = DB::table('productos')
+								->join('tipo_productos', 'tipo_productos.id', '=', 'productos.tipo_productos_id')
+								->join('tipo_displays', 'tipo_displays.id', '=', 'productos.tipo_displays_id')
+								->join('marca_displays', 'marca_displays.id', '=', 'productos.marca_displays_id')
+								->select('productos.id', 'productos.precioMayor', 'productos.descripcion', DB::raw('case productos.tipo_displays_id when 6 then "" else concat(tipo_productos.descripcion, " ", tipo_displays.descripcion," ", marca_displays.descripcion ) end as presentacion'), DB::raw('case tipo_displays_id when 1 then concat(productos.peso, " kg.") when 2 then concat(cast(productos.cantidad as int), "x", cast(productos.cantidad_x_display as int)) when 6 then "" else concat(cast(productos.cantidad as int), " Und." )
+								 end as contenido') )->orderby('presentacion', 'asc')->get()->toJson();
+			//return $productos;
+
 			//return $placas;
-      return view('ventas.liquidacion', compact('comprobantes', 'destinos', 'lugares', 'vendedores', 'placas'));
+      return view('ventas.liquidacion', compact('comprobantes', 'destinos', 'lugares', 'vendedores', 'placas', 'productos'));
 		}
     /**
      * Show the form for creating a new resource.

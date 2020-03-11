@@ -8,8 +8,16 @@ class Producto extends Model
 {
 		//
 		
-		public function tipo_Displays(){
-			return $this->hasMany('App\TipoDisplay');
-			
+		public function displays(){
+			return $this->belongsTo('App\TipoDisplay', 'tipo_displays_id');
+		}
+		public function tipos(){
+			return $this->belongsTo('App\TipoProducto', 'tipo_productos_id');
+		}
+		public function marcas(){
+			return $this->belongsTo('App\MarcaDisplay', 'marca_displays_id');
+		}
+		public function unidades(){
+			return $this->belongsTo('App\unidades', 'unidades_id');
 		}
 }
