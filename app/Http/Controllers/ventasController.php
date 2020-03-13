@@ -77,7 +77,7 @@ class ventasController extends Controller
      */
     public function show($id)
     {
-        //
+      
     }
 
     /**
@@ -88,7 +88,29 @@ class ventasController extends Controller
      */
     public function edit($id)
     {
-        //
+			$liquidacions = App\Liquidacion::findOrFail($id);
+      $comprobantes = App\comprobantes::all()->toJson();
+			$destinos = App\DestinoGasto::orderBy('destino', 'asc')->get()->toJson();
+
+			$lugares = App\Liquidacion::select('lugar')->whereNotNull('lugar')->get()->toJson();
+			$vendedores = App\Liquidacion::select('vendedor')->whereNotNull('vendedor')->get()->toJson();
+			$placas = App\Liquidacion::select('placa')->whereNotNull('placa')->get()->toJson();
+			$productos = DB::table('productos')
+								->join('tipo_productos', 'tipo_productos.id', '=', 'productos.tipo_productos_id')
+								->join('tipo_displays', 'tipo_displays.id', '=', 'productos.tipo_displays_id')
+								->join('marca_displays', 'marca_displays.id', '=', 'productos.marca_displays_id')
+								->select('productos.id', 'productos.precioMayor', 'productos.descripcion', DB::raw('case productos.tipo_displays_id when 6 then "" else concat(tipo_productos.descripcion, " ", tipo_displays.descripcion," ", marca_displays.descripcion ) end as presentacion'), DB::raw('case tipo_displays_id when 1 then concat(productos.peso, " kg.") when 2 then concat(cast(productos.cantidad as int), "x", cast(productos.cantidad_x_display as int)) when 6 then "" else concat(cast(productos.cantidad as int), " Und." )
+								 end as contenido') )->orderby('presentacion', 'asc')->get()->toJson();
+
+			$vlistaVentasContado = App\ventasContado::where('liquidacion_id', $id)->get()->toJson();
+			$vlistaStockFinal = App\ventasStock::where('liquidacion_id', $id)->get()->toJson();
+			$vlistaVentasCredito = App\ventasCredito::where('liquidacion_id', $id)->get()->toJson();
+			$vlistaCobranza = App\VentasCobranza::where('liquidacion_id', $id)->get()->toJson();
+			$vlistaAdelantos = App\VentasAdelanto::where('liquidacion_id', $id)->get()->toJson();
+			$vlistaGastos = App\VentasGasto::where('liquidacion_id', $id)->get()->toJson();
+			$vlistaBonificaciones = App\VentasBonificacion::where('liquidacion_id', $id)->get()->toJson();
+			
+    	return view('ventas.edicion', compact('comprobantes', 'destinos', 'lugares', 'vendedores', 'placas', 'productos', 'vlistaVentasContado', 'vlistaStockFinal', 'vlistaVentasCredito', 'vlistaCobranza', 'vlistaAdelantos', 'vlistaGastos', 'vlistaBonificaciones', 'liquidacions' ));
     }
 
     /**

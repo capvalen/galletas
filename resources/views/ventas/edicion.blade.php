@@ -18,10 +18,10 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{route('ventas.index')}}">Liquidaciones</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Nueva</li>
+    <li class="breadcrumb-item active" aria-current="page">Edición</li>
   </ol>
 </nav>
-<h2><i class="icofont-cart"></i> Liquidación de Ventas</h2>
+<h2><i class="icofont-cart"></i> Edición de Liquidación</h2>
 @endsection
 
 @section('cuerpo')
@@ -56,7 +56,7 @@
 				</div>
 			
 				<div class="col d-flex align-items-end">
-					<button type="button" class="btn btn-outline-primary mb-2" @click="alertaGuardar=true"> <i class="icofont-save"></i> Guardar ficha</button>
+					<button type="button" class="btn btn-outline-success mb-2" @click="actualizarFicha()"> <i class="icofont-save"></i> Actualizar cabeceras</button>
 				</div>
 			</form>
 		</div>
@@ -91,7 +91,7 @@
 								<td>@{{venta.cantidad}}</td>
 								<td>@{{venta.presentacion}}</td>
 								<td>@{{parseFloat(venta.precio).toFixed(2)}}</td>
-								<td>@{{parseFloat(venta.ventcSubTotal).toFixed(2)}}</td>
+								<td>@{{parseFloat(venta.total).toFixed(2)}}</td>
 								<td>
 									<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addVentasContLista" @click="esNuevo=false; ventascEditar(index)"><i class="icofont-edit"></i></button>
 									<button class="btn btn-outline-danger border-0 btn-sm" @click="ventasBorrarFila(index)"><i class="icofont-close"></i></button>
@@ -271,7 +271,7 @@
 							<td>@{{credito.cantidad}}</td>
 							<td>@{{credito.presentacion}}</td>
 							<td>@{{parseFloat(credito.precio).toFixed(2)}}</td>
-							<td>@{{parseFloat(credito.subTotal).toFixed(2)}}</td>
+							<td>@{{parseFloat(credito.total).toFixed(2)}}</td>
 							<td>
 								<button class="btn btn-outline-primary border-0 btn-sm" data-toggle="modal" data-target="#addVentasCreditoLista" @click="esNuevo=false; creditoEditar(index)"><i class="icofont-edit"></i></button>
 								<button class="btn btn-outline-danger border-0 btn-sm" @click="creditoBorrarFila(index)"><i class="icofont-close"></i></button>
@@ -433,7 +433,7 @@
 							<td><span v-if="gasto.tipo=='1'">Gasto</span><span v-else>Devolución</span></td>
 							<td>@{{gasto.destino}}</td>
 							<td>@{{gasto.descripcion}}</td>
-							<td><span v-if="gasto.tipo=='1'" class="text-danger">@{{parseFloat(gasto.monto).toFixed(2)}}</span><span v-else class="text-primary">@{{parseFloat(gasto.entra).toFixed(2)}}</span></td>
+							<td><span v-if="gasto.tipo=='1'" class="text-danger">@{{parseFloat(gasto.monto).toFixed(2)}}</span><span v-else class="text-primary">@{{parseFloat(gasto.monto).toFixed(2)}}</span></td>
 							<td>@{{gasto.tipoComprobante}}</td>
 							<td>@{{gasto.comprobante}}</td>
 							<td>
@@ -524,7 +524,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="prepararValidacion(); ventcAgregar(); "> <i class="icofont-sale-discount"></i> Insertar</button>
-        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="prepararValidacion(); ventcActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" @click="prepararValidacion(); ventcActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
   </div>
@@ -567,8 +567,8 @@
 				</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="prepararValidacion(); vencreAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
-        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="prepararValidacion(); vencreActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="tieneObservaciones=true; listaObservaciones= []; vencreAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="vencreActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
   </div>
@@ -607,7 +607,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="prepararValidacion(); cobroAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
-        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="prepararValidacion(); cobroActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" @click="prepararValidacion(); cobroActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
   </div>
@@ -650,7 +650,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="prepararValidacion(); adelaAgregar() "> <i class="icofont-sale-discount"></i> Insertar</button>
-        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="prepararValidacion(); adelaActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" @click="prepararValidacion(); adelaActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
   </div>
@@ -660,7 +660,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel"><strong class="obligatorio">*</strong> Salida de stock</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Salida de stock</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -713,20 +713,10 @@
 					<label for="">Total vendido: <strong>@{{parseFloat(parseFloat(stockPenta)+parseFloat(stockFabrica)+parseFloat(stockOficina))}}</strong></label><br>
 					<label for="">Total retorno: <strong>@{{parseFloat(stockRetorno)}}</strong></label>
 				</div>
-				<div class="alert alert-warning mt-3" v-if="!tieneObservaciones">
-					<button type="button" class="close" aria-label="Close" @click="tieneObservaciones=true" style="color: #856404;">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="alert-heading"><i class="icofont-eaten-fish"></i> Advertencias!</h4>
-					<span>Corrija lo siguiente antes de continuar:</span>
-					<ul class="pb-0">
-						<li v-for="observacion in listaObservaciones">@{{observacion}}</li>
-					</ul>
-				</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="prepararValidacion(); stockAgregar();"> <i class="icofont-plus-circle"></i> Insertar</button>
-        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" @click="prepararValidacion(); stockActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="stockAgregar() "> <i class="icofont-plus-circle"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="stockActualizar();"> <i class="icofont-sale-discount"></i> Actualizar</button>
       </div>
     </div>
   </div>
@@ -809,10 +799,20 @@
 				<input type="text" name="" id="" class=" form-control text-capitalize" v-model="bonDireccion">
 				<label class="mt-0 my-2" for="">Observación</label>
 				<input type="text" name="" id="" class="form-control" value="" v-model="bonObservacion">
+				<div class="alert alert-warning mt-3" v-if="!tieneObservaciones">
+					<button type="button" class="close" aria-label="Close" @click="tieneObservaciones=true" style="color: #856404;">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="alert-heading"><i class="icofont-eaten-fish"></i> Advertencias!</h4>
+					<span>Corrija lo siguiente antes de continuar:</span>
+					<ul class="pb-0">
+						<li v-for="observacion in listaObservaciones">@{{observacion}}</li>
+					</ul>
+				</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" v-if="esNuevo" data-dismiss="modal" @click="agregarBonificacion() "> <i class="icofont-ticket"></i> Insertar</button>
-        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" data-dismiss="modal" @click="bonifActualizar();"> <i class="icofont-ticket"></i> Actualizar</button>
+        <button type="button" class="btn btn-outline-success" v-if="esNuevo" @click="prepararValidacion(); agregarBonificacion() "> <i class="icofont-ticket"></i> Insertar</button>
+        <button type="button" class="btn btn-outline-warning" v-if="!esNuevo" @click="prepararValidacion(); bonifActualizar();"> <i class="icofont-ticket"></i> Actualizar</button>
       </div>
     </div>
   </div>
@@ -854,13 +854,13 @@
 	var app = new Vue({
   el: '#app',
   data: {
-		listaVentasContado: [],
-		listaStockFinal: [],
-		listaVentasCredito:[],
-		listaCobranza:[],
-		listaAdelantos:[],
-		listaGastos:[],
-		listaBonificaciones:[],
+		listaVentasContado: JSON.parse({!! json_encode($vlistaVentasContado) !!}),
+		listaStockFinal: JSON.parse({!! json_encode($vlistaStockFinal) !!}),
+		listaVentasCredito: JSON.parse({!! json_encode($vlistaVentasCredito) !!}),
+		listaCobranza: JSON.parse({!! json_encode($vlistaCobranza) !!}),
+		listaAdelantos: JSON.parse({!! json_encode($vlistaAdelantos) !!}),
+		listaGastos: JSON.parse({!! json_encode($vlistaGastos) !!}),
+		listaBonificaciones: JSON.parse({!! json_encode($vlistaBonificaciones) !!}),
 		ventcCantidad:0, ventcIdPresentacion:0, ventcPresentacion:'', ventcPrecio: '0.00', ventcSubTotal:0, ventcTotal:0, ventcNuevo: true,
 		gasDescripcion:'', gasMonto: '0.00', gasTotal:0, esNuevo: true, idEditar:0, gasidComprobante:0, gasTipoComprobante:'', gasComprobante:'', gasidDestino:0, gasDestino:'', gasidGasto:1, gasEntra:0,
 		stockPenta: 0, stockFabrica: 0, stockOficina:0, stockRetorno:0, stockIdPresentacion:0, stockObservacion:'', stockTotal:0, stockTotalEntrega:0, stockVencido:0, stockRetornoFabrica:0, stockRetornoOficina:0,
@@ -877,46 +877,61 @@
 		listaComprobantes: JSON.parse({!! json_encode($comprobantes) !!}),
 		listaDestinos: JSON.parse({!! json_encode($destinos) !!}),
 	},
-	/* {presentacion: 'Ningún producto', precio: 0.00},
-			{presentacion: 'Galleta de agua Bolsa 1.57kg Marie', precio: 0.00},.
-			{presentacion: 'Galleta de agua Bolsa 1.2kg Marie',precio: 0.00},.
-			{presentacion: 'Galleta de agua Bolsa 1 kg Rey del centro',precio: 0.00},.
-			{presentacion: 'Galleta de agua Display 5x 950 Rey del centro',precio: 0.00},.
-			{presentacion: 'Galleta de agua Display 5x 950 Marie',precio: 0.00},.
-			{presentacion: 'Galleta de agua Display 5x 700 Marie',precio: 0.00},.
-			{presentacion: 'Galleta de agua Display 10x 18 Marie de 0.17kg',precio: 0.00},.
-			{presentacion: 'Galleta de letras Display 10x 140 Marie',precio: 0.00},
-			{presentacion: 'Galleta de agua Display 10x 22 Rey del centro',precio: 0.00},
-			{presentacion: 'Pan de molde blanco Marie',precio: 0.00},
-			{presentacion: 'Pan de molde integral Marie',precio: 0.00},
-			{presentacion: 'Keke domo Marie',precio: 0.00},
-			{presentacion: 'Keke pirotín Rey del centro',precio: 0.00},
-			{presentacion: 'Galleta de agua Marie Bolsa 1.2kg',precio: 0.00},
-			{presentacion: 'Pre mezcla x Saco',precio: 0.00},
-			{presentacion: 'Galleta de agua Display 10x 18 Marie de 0.16kg',precio: 0.00} */
+
 	methods:{
 		agregarGasto(){
 			this.gasTipoComprobante = $('#sltGrupoComprobantes option[value="'+$('#sltGrupoComprobantes').val()+'"]').text();
 			this.gasDestino = $('#sltDestinos option[value="'+$('#sltDestinos').val()+'"]').text();
 
-			this.listaGastos.push({ monto: this.gasMonto, descripcion: this.gasDescripcion, idComprobante: this.gasidComprobante, comprobante: this.gasComprobante, tipoComprobante: this.gasTipoComprobante, idDestino:this.gasidDestino, destino: this.gasDestino, tipo: this.gasidGasto, entra: this.gasEntra });
+			axios.post('{{route("liquidacion.gasto.crearFila")}}', {liquidacion_id: '{{$liquidacions->id}}',
+				monto: this.gasMonto, descripcion: this.gasDescripcion, idComprobante: this.gasidComprobante, comprobante: this.gasComprobante, tipoComprobante: this.gasTipoComprobante, empresa_id:this.gasidDestino, destino: this.gasDestino, tipo: this.gasidGasto, entra: this.gasEntra
+			}).then(function (response) { console.log( response.data );
+				if( isNaN(response.data) ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					idTempo= response.data;
+					alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+				}
+			});
+
+			let valor = 0;
+			if(this.gasidGasto==1){ valor = this.gasMonto; }else{ valor = this.gasEntra }
+
+
+			this.listaGastos.push({ monto: valor, descripcion: this.gasDescripcion, idComprobante: this.gasidComprobante, comprobante: this.gasComprobante, tipoComprobante: this.gasTipoComprobante, idDestino:this.gasidDestino, destino: this.gasDestino, tipo: this.gasidGasto, entra: this.gasEntra });
 			this.gasTotal+=parseFloat( this.gasMonto - this.gasEntra );
 		},
 		gastosBorrarFila(index){
 			this.gasTotal-= parseFloat(this.listaGastos[index].monto );
 			this.gasTotal+= parseFloat(this.listaGastos[index].entra );
-			this.listaGastos.splice(index,1);
+
+			axios.post('{{route("liquidacion.gasto.borrarFila")}}', {id: this.listaGastos[ index ].id,
+			}).then(function (response) { //console.log( response.data );
+				if( response.data!='ok' ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+					app.listaGastos.splice(index,1);
+				}
+			});
 		},
 		gastosEditar(index){
 			this.gasDescripcion = this.listaGastos[index].descripcion;
-			this.gasMonto = this.listaGastos[index].monto;
 			this.gasidComprobante = this.listaGastos[index].idComprobante;
 			this.gasComprobante = this.listaGastos[index].comprobante;
 			this.gasComprobante = this.listaGastos[index].comprobante;
-			this.gasidDestino = this.listaGastos[index].idDestino;
+			this.gasidDestino = this.listaGastos[index].empresa_id;
 			this.gasidGasto = this.listaGastos[index].tipo;
-			this.gasEntra = this.listaGastos[index].entra;
+			if(this.listaGastos[index].tipo==1){ 
+				this.gasMonto = this.listaGastos[index].monto;
+			}else{
+				this.gasEntra = this.listaGastos[index].monto;
+			}
 			this.idEditar = index;
+
+			$('#sltDestinos').selectpicker('val', this.gasidDestino );
 		},
 		actualizarGasto(){
 			this.gasTipoComprobante = $('#sltGrupoComprobantes option[value="'+$('#sltGrupoComprobantes').val()+'"]').text();
@@ -924,11 +939,24 @@
 			//console.log( 'restar '+this.listaGastos[this.idEditar].monto +" de "+ this.gasTotal );
 			this.gasTotal+=parseFloat( -this.listaGastos[this.idEditar].monto );
 			this.gasTotal+=parseFloat( this.listaGastos[this.idEditar].entra );
+
+			axios.post('{{route("liquidacion.gasto.editarFila")}}', {liquidacion_id: '{{$liquidacions->id}}', id: this.listaGastos[this.idEditar].id,
+				monto: this.gasMonto, descripcion: this.gasDescripcion, idComprobante: this.gasidComprobante, comprobante: this.gasComprobante, tipoComprobante: this.gasTipoComprobante, empresa_id:this.gasidDestino, destino: this.gasDestino, tipo: this.gasidGasto, entra: this.gasEntra
+			}).then(function (response) { console.log( response.data );
+				if( isNaN(response.data) ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+				}
+			});
 			
+			let valor = 0;
+			if(this.gasidGasto==1){ valor = this.gasMonto; }else{ valor = this.gasEntra }
 
 			this.listaGastos[this.idEditar].descripcion = this.gasDescripcion;
 			//this.gasTotal-= parseFloat(this.listaGastos[this.idEditar].monto);
-			this.listaGastos[this.idEditar].monto = this.gasMonto;
+			this.listaGastos[this.idEditar].monto = valor;
 			this.listaGastos[this.idEditar].comprobante = this.gasComprobante;
 			this.listaGastos[this.idEditar].idComprobante = this.gasidComprobante;
 			this.listaGastos[this.idEditar].tipoComprobante = this.gasTipoComprobante;
@@ -941,7 +969,7 @@
 			this.gasTotal-=parseFloat(this.gasEntra );
 		},
 		ventcAgregar(){
-			
+			let idTempo = '';
 			if( this.noEsNumero(this.ventcCantidad) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La cantidad debe tener un número'); }
 			if( $('#sltPPresentaciones').val()==0 || $('#sltPPresentaciones').val()==null ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
 			if( this.noEsNumero(this.ventcPrecio) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El precio debe tener un valor numérico'); }
@@ -949,7 +977,20 @@
 			if( this.tieneObservaciones ){
 				$('#addVentasContLista').modal('hide');
 				this.ventcPresentacion = $('#sltPPresentaciones option[value="'+$('#sltPPresentaciones').val()+'"]').text();
-				this.listaVentasContado.push({ cantidad: this.ventcCantidad, presentacion: this.ventcPresentacion, idPresentacion: this.ventcIdPresentacion,  precio: this.ventcPrecio, ventcSubTotal: parseFloat(this.ventcCantidad*this.ventcPrecio) });
+
+				axios.post('{{route("liquidacion.ventas.crearFila")}}', {liquidacion_id: '{{$liquidacions->id}}',
+					cantidad: this.ventcCantidad, presentacion: this.ventcPresentacion, idPresentacion: this.ventcIdPresentacion,  precio: this.ventcPrecio, total: parseFloat(this.ventcCantidad*this.ventcPrecio)
+				}).then(function (response) { console.log( response.data );
+					if( isNaN(response.data) ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						idTempo= response.data;
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+					}
+				});
+
+				this.listaVentasContado.push({id: idTempo,  cantidad: this.ventcCantidad, presentacion: this.ventcPresentacion, idPresentacion: this.ventcIdPresentacion,  precio: this.ventcPrecio, total: parseFloat(this.ventcCantidad*this.ventcPrecio) });
 				this.ventcTotal += parseFloat(this.ventcCantidad*this.ventcPrecio);
 			}
 
@@ -960,40 +1001,71 @@
 			this.ventcCantidad = this.listaVentasContado[index].cantidad;
 			this.ventcPrecio = this.listaVentasContado[index].precio;
 			this.idEditar = index;
+			$('#sltPPresentaciones').selectpicker('val', this.ventcIdPresentacion);
 		},
 		ventcActualizar(){
 			if( this.noEsNumero(this.ventcCantidad) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La cantidad debe tener un número'); }
 			if( $('#sltPPresentaciones').val()==0 || $('#sltPPresentaciones').val()==null ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
 			if( this.noEsNumero(this.ventcPrecio) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El precio debe tener un valor numérico'); }
-
+			
 			if( this.tieneObservaciones ){
-				this.ventcTotal -= parseFloat( this.listaVentasContado[this.idEditar].ventcSubTotal );
+				$('#addVentasContLista').modal('hide');
+				this.ventcTotal -= parseFloat( this.listaVentasContado[this.idEditar].total );
 
 				this.listaVentasContado[ this.idEditar ].idPresentacion = this.ventcIdPresentacion;
 				this.listaVentasContado[ this.idEditar ].cantidad = parseFloat(this.ventcCantidad);
 				this.listaVentasContado[ this.idEditar ].precio = parseFloat(this.ventcPrecio);
-				this.listaVentasContado[ this.idEditar ].ventcSubTotal = parseFloat(this.ventcCantidad*this.ventcPrecio);
+				this.listaVentasContado[ this.idEditar ].total = parseFloat(this.ventcCantidad*this.ventcPrecio);
 				this.listaVentasContado[ this.idEditar ].presentacion = $('#sltPPresentaciones option[value="'+$('#sltPPresentaciones').val()+'"]').text();
 				this.ventcTotal += parseFloat(this.ventcCantidad*this.ventcPrecio);
+
+				axios.post('{{route("liquidacion.ventas.editarFila")}}', {id: this.listaVentasContado[ this.idEditar ].id,
+					cantidad: this.listaVentasContado[ this.idEditar ].cantidad, presentacion: $.trim(this.listaVentasContado[ this.idEditar ].presentacion), idPresentacion: this.listaVentasContado[ this.idEditar ].idPresentacion,  precio: this.listaVentasContado[ this.idEditar ].precio, total: this.listaVentasContado[ this.idEditar ].total
+				}).then(function (response) { console.log( response.data );
+					if( isNaN(response.data) ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+					}
+				});
+				
 			}
+
 		},
 		ventasBorrarFila(index){
 			this.ventcTotal-= parseFloat(this.listaVentasContado[index].ventcSubTotal);
-			this.listaVentasContado.splice(index,1);
+			
+			axios.post('{{route("liquidacion.ventas.borrarFila")}}', {fila: this.listaVentasContado[index].id }).then(function (response) {
+				if( response.data!='ok' ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					alertify.notify('<i class="icofont-check-circled"></i> Actualizado correctamente', 'success', 10, function(){ });
+					app.listaVentasContado.splice(index,1);
+				}
+			});
+
 		},
 		stockAgregar(){
-			if( $('#sltPresentacionStock').val()==0 || $('#sltPresentacionStock').val()==null ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
-
-			if( this.tieneObservaciones ){
-				$('#addStockEntrega').modal('hide');
-
-				let sub= parseFloat(this.stockPenta) + parseFloat(this.stockFabrica) + parseFloat(this.stockOficina);
-				this.listaStockFinal.push({ presentacion: $('#sltPresentacionStock option[value="'+$('#sltPresentacionStock').val()+'"]').text(), idPresentacion: this.stockIdPresentacion,
-				pentapeaks: this.stockPenta, fabrica: this.stockFabrica, oficina: this.stockOficina, subTotal: sub, retorno: this.stockRetorno, retornoFabrica: this.stockRetornoFabrica, retornoOficina: this.stockRetornoOficina, vencido: this.stockVencido, observacion: this.stockObservacion  });
-				this.stockTotal+= sub;
-				this.stockTotalEntrega += parseFloat(this.stockRetorno);
-			}
+			let idTempo = '';
+			let sub= parseFloat(this.stockPenta) + parseFloat(this.stockFabrica) + parseFloat(this.stockOficina);
 			
+			axios.post('{{route("liquidacion.stock.crearFila")}}', {liquidacion_id: '{{$liquidacions->id}}',
+				presentacion: $.trim($('#sltPresentacionStock option[value="'+$('#sltPresentacionStock').val()+'"]').text()), idPresentacion: this.stockIdPresentacion, pentapeaks: this.stockPenta, fabrica: this.stockFabrica, oficina: this.stockOficina, subTotal: sub, retorno: this.stockRetorno, retornoFabrica: this.stockRetornoFabrica, retornoOficina: this.stockRetornoOficina, vencido: this.stockVencido, observacion: this.stockObservacion
+			}).then(function (response) { //console.log( response.data );
+				if( isNaN(response.data) ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					idTempo = response.data;
+					alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+
+					app.listaStockFinal.push({id: idTempo,  presentacion: $('#sltPresentacionStock option[value="'+$('#sltPresentacionStock').val()+'"]').text(), idPresentacion: app.stockIdPresentacion, pentapeaks: app.stockPenta, fabrica: app.stockFabrica, oficina: app.stockOficina, subTotal: sub, retorno: app.stockRetorno, retornoFabrica: app.stockRetornoFabrica, retornoOficina: app.stockRetornoOficina, vencido: app.stockVencido, observacion: app.stockObservacion  });
+					app.stockTotal+= sub;
+					app.stockTotalEntrega += parseFloat(app.stockRetorno);
+				}
+			});
 		},
 		stockEditar(index){
 			this.stockIdPresentacion = this.listaStockFinal[index].idPresentacion;
@@ -1005,53 +1077,83 @@
 			this.stockRetornoFabrica = this.listaStockFinal[index].retornoFabrica;
 			this.stockRetornoOficina = this.listaStockFinal[index].retornoOficina;
 			this.stockObservacion = this.listaStockFinal[index].observacion;
+
+			$('#sltPresentacionStock').selectpicker('val', this.stockIdPresentacion);
 			
 			this.idEditar = index;
 		},
 		stockActualizar(){
-			if( $('#sltPresentacionStock').val()==0 || $('#sltPresentacionStock').val()==null ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
+			this.stockTotal -= parseFloat( this.listaStockFinal[this.idEditar].subTotal );
+			this.stockTotalEntrega -= parseFloat( this.listaStockFinal[this.idEditar].retorno );
+			let sub= parseFloat(this.stockPenta) + parseFloat(this.stockFabrica) + parseFloat(this.stockOficina);
 
-			if( this.tieneObservaciones ){
-				this.stockTotal -= parseFloat( this.listaStockFinal[this.idEditar].subTotal );
-				this.stockTotalEntrega -= parseFloat( this.listaStockFinal[this.idEditar].retorno );
-	
-				let sub= parseFloat(this.stockPenta) + parseFloat(this.stockFabrica) + parseFloat(this.stockOficina);
-				
-				this.listaStockFinal[ this.idEditar ].idPresentacion = this.stockIdPresentacion;
-				this.listaStockFinal[ this.idEditar ].presentacion = $('#sltPresentacionStock option[value="'+$('#sltPresentacionStock').val()+'"]').text();
-				this.listaStockFinal[ this.idEditar ].pentapeaks = this.stockPenta;
-				this.listaStockFinal[ this.idEditar ].fabrica = this.stockFabrica;
-				this.listaStockFinal[ this.idEditar ].oficina = this.stockOficina;
-				this.listaStockFinal[ this.idEditar ].subTotal = sub;
-				this.listaStockFinal[ this.idEditar ].retorno = this.stockRetorno;
-				this.listaStockFinal[ this.idEditar ].retornoFabrica = this.stockRetornoFabrica;
-				this.listaStockFinal[ this.idEditar ].retornoOficina = this.stockRetornoOficina;
-				this.listaStockFinal[ this.idEditar ].vencido = this.stockVencido;
-				this.listaStockFinal[ this.idEditar ].observacion = this.stockObservacion;
-	
-				this.stockTotal+= sub;
-				this.stockTotalEntrega += parseFloat(this.stockRetorno);
-			}
+			axios.post('{{route("liquidacion.stock.editarFila")}}', {id: this.listaStockFinal[ this.idEditar ].id,
+				presentacion: $.trim($('#sltPresentacionStock option[value="'+$('#sltPresentacionStock').val()+'"]').text()), idPresentacion: this.stockIdPresentacion, pentapeaks: this.stockPenta, fabrica: this.stockFabrica, oficina: this.stockOficina, subTotal: sub, retorno: this.stockRetorno, retornoFabrica: this.stockRetornoFabrica, retornoOficina: this.stockRetornoOficina, vencido: this.stockVencido, observacion: this.stockObservacion
+			}).then(function (response) { //console.log( response.data );
+				if( response.data!='ok' ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+				}
+			});
+
+			this.listaStockFinal[ this.idEditar ].idPresentacion = this.stockIdPresentacion;
+			this.listaStockFinal[ this.idEditar ].presentacion = $('#sltPresentacionStock option[value="'+$('#sltPresentacionStock').val()+'"]').text();
+			this.listaStockFinal[ this.idEditar ].pentapeaks = this.stockPenta;
+			this.listaStockFinal[ this.idEditar ].fabrica = this.stockFabrica;
+			this.listaStockFinal[ this.idEditar ].oficina = this.stockOficina;
+			this.listaStockFinal[ this.idEditar ].subTotal = sub;
+			this.listaStockFinal[ this.idEditar ].retorno = this.stockRetorno;
+			this.listaStockFinal[ this.idEditar ].retornoFabrica = this.stockRetornoFabrica;
+			this.listaStockFinal[ this.idEditar ].retornoOficina = this.stockRetornoOficina;
+			this.listaStockFinal[ this.idEditar ].vencido = this.stockVencido;
+			this.listaStockFinal[ this.idEditar ].observacion = this.stockObservacion;
+
+			this.stockTotal+= sub;
+			this.stockTotalEntrega += parseFloat(this.stockRetorno);
 
 		},
 		stockBorrarFila(index){
 			this.stockTotal -= parseFloat( this.listaStockFinal[index].subTotal );
 			this.stockTotalEntrega -= parseFloat( this.listaStockFinal[index].retorno );
-			this.listaStockFinal.splice(index,1);
+			
+			axios.post('{{route("liquidacion.stock.borrarFila")}}', {id: this.listaStockFinal[ index ].id,
+			}).then(function (response) { //console.log( response.data );
+				if( response.data!='ok' ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+					app.listaStockFinal.splice(index,1);
+				}
+			});
 		},
 		vencreAgregar(){
 			if( this.vencreCliente=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('El nombre del cliente es obligatorio'); }
 			if( this.vencreNumNota=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('El número de nota de crédito es obligatorio'); }
 			if( this.noEsNumero(this.vencrePrecio) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El precio debe tener un valor numérico'); }
-			if( $('#sltPresentacionCredito').val()==0 ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
+			if( $('#sltPresentacionCredito').val()==0 || $('#sltPresentacionCredito').val()==null ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
 			if( this.noEsNumero(this.ventcCantidad) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El precio debe tener un valor numérico'); }
 
 			if( this.tieneObservaciones ){
 				$('#addVentasCreditoLista').modal('hide');
 				let sub = parseFloat(this.vencrePrecio)	* parseFloat(this.vencreCantidad);
 				this.vencrePresentacion = $('#sltPresentacionCredito option[value="'+$('#sltPresentacionCredito').val()+'"]').text();
-				this.listaVentasCredito.push({ presentacion: this.vencrePresentacion, idPresentacion: this.vencreIdPresentacion, cliente: this.vencreCliente, nota: this.vencreNumNota, cantidad: this.vencreCantidad, precio: this.vencrePrecio, subTotal: sub	});
-				this.sumCredito += sub;
+
+				axios.post('{{route("liquidacion.credito.crearFila")}}', {liquidacion_id: '{{$liquidacions->id}}',
+					presentacion: this.vencrePresentacion, idPresentacion: this.vencreIdPresentacion, cliente: this.vencreCliente, nota: this.vencreNumNota, cantidad: this.vencreCantidad, precio: this.vencrePrecio, subTotal: sub }).then(function(response){
+					if( isNaN(response.data) ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+
+						app.listaVentasCredito.push({ id: response.data, presentacion: app.vencrePresentacion, idPresentacion: app.vencreIdPresentacion, cliente: app.vencreCliente, nota: app.vencreNumNota, cantidad: app.vencreCantidad, precio: app.vencrePrecio, total: sub	});
+						app.sumCredito += sub;
+					}
+				});
+
 			}
 		},
 		creditoEditar(index){
@@ -1060,31 +1162,57 @@
 			this.vencreNumNota = this.listaVentasCredito[index].nota;
 			this.vencreCantidad = this.listaVentasCredito[index].cantidad;
 			this.vencrePrecio = this.listaVentasCredito[index].precio;
+
+			$('#sltPresentacionCredito').selectpicker('val', this.vencreIdPresentacion);
+
 			this.idEditar = index;
 		},
 		vencreActualizar(){
 			if( this.vencreCliente=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('El nombre del cliente es obligatorio'); }
 			if( this.vencreNumNota=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('El número de nota de crédito es obligatorio'); }
 			if( this.noEsNumero(this.vencrePrecio) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El precio debe tener un valor numérico'); }
-			if( $('#sltPresentacionCredito').val()==0 ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
+			if( $('#sltPresentacionCredito').val()==0 || $('#sltPresentacionCredito').val()==null ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debe seleccionar un producto válido'); }
 			if( this.noEsNumero(this.ventcCantidad) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El precio debe tener un valor numérico'); }
 
 			if( this.tieneObservaciones ){
 				let sub = parseFloat(this.vencrePrecio)	* parseFloat(this.vencreCantidad);
 				this.sumCredito -= parseFloat(this.listaVentasCredito[ this.idEditar ].subTotal);
+				this.vencrePresentacion = $('#sltPresentacionCredito option[value="'+$('#sltPresentacionCredito').val()+'"]').text();
+
+
+				axios.post('{{route("liquidacion.credito.editarFila")}}', {id: this.listaVentasCredito[ this.idEditar ].id,
+					presentacion: this.vencrePresentacion, idPresentacion: this.vencreIdPresentacion, cliente: this.vencreCliente, nota: this.vencreNumNota, cantidad: this.vencreCantidad, precio: this.vencrePrecio, total: sub }).then(function(response){
+					if( response.data!='ok' ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+					}
+				});
 
 				this.listaVentasCredito[ this.idEditar ].idPresentacion = this.vencreIdPresentacion ;
 				this.listaVentasCredito[ this.idEditar ].cliente = this.vencreCliente ;
 				this.listaVentasCredito[ this.idEditar ].nota = this.vencreNumNota ;
 				this.listaVentasCredito[ this.idEditar ].cantidad = this.vencreCantidad ;
 				this.listaVentasCredito[ this.idEditar ].precio = this.vencrePrecio ;
-				this.listaVentasCredito[ this.idEditar ].subTotal = sub ;
+				this.listaVentasCredito[ this.idEditar ].total = sub ;
 				this.sumCredito += sub;
 			}
 		},
 		creditoBorrarFila(index){
 			this.sumCredito-= parseFloat( this.listaVentasCredito[this.idEditar].subTotal );
-			this.listaVentasCredito.splice(index,1);
+
+			axios.post('{{route("liquidacion.credito.borrarFila")}}', {id: this.listaVentasCredito[ index ].id,
+			}).then(function (response) { //console.log( response.data );
+				if( response.data!='ok' ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+					app.listaVentasCredito.splice(index,1);
+				}
+			});
+
 		},
 		cobroAgregar(){
 
@@ -1095,8 +1223,21 @@
 
 			if( this.tieneObservaciones ){
 				$('#addCobranzaLista').modal('hide');
-				this.listaCobranza.push({cliente: this.cobraCliente, deuda: this.cobraDeuda, acuenta: this.cobraAcuenta, saldo: this.cobraSaldos, nota: this.cobraNumNota });
-				this.sumCobranza+= parseFloat(this.cobraAcuenta);
+
+				axios.post('{{route("liquidacion.cobro.crearFila")}}', {liquidacion_id: '{{$liquidacions->id}}',
+					cliente: this.cobraCliente, deuda: this.cobraDeuda, acuenta: this.cobraAcuenta, saldo: this.cobraSaldos, nota: this.cobraNumNota
+				}).then(function (response) { console.log( response.data );
+					if( isNaN(response.data) ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						idTempo= response.data;
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+						app.listaCobranza.push({id: idTempo, cliente: app.cobraCliente, deuda: app.cobraDeuda, acuenta: app.cobraAcuenta, saldo: app.cobraSaldos, nota: app.cobraNumNota });
+						app.sumCobranza+= parseFloat(app.cobraAcuenta);
+					}
+				});
+
 			}
 		},
 		cobroEditar(index){
@@ -1107,28 +1248,54 @@
 			this.idEditar = index;
 		},
 		cobroActualizar(){
+
 			if( this.cobraCliente=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('El nombre del cliente es obligatorio'); }
 			if( this.noEsNumero(this.cobraDeuda) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La deuda debe tener un valor numérico'); }
 			if( this.noEsNumero(this.cobraAcuenta) ){ this.tieneObservaciones = false; this.listaObservaciones.push('El monto a cuenta debe ser un valor numérico'); }
 			if( this.cobraNumNota=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('La nota de pedido es obligatoria'); }
 
 			if( this.tieneObservaciones ){
+				$('#addCobranzaLista').modal('hide');
 				this.sumCobranza-= parseFloat(this.listaCobranza[this.idEditar].acuenta);
+
+				axios.post('{{route("liquidacion.cobro.editarFila")}}', {liquidacion_id: '{{$liquidacions->id}}', id: this.listaCobranza[this.idEditar].id,
+					cliente: this.cobraCliente, deuda: this.cobraDeuda, acuenta: this.cobraAcuenta, saldo: this.cobraSaldos, nota: this.cobraNumNota
+				}).then(function (response) { console.log( response.data );
+					if( response.data!='ok' ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						idTempo= response.data;
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+						app.listaCobranza.push({id: idtempo, cliente: app.cobraCliente, deuda: app.cobraDeuda, acuenta: app.cobraAcuenta, saldo: app.cobraSaldos, nota: app.cobraNumNota });
+						app.sumCobranza+= parseFloat(app.cobraAcuenta);
+					}
+				});
+	
 				this.listaCobranza[this.idEditar].cliente= this.cobraCliente;
 				this.listaCobranza[this.idEditar].deuda= this.cobraDeuda;
 				this.listaCobranza[this.idEditar].acuenta= this.cobraAcuenta;
 				this.listaCobranza[this.idEditar].saldo= this.cobraSaldos;
 				this.listaCobranza[this.idEditar].nota= this.cobraNumNota;
+	
 				this.sumCobranza+=parseFloat(this.cobraAcuenta);
 			}
 
 		},
 		cobroBorrarFila(index){
 			this.sumCobranza-= parseFloat( this.listaCobranza[index].acuenta);
-			this.listaCobranza.splice(index,1);
+			axios.post('{{route("liquidacion.cobro.borrarFila")}}', {id: this.listaCobranza[ index ].id,
+			}).then(function (response) { //console.log( response.data );
+				if( response.data!='ok' ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+					app.listaCobranza.splice(index,1);
+				}
+			});
 		},
 		adelaAgregar(){
-
 			if( this.adelaIdPresentacion=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('Tiene que seleccionar una presentación obligatoria'); }
 			if( this.adelaCliente=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('Tiene que rellenar el cliente'); }
 			if( this.noEsNumero(this.adelaMonto) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La monto mínimo debe ser cero'); }
@@ -1138,43 +1305,81 @@
 			if(this.tieneObservaciones){
 				$('#addAdelantoLista').modal('hide');
 				let presentAdela = $('#sltPresentacionAdela option[value="'+$('#sltPresentacionAdela').val()+'"]').text();
-				this.listaAdelantos.push({cliente: this.adelaCliente, monto: this.adelaMonto, cantidad: this.adelaCantidad, bonificacion: this.adelaBonificacion,idPresentacion: this.adelaIdPresentacion, presentacion: presentAdela  });
-				this.sumAdelanto+= parseFloat(this.adelaMonto);
-			}
 
+				axios.post('{{route("liquidacion.adelanto.crearFila")}}', {liquidacion_id: '{{$liquidacions->id}}',
+					cliente: this.adelaCliente, monto: this.adelaMonto, cantidad: this.adelaCantidad, bonificacion: this.adelaBonificacion,idPresentacion: this.adelaIdPresentacion, presentacion: presentAdela
+				}).then(function (response) { console.log( response.data );
+					if( isNaN(response.data) ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						idTempo= response.data;
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+						
+						app.listaAdelantos.push({id: idTempo, cliente: app.adelaCliente, monto: app.adelaMonto, cantidad: app.adelaCantidad, bonificacion: app.adelaBonificacion,idPresentacion: app.adelaIdPresentacion, presentacion: presentAdela  });
+						app.sumAdelanto+= parseFloat(app.adelaMonto);
+					}
+				});
+
+			}
 		},
 		adelantoEditar(index){
 			this.adelaCliente = this.listaAdelantos[index].cliente;
 			this.adelaMonto = this.listaAdelantos[index].monto
 			this.adelaCantidad = this.listaAdelantos[index].cantidad;
 			this.adelaPresentacion = this.listaAdelantos[index].presentacion;
-			this.idPresentacion = this.listaAdelantos[index].idPresentacion;
+			this.adelaIdPresentacion = this.listaAdelantos[index].idPresentacion;
 			this.adelaBonificacion = this.listaAdelantos[index].bonificacion;
+
+			$('#sltPresentacionAdela').selectpicker('val', this.adelaIdPresentacion);
+
 			this.idEditar = index;
 		},
 		adelaActualizar(){
+			let presentAdela = $('#sltPresentacionAdela option[value="'+$('#sltPresentacionAdela').val()+'"]').text();
+
 			if( this.adelaIdPresentacion=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('Tiene que seleccionar una presentación obligatoria'); }
 			if( this.adelaCliente=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('Tiene que rellenar el cliente'); }
 			if( this.noEsNumero(this.adelaMonto) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La monto mínimo debe ser cero'); }
 			if( this.noEsNumero(this.adelaCantidad) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La cantidad mínima debe ser cero'); }
 			if( this.noEsNumero(this.adelaBonificacion) ){ this.tieneObservaciones = false; this.listaObservaciones.push('La bonificación mínima debe ser cero'); }
 
-			if(this.tieneObservaciones){
-				let presentAdela = $('#sltPresentacionAdela option[value="'+$('#sltPresentacionAdela').val()+'"]').text();
+			if(this.tieneObservaciones){ 
+				$('#addAdelantoLista').modal('hide');
 				this.sumAdelanto-=parseFloat(this.listaAdelantos[this.idEditar].monto);
+
+				axios.post('{{route("liquidacion.adelanto.editarFila")}}', {liquidacion_id: '{{$liquidacions->id}}', id: this.listaAdelantos[this.idEditar].id,
+					cliente: this.adelaCliente, monto: this.adelaMonto, cantidad: this.adelaCantidad, bonificacion: this.adelaBonificacion, idPresentacion: this.adelaIdPresentacion, presentacion: presentAdela
+				}).then(function (response) { console.log( response.data );
+					if( response.data!="ok" ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+						app.listaAdelantos[app.idEditar].cliente = app.adelaCliente;
+						app.listaAdelantos[app.idEditar].monto = app.adelaMonto;
+						app.listaAdelantos[app.idEditar].cantidad = app.adelaCantidad;
+						app.listaAdelantos[app.idEditar].bonificacion = app.adelaBonificacion;
+						app.listaAdelantos[app.idEditar].idPresentacion = app.idPresentacion;
+						app.listaAdelantos[app.idEditar].presentacion = presentAdela;
+						app.sumAdelanto+= parseFloat(app.adelaMonto);
+					}
+				});
 	
-				this.listaAdelantos[this.idEditar].cliente = this.adelaCliente;
-				this.listaAdelantos[this.idEditar].monto = this.adelaMonto;
-				this.listaAdelantos[this.idEditar].cantidad = this.adelaCantidad;
-				this.listaAdelantos[this.idEditar].bonificacion = this.adelaBonificacion;
-				this.listaAdelantos[this.idEditar].idPresentacion = this.idPresentacion;
-				this.listaAdelantos[this.idEditar].presentacion = presentAdela;
-				this.sumAdelanto+= parseFloat(this.adelaMonto);
+				
 			}
 		},
 		adelantoBorrarFila(index){
 			this.sumAdelanto-= parseFloat(this.listaAdelantos[index].monto);
-			this.listaAdelantos.splice(index,1);
+			axios.post('{{route("liquidacion.adelanto.borrarFila")}}', {id: this.listaAdelantos[index].id }).then(function (response) {
+				if( response.data!='ok' ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					alertify.notify('<i class="icofont-check-circled"></i> Actualizado correctamente', 'success', 10, function(){ });
+					app.listaAdelantos.splice(index,1);;
+				}
+			});
 		},
 		fechaFormateada(fecha){
 			return moment(fecha).format('DD/MM/YYYY');
@@ -1184,11 +1389,23 @@
 			if( this.bonDescripcion=='' ){ this.tieneObservaciones = false; this.listaObservaciones.push('Debes seleccionar un producto'); }
 			if( this.noEsNumero(this.bonCantidad) || this.bonCantidad<0 ){ this.tieneObservaciones = false; this.listaObservaciones.push('La cantidad debe ser mayor que cero'); }
 			if( this.noEsNumero(this.bonBonificacion) || this.bonBonificacion<0 ){ this.tieneObservaciones = false; this.listaObservaciones.push('Las bonificaciones deben ser mayor que cero'); }
-
+			
 			if( this.tieneObservaciones ){
-				this.bonDescripcion = $('#sltPresentacionBonif option[value="'+$('#sltPresentacionBonif').val()+'"]').text();
-				this.listaBonificaciones.push({ cantidad: this.bonCantidad, presentacion: this.bonDescripcion, idPresentacion: $('#sltPresentacionBonif').val(), observacion: this.bonObservacion, bonificacion: this.bonBonificacion, cliente: this.bonCliente, direccion: this.bonDireccion, esBono: this.bonQuees });
-				this.bonifTotal+=parseFloat(this.bonBonificacion);
+				$('#addBonificacionLista').modal('hide');
+				axios.post("{{route('liquidacion.bonificacion.crearFila')}}", {liquidacion_id: '{{$liquidacions->id}}',
+				cantidad: this.bonCantidad, presentacion: this.bonDescripcion, idPresentacion: $('#sltPresentacionBonif').val(), observacion: this.bonObservacion, bonificacion: this.bonBonificacion, cliente: this.bonCliente, direccion: this.bonDireccion, esBono: this.bonQuees})
+				.then(function (response){
+					if( isNaN(response.data) ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						idTempo = response.data;
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+
+						app.listaBonificaciones.push({ cantidad: app.bonCantidad, presentacion: app.bonDescripcion, idPresentacion: $('#sltPresentacionBonif').val(), observacion: app.bonObservacion, bonificacion: app.bonBonificacion, cliente: app.bonCliente, direccion: app.bonDireccion, esBono: app.bonQuees });
+						app.bonifTotal+=parseFloat(app.bonBonificacion);
+					}
+				});
 			}
 		},
 		bonifEditar(index){
@@ -1199,6 +1416,9 @@
 			this.bonCliente= this.listaBonificaciones[index].cliente;
 			this.bonDireccion= this.listaBonificaciones[index].direccion;
 			this.bonQuees= this.listaBonificaciones[index].esBono;
+
+			$('#sltPresentacionBonif').selectpicker('val', this.bonIdPresentacion);
+
 			this.idEditar = index;
 		},
 		bonifActualizar(){
@@ -1209,6 +1429,19 @@
 
 			if( this.tieneObservaciones ){
 				$('#addBonificacionLista').modal('hide');
+
+				axios.post("{{route('liquidacion.bonificacion.editarFila')}}", {id: this.listaBonificaciones[this.idEditar].id,
+				cantidad: this.bonCantidad, presentacion: this.bonDescripcion, idPresentacion: $('#sltPresentacionBonif').val(), observacion: this.bonObservacion, bonificacion: this.bonBonificacion, cliente: this.bonCliente, direccion: this.bonDireccion, esBono: this.bonQuees})
+				.then(function (response){
+					if( response.data!='ok' ){
+						//location.reload();
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						idTempo = response.data;
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+					}
+				});
+
 				this.bonifTotal-=parseFloat(this.listaBonificaciones[this.idEditar].cantidad);
 	
 				this.listaBonificaciones[this.idEditar].idPresentacion= $('#sltPresentacionBonif').val()
@@ -1225,7 +1458,17 @@
 		},
 		bonifBorrarFila(index){
 			this.bonifTotal-= parseFloat(this.listaBonificaciones[index].bonificacion);
-			this.listaBonificaciones.splice(index,1);
+
+			axios.post('{{route("liquidacion.bonificacion.borrarFila")}}', {id: this.listaBonificaciones[index].id }).then(function (response) {
+				if( response.data!='ok' ){
+					//location.reload();
+					alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+				}else{
+					alertify.notify('<i class="icofont-check-circled"></i> Actualizado correctamente', 'success', 10, function(){ });
+					app.listaBonificaciones.splice(index,1);
+				}
+			});
+
 		},
 		guardarFicha(){
 			axios.post('{{route("liquidacion.insertar")}}', {
@@ -1238,6 +1481,18 @@
 				if(!isNaN(parseInt(response.data))){ //alert('Ficha guardada');
 					alertify.alert('','<p class="text-muted mb-0">Ficha guardada:</p> <h3 class="text-secondary">' + moment( this.fichFecha ).format('YYMM') + "-" + response.data+"</h3>" ).set({transition:'fade', 'onok': function(){ window.location.href = "{{route('ventas.index')}}"+"/"+ app.fichFecha;}});
 				}
+			});
+		},
+		actualizarFicha(){
+			axios.post('{{route("liquidacion.cabecera.editar")}}', {liquidacion_id: '{{$liquidacions->id}}',
+				fecha: this.fichFecha, vendedor: this.fichVendedor, placa: this.fichPlaca, lugar: this.fichLugar, conductor: this.fichConductor,
+				sumaEntregado: this.entregado,
+			}).then(function(response){ console.log(response.data);
+				if( response.data!='ok' ){
+						alertify.notify('<i class="icofont-close-circled"></i> No se pudo actualizar el dato', 'danger', 10, function(){ });
+					}else{
+						alertify.notify('<i class="icofont-check-circled"></i> Agregado correctamente', 'success', 10, function(){ });
+					}
 			});
 		},
 		forzarMinimo(valor){

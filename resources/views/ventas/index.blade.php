@@ -96,7 +96,8 @@ use Carbon\Carbon;
 							
 							<td>{{$usuarios[0]->name}}</td>
 							<td>{{$creado->format('d/m/Y H:m a')}}</td>
-							<td>
+							<td class="form-inline">
+								<a class="btn btn-outline-primary border-0 btn-sm" href="{{route('liquidacion.edit', $liquidacion->id )}}"><i class="icofont-edit"></i></a>
 								<form action="{{route('liquidacion.borrar', $liquidacion->id )}}" method="post"> @csrf
 									<button class="btn btn-outline-danger border-0 btn-sm"><i class="icofont-close"></i></button>
 								</form>

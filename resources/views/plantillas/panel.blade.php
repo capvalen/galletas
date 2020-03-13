@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="{{url('css/bootstrap-select.min.css?version=0.4')}}" >
   <link rel="stylesheet" href="{{url('css/bootstrap-material-datetimepicker.css?version=0.1')}}" >
   <link rel="stylesheet" href="{{url('css/animate.css?version=0.0')}}" >
-  <link rel="stylesheet" href="{{url('css/alertify.min.css?version=1.0.9')}}" >
+  <link rel="stylesheet" href="{{url('css/alertify.min.css?version=1.0.10')}}" >
 	<link rel="stylesheet" href="{{asset('css/easy-autocomplete.min.css?version=1.0.3')}}" > <!-- Extraido de: http://easyautocomplete.com/guide -->
 
 

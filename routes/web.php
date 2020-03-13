@@ -59,6 +59,7 @@ Route::post('tipoProceso/eliminar/{id}', 'tipoProcesoControler@destroy' )->name(
 
 Route::get('Liquidaciones/{fecha?}', 'ventasController@index' )->name('ventas.index');
 Route::get('Liquidación/Nueva', 'ventasController@liquidacion' )->name('liquidacion.nueva');
+Route::get('Liquidación/Editar/{id}', 'ventasController@edit' )->name('liquidacion.edit');
 
 
 Route::get('productos/lista/', 'tipoProcesoControler@productosCompleto' )->name('productos.listado');
@@ -67,6 +68,28 @@ Route::post('productos/precios/{id}', 'tipoProcesoControler@productosPrecios' )-
 Route::post('liquidacion/insertar/', 'tipoProcesoControler@liquidacion_insert' )->name('liquidacion.insertar');
 Route::get('Liquidación/Reporte/{id?}', 'tipoProcesoControler@reporteLiquidacion' )->name('liquidacion.reporte');
 Route::post('liquidacion/borrar/{id}', 'ventasController@destroy' )->name('liquidacion.borrar');
+Route::post('liquidacion/cabecera/editar/', 'tipoProcesoControler@editarCabecera' )->name('liquidacion.cabecera.editar');
+Route::post('liquidacion/ventas/crear/', 'tipoProcesoControler@crearVentaFila' )->name('liquidacion.ventas.crearFila');
+Route::post('liquidacion/ventas/editar/', 'tipoProcesoControler@editarVentaFila' )->name('liquidacion.ventas.editarFila');
+Route::post('liquidacion/ventas/borrar/', 'tipoProcesoControler@borrarVentaFila' )->name('liquidacion.ventas.borrarFila');
+Route::post('liquidacion/stock/crear/', 'tipoProcesoControler@crearStockFila' )->name('liquidacion.stock.crearFila');
+Route::post('liquidacion/stock/editar/', 'tipoProcesoControler@editarStockFila' )->name('liquidacion.stock.editarFila');
+Route::post('liquidacion/stock/borrar/', 'tipoProcesoControler@borrarStockFila' )->name('liquidacion.stock.borrarFila');
+Route::post('liquidacion/bonificacion/crear/', 'tipoProcesoControler@crearBonificacionFila' )->name('liquidacion.bonificacion.crearFila');
+Route::post('liquidacion/bonificacion/editar/', 'tipoProcesoControler@editarBonificacionFila' )->name('liquidacion.bonificacion.editarFila');
+Route::post('liquidacion/bonificacion/borrar/', 'tipoProcesoControler@borrarBonificacionFila' )->name('liquidacion.bonificacion.borrarFila');
+Route::post('liquidacion/credito/crear/', 'tipoProcesoControler@crearCreditoFila' )->name('liquidacion.credito.crearFila');
+Route::post('liquidacion/credito/editar/', 'tipoProcesoControler@editarCreditoFila' )->name('liquidacion.credito.editarFila');
+Route::post('liquidacion/credito/borrar/', 'tipoProcesoControler@borrarCreditoFila' )->name('liquidacion.credito.borrarFila');
+Route::post('liquidacion/cobro/crear/', 'tipoProcesoControler@crearCobroFila' )->name('liquidacion.cobro.crearFila');
+Route::post('liquidacion/cobro/editar/', 'tipoProcesoControler@editarCobroFila' )->name('liquidacion.cobro.editarFila');
+Route::post('liquidacion/cobro/borrar/', 'tipoProcesoControler@borrarCobroFila' )->name('liquidacion.cobro.borrarFila');
+Route::post('liquidacion/adelanto/crear/', 'tipoProcesoControler@crearAdelantoFila' )->name('liquidacion.adelanto.crearFila');
+Route::post('liquidacion/adelanto/editar/', 'tipoProcesoControler@editarAdelantoFila' )->name('liquidacion.adelanto.editarFila');
+Route::post('liquidacion/adelanto/borrar/', 'tipoProcesoControler@borrarAdelantoFila' )->name('liquidacion.adelanto.borrarFila');
+Route::post('liquidacion/gasto/crear/', 'tipoProcesoControler@crearGastoFila' )->name('liquidacion.gasto.crearFila');
+Route::post('liquidacion/gasto/editar/', 'tipoProcesoControler@editarGastoFila' )->name('liquidacion.gasto.editarFila');
+Route::post('liquidacion/gasto/borrar/', 'tipoProcesoControler@borrarGastoFila' )->name('liquidacion.gasto.borrarFila');
 
 Route::get('Reportes/', 'reporteController@index' )->name('reportes.index');
 Route::post('Reportes/Resultado', 'reporteController@busqueda' )->name('reportes.busqueda');

@@ -877,6 +877,9 @@
 	/* background: rgba(91, 189, 114, 0.95); */
 	background: rgb(30, 193, 68);
 }
+.alertify-notifier .ajs-message.ajs-danger {
+	background-color: #de0317;
+}
 .alertify-notifier .ajs-message.ajs-error {
 	background: rgba(243, 36, 36, 0.95);
 	color: white!important;
