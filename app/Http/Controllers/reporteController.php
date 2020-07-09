@@ -34,7 +34,52 @@ class reporteController extends Controller
 			$fin = Carbon::createFromFormat('d/m/Y', $request->end )->isoFormat('YYYY-MM-DD')." 23:59:59";
 
 			switch ($tipo) {
-				case 'R0': return back()->with('mensaje', 'Debes selecionar un tipo de reporte válido'); break;
+					case 'R0': return back()->with('mensaje', 'Debes selecionar un tipo de reporte válido'); break;
+					case 'R1':
+							$productos = DB::table('productos')
+							->join('tipo_productos', 'tipo_productos.id', '=', 'productos.tipo_productos_id')
+							->join('tipo_displays', 'tipo_displays.id', '=', 'productos.tipo_displays_id')
+							->join('marca_displays', 'marca_displays.id', '=', 'productos.marca_displays_id')
+							->select('productos.id', 'productos.precioMayor', 'productos.descripcion', DB::raw('case productos.tipo_displays_id when 6 then "" else concat(tipo_productos.descripcion, " ", tipo_displays.descripcion," ", marca_displays.descripcion ) end as presentacion'), DB::raw('case tipo_displays_id when 1 then concat(productos.peso, " kg.") when 2 then concat(cast(productos.cantidad as int), "x", cast(productos.cantidad_x_display as int)) when 6 then "" else concat(cast(productos.cantidad as int), " Und." )
+								end as contenido') )->where('activo', 1)->orderby('presentacion', 'asc')->get()->toJson();
+
+							/* 	$contado = DB::table('liquidacions')
+								->join('ventas_contados', 'liquidacions.id', '=', 'ventas_contados.liquidacion_id')
+								->whereBetween('liquidacions.created_at', [$inicio, $fin])
+								->get(); */
+
+							$vContado = App\ventasContado::join('liquidacions', 'liquidacions.id', '=', 'ventas_contados.liquidacion_id')
+								->select('idPresentacion')->selectRaw('sum(cantidad) as suma')->groupBy('idPresentacion')
+								->whereBetween('liquidacions.created_at', [$inicio, $fin])
+								->get();
+						
+							$vCredito = App\ventasCredito::join('liquidacions', 'liquidacions.id', '=', 'ventas_creditos.liquidacion_id')
+								->select('idPresentacion')->selectRaw('sum(cantidad) as suma')->groupBy('idPresentacion')
+								->whereBetween('liquidacions.created_at', [$inicio, $fin])
+								->get();
+
+							$vBonificacion = App\VentasBonificacion::join('liquidacions', 'liquidacions.id', '=', 'ventas_bonificacions.liquidacion_id')
+								->select('idPresentacion')->selectRaw('sum(bonificacion) as suma')->groupBy('idPresentacion')
+								->whereBetween('liquidacions.created_at', [$inicio, $fin])->where('esBono', 1)
+								->get();
+							
+							$vBonificacionAdela = App\VentasAdelanto::join('liquidacions', 'liquidacions.id', '=', 'ventas_adelantos.liquidacion_id')
+							->select('idPresentacion')->selectRaw('sum(bonificacion) as suma')->groupBy('idPresentacion')
+							->whereBetween('liquidacions.created_at', [$inicio, $fin])->where('bonificacion', '>', 0)
+							->get();
+
+							$vAdelanto = App\VentasAdelanto::join('liquidacions', 'liquidacions.id', '=', 'ventas_adelantos.liquidacion_id')
+							->select('idPresentacion')->selectRaw('sum(cantidad) as suma')->groupBy('idPresentacion')
+							->whereBetween('liquidacions.created_at', [$inicio, $fin])
+							->get();
+
+							$vDegustacion = App\VentasBonificacion::join('liquidacions', 'liquidacions.id', '=', 'ventas_bonificacions.liquidacion_id')
+								->select('idPresentacion')->selectRaw('sum(bonificacion) as suma')->groupBy('idPresentacion')
+								->whereBetween('liquidacions.created_at', [$inicio, $fin])->where('esBono', 0)
+								->get();
+							//return $vBonificacionAdela;
+							return view('reportes.index', compact('desde', 'hasta', 'lugares', 'gastos', 'tipo', 'sellers'));
+					break;
 				case 'R2':
 					//$inicio = Carbon::createFromFormat('d/m/Y', $request->start );
 					//$fin = Carbon::createFromFormat('d/m/Y', $request->end );

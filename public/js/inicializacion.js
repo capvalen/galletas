@@ -1,5 +1,63 @@
+$(document).ready(function () {
+	$("#sidebar").mCustomScrollbar({
+			theme: "minimal-dark",
+			mouseWheelPixels: 200
+	});
+
+	$('#dismiss, .overlay').on('click', function () {
+			ocultarPanel()
+	});
+	$('.sidebar-header').click(function(){
+			ocultarPanel();
+	});
+	$('#btnBrand').click(function(){
+			mostrarPanel();
+	});
+					
+function ocultarPanel(){
+	$('#sidebar').removeClass('active');
+	$('.overlay').removeClass('active');
+	$('#sidebarCollapse').toggleClass('tieneMostrar');
+}
+function mostrarPanel(){
+	$('#sidebar').addClass('active');
+	$('.overlay').addClass('active');
+	$('.collapse.in').toggleClass('in');
+	$('a[aria-expanded=true]').attr('aria-expanded', 'false');
+	$('#sidebarCollapse').toggleClass('tieneMostrar');
+}
+
+	$('#sidebarCollapse').on('click', function () {
+	if($(this).hasClass('tieneMostrar')){
+			mostrarPanel();
+	}else{
+			ocultarPanel();
+	}
+											
+	});
+});
+
 $('.txtNumeroDecimal').change(function(){
 	$(this).val(parseFloat($(this).val()).toFixed(2));
+});
+$('.esDecimal').change(function(){
+	var campo = $(this);
+	var valor =campo.val();
+	$(this).val(parseFloat(valor).toFixed(2));
+});
+$('.noEsDecimal').change(function(){
+	var campo = $(this);
+	var valor =campo.val();
+	$(this).val(parseFloat(valor).toFixed(0));
+});
+$('.esMoneda').change(function(){
+	var campo = $(this);
+	var valor =campo.val();
+	if(valor<0){
+		$(this).val('0.00')
+	}else{
+		$(this).val(parseFloat(valor).toFixed(2));
+	}
 });
 $('#agregarBarra').click(function(){
 	//console.log('Se hizo clic en el boton agregar barra');
@@ -8,9 +66,6 @@ $('#agregarBarra').click(function(){
 	$('#listBarras').append('<li class="collection-item">'+$('#txtBarras').val()+'<a href="#!" class="secondary-content"><i class="material-icons red-text">close</i></a></li>')
 	$('#txtBarras').val('');}
 });
-$(document).ready(function(){
-});
-$.fn.modal.prototype.constructor.Constructor.DEFAULTS.backdrop = 'static'; //Para que no cierre el modal, cuando hacen clic en cualquier parte
 
 function esNumero(cadena) //true para si es número sólo
 {
@@ -48,9 +103,20 @@ $('.form-control-clear').click(function() {
 /*function returnNumDecimal(numSinFormato){
 return parseFloat(numSinFormato).tof()
 }*/
-$("input").focus(function(){
-  this.select();
+$("input").focus(function(){this.select();}); //para seleccionar todo en un input
+
+/*Para que la página cargue en el tab que se requiere*/
+// Javascript to enable link to tab
+var url = document.location.toString();
+if (url.match('#')) {
+    $('.nav-tabs a[href="#' + url.split('#')[1]).tab('show').click();
+    console.log(url.split('#')[1]);
+} //add a suffix
+$('.nav-tabs a').on('shown.bs.tab', function (e) {
+window.location.hash = e.target.hash;
 });
-$("#app").on( 'focus', 'input', function(){
-	this.select();
+$('.soloLetras').keypress(function (e) {//|| 
+	if(!(e.which >= 97 /* a */ && e.which <= 122 /* z */) && !(e.which >= 48 /* 0 */ && e.which <= 90 /* 9 */)  ) {
+        e.preventDefault();
+    }
 });
